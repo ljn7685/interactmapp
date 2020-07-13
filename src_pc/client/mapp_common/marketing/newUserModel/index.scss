@@ -1,0 +1,33 @@
+.result-wrapper{
+  .at-modal__header{
+    text-align: left;
+    .closer{
+      position: absolute;
+      top: 18rpx;
+      right: 18rpx;
+    }
+  }
+
+  .at-modal__content{
+    min-height: unset;
+    display: flex;
+    flex-direction: column;
+
+    .text-row{
+      line-height: 38rpx;
+      margin: 12rpx 0;
+    }
+  }
+
+  .at-modal__footer{
+    .at-modal__action{
+      .leftBtn{
+        color: #666;
+      }
+      .rightBtn{
+        background-color: #1890FF;
+        color: white !important;
+      }
+    }
+  }
+}

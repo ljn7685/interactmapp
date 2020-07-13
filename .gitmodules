@@ -1,0 +1,3 @@
+[submodule "public/mapp_common"]
+	path = public/mapp_common
+	url = https://github.com/aiyongbao/mapp_common.git

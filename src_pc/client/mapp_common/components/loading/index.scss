@@ -1,0 +1,120 @@
+.circleProgress_wrapper{
+    width: 80px;
+    height: 80px;
+    position: relative;
+    animation: circleProgressLoad 2s cubic-bezier(0.60, 0.00, 0.40, 1.00) infinite,
+    circleFirstEnter 0.4s cubic-bezier(0.60, 0.00, 0.40, 1.00);
+}
+.mask{
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.25);
+    position: absolute;
+    top: 0;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: firstEnter 0.2s cubic-bezier(0.60, 0.00, 0.40, 1.00);
+}
+.wrapper{
+    width: 40px;
+    height: 80px;
+    position: absolute;
+    top:0;
+    overflow: hidden;
+}
+.right{
+    right:0;
+}
+.left{
+    left:0;
+}
+.circleProgress{
+    width: 70px;
+    height: 70px;
+    border:5px solid #1890ff;
+    border-radius: 50%;
+    position: absolute;
+    top:0;
+    transform: rotate(45deg);
+}
+.rightcircle{
+    border-top:5px solid rgba(24,144,255,0.3);
+    border-right:5px solid rgba(24,144,255,0.3);
+    right:0;
+    animation: circleProgressLoad_right 2s cubic-bezier(0.60, 0.00, 1.00, 1.00) infinite;
+}
+.leftcircle{
+    border-bottom:5px solid rgba(24,144,255,0.3);
+    border-left:5px solid rgba(24,144,255,0.3);
+    left:0;
+    animation: circleProgressLoad_left 2s cubic-bezier(0.00, 0.00, 0.40, 1.00) infinite;
+}
+@keyframes circleProgressLoad_right{
+    0%{
+        transform: rotate(45deg);
+    }
+    20%{
+        transform: rotate(225deg);
+    }
+    40%{
+        transform: rotate(225deg);
+    }
+    60%{
+        transform: rotate(225deg);
+    }
+    80%{
+        transform: rotate(405deg);
+    }
+    100%{
+        transform: rotate(405deg);
+    }
+}
+@keyframes circleProgressLoad_left{
+    0%{
+        transform: rotate(45deg);
+    }
+    20%{
+        transform: rotate(45deg);
+    }
+    40%{
+        transform: rotate(225deg);
+    }
+    60%{
+        transform: rotate(225deg);
+    }
+    80%{
+        transform: rotate(225deg);
+    }
+    100%{
+        transform: rotate(405deg);
+    }
+}
+@keyframes circleProgressLoad{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+@keyframes firstEnter{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@keyframes circleFirstEnter{
+    0%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}

@@ -1,0 +1,25 @@
+.enter-peer{
+    width: 1rpx;
+    position: fixed;
+    right: 170rpx;
+    text-align: center;
+    line-height: 180rpx;
+    z-index: 11;
+    .movable-area{
+        width: 100%;
+        height: 100vh;
+        .close-peer{
+            position: absolute;
+            right: -110rpx;
+            top: -15rpx;
+            width: 34rpx;
+            height: 34rpx;
+        }
+        .enter-img{
+            width: 130rpx;
+            height: 130rpx;
+        }
+    }
+   
+}
+

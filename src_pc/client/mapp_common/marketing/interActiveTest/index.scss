@@ -1,0 +1,62 @@
+.active-card {
+    border-radius: 10rpx;
+    background-color: #FFFFFF;
+    width: 700rpx;
+    height: 228rpx;
+    margin: 16rpx 0rpx 8rpx 24rpx;
+    .active-card-title {
+        border-bottom: 2rpx solid #E7E8EC;
+        color: #1A1A1A;
+        font-size: 28rpx;
+        padding: 20rpx 0rpx 18rpx 24rpx;
+    }
+    .active-card-bottom {
+        display: flex;
+        flex-direction: row;
+        height: 148rpx;
+        .active-card-png {
+            width: 64rpx;
+            height: 64rpx;
+            margin-left: 24rpx;
+            align-self: center;
+        }
+        .active-card-text {
+            width: 386rpx;
+            font-size: 24rpx;
+            color: #666666;
+            margin-left: 12rpx;
+            line-height: 36rpx;
+            align-self: center;
+        }
+        .active-card-but {
+            border: 2rpx solid #F54531; 
+            border-radius: 56rpx;
+            color: #F54531;
+            font-size: 24rpx;
+            width: 160rpx;
+            margin-left: 24rpx;
+            text-align: center;
+            align-self: center;
+            line-height: 56rpx;
+        }
+        .active-card-but-has {
+            border: 2rpx solid #666666 ; 
+            border-radius: 56rpx;
+            color: #F54531;
+            color: #666666;
+            font-size: 24rpx;
+            width: 160rpx;
+            margin-left: 24rpx;
+            text-align: center;
+            align-self: center;
+            line-height: 56rpx;
+        }
+    }
+}
+.inter-active-top { 
+    background-color: #DEE5F6;
+    color: #2D6EFF;
+    width: 738rpx;
+    padding: 6rpx 0rpx 5rpx 12rpx;
+    font-size: 24rpx;
+}

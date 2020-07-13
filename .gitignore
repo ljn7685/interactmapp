@@ -1,0 +1,16 @@
+dist_pc/
+dist_mb/
+dist_customer/
+src_mb/public
+src_pc/public
+src_customer/public
+deploy_versions/
+.temp/
+.rn_temp/
+node_modules/
+.DS_Store
+**.DS_Store
+.idea/**
+package-lock.json
+.github/
+**/.DS_Store

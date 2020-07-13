@@ -1,0 +1,120 @@
+.contenter{
+    width: 100vw;
+    .backgroud{
+        width: 100%;
+        height: 250rpx;
+        position: relative;
+    }
+    .content-box{
+        width: 100%;
+        position: absolute;
+        background: #fff;
+        border-radius: 40rpx 40rpx 0 0;
+        margin-top: -75rpx;
+        padding-bottom: 120rpx;
+    }
+    .content-top{
+        width: 100%;
+        padding-bottom: 28rpx;
+        .income-top{
+            display: flex;
+            margin-top: 40rpx;
+            justify-content: space-between;
+            align-items: center;
+            .income-title{
+                font-family: PingFangSC-Semibold;
+                font-size: 40rpx;
+                color: #313338;
+                margin-left: 32rpx;
+            }
+            .income-txt{
+                height: 56rpx;
+                display: flex;
+                .bg-txt{
+                    width: 40rpx;
+                    height: 56rpx;
+                }
+                .income-content{
+                    // background: #e2e1ff;
+                    background: #E8E8FF;
+                    font-family: PingFangSC-Regular;
+                    font-size: 28rpx;
+                    color: #4542FC;
+                    text-align: right;
+                    line-height: 56rpx;
+                    padding-right: 30rpx;
+                }
+            }
+        }
+        .top{
+            display: flex;
+            margin-top: 50rpx;
+            padding-left: 32rpx;
+            align-items: center;
+            .load{
+                width: 66rpx;
+                height: 60rpx;
+            }
+            .full-data{
+                font-family: PingFangSC-Regular;
+                font-size: 32rpx;
+                color: #F23C3C;
+                margin-left: 20rpx;
+                width: 56%;
+            }
+            .data-box{
+                display: flex;
+                align-items: center;
+                width: 54%;
+                margin-left: 40rpx;
+                .arrow{
+                    width: 20rpx;
+                    height: 34rpx;
+                }
+                .data{
+                    font-family: PingFangSC-Regular;
+                    font-size: 32rpx;
+                    color: #F23C3C;
+                    margin-left: 10rpx;
+                }
+            }
+           
+            .baby_title{
+                font-family: PingFangSC-Semibold;
+                font-size: 40rpx;
+                color: #313338;
+            }
+        }
+        .content{
+            margin-top: 40rpx;
+        }
+    }
+    .line{
+        height: 20rpx;
+        width: 100%;
+        background: #eceff2;
+    }
+    .buttom{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-image: linear-gradient(270deg, #399BFF 0%, #514BFF 100%);
+        display: flex;
+        color: #fff;
+        height: 120rpx;
+        line-height: 120rpx;
+        font-size: 32rpx;
+        align-items: center;
+        justify-content: center;
+        .arrow-right{
+            width: 26rpx;
+            height: 26rpx;
+            margin-left: 10rpx;
+        }
+        .btu-num{
+            color: #fccf50;
+            font-size: 40rpx;
+
+        }
+    }
+}

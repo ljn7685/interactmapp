@@ -1,0 +1,91 @@
+ // 店铺等级
+ .empty-shop-info{
+    height: 160rpx;
+    width: 100%;
+    line-height: 160rpx;
+    color: #FF5A5A;
+    text-align: center;
+    border-bottom: 2rpx solid #f2f2f2;
+  }
+  .rate-management-box{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 2rpx solid #f2f2f2;
+    padding-bottom: 20rpx;
+    padding-top: 10rpx;
+    .rate-management-top-txt{
+      display: flex;
+      font-size: 28rpx;
+      justify-content: center;
+      background: rgb(228, 238, 255);
+      padding: 5rpx 10rpx;
+      .rate-management-right{
+        color: red;
+        position: relative;
+        &::after{
+          content: '';
+          position: absolute;
+          left: 32%;
+          top: -50rpx;
+          border-width: 25rpx;
+          border-style: solid;
+          border-color: transparent transparent rgb(228, 238, 255) transparent ;
+        }
+      }
+    }
+    .rate-management-level-start{
+      margin-top: 30rpx;
+      width: 100%;
+     .rate-management-level-start-top{
+        display: flex;
+       justify-content: space-around;
+       .level-img-box-now{
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         .level-txt-now{
+           min-width: 100rpx;
+           font-size: 24rpx;
+         }
+       }
+       .rate-management-level-start-middle{
+        width: 48%;
+        background-color: #F2F2F2;
+        border-radius:4px;
+        height: 8rpx;
+        margin-left: 10rpx;
+        margin-right: 10rpx;
+        margin-top: 13rpx;
+          .rate-management-level-start-middle-line{
+            background-color: #F37845;
+            border-radius:4px;
+            height: 8rpx;
+          }
+          .rate-management-level-start-bottom{
+            line-height: 48rpx;
+            text-align: center;
+            .rate-management-level-start-bottom-text{
+              font-size: 24rpx;
+            }
+          }
+      }
+     
+        .level-img-box-next{
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          .level-txt-next{
+            min-width: 100rpx;
+            font-size: 24rpx;
+          }
+        }
+      }
+    }
+   
+  }
+  // 

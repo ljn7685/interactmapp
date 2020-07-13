@@ -1,0 +1,14 @@
+@import "~taro-ui/dist/style/components/textarea.scss";
+
+.at-textarea{
+    background-color: #F5F5F5;
+    border-color: #F5F5F5;
+}
+
+.at-textarea__textarea{
+    background-color: #F5F5F5;
+}
+
+.at-textarea--error{
+    border-color: #F23C3C;
+}
