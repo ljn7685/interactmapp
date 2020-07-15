@@ -108,7 +108,7 @@ class Loading extends Component {
   onComplete = () => {
     console.log("onComplete");
     setTimeout(() => {
-      Taro.navigateTo({
+      Taro.redirectTo({
         url: "/pages/GameIndex/GameIndex",
       });
     }, 500);

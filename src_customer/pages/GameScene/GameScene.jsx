@@ -79,7 +79,7 @@ class GameScene extends Component {
     onCanvasReady() {
         console.log("onCanvasReady");
         const { game } = this.state;
-        game.bump = new Bump(PIXI)
+        game.bump = new Bump(PIXI);
         // 建立canvas引用
         // eslint-disable-next-line no-undef
         my._createCanvas({
@@ -118,7 +118,6 @@ class GameScene extends Component {
                     // 设置resolution 为像素密度
                     resolution: clientWidth / 750,
                 });
-                
                 game.width = size.width;
                 game.height = size.height;
                 console.log("game size", game.width, game.height);

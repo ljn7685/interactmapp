@@ -10,6 +10,6 @@ export default {
     navigationBarTitleText: "WeChat",
     navigationBarTextStyle: "black",
     enableSkia: "true",
-    enablePullDownRefresh: false
+    allowsBounceVertical: "NO"
   },
 };

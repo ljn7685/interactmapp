@@ -39,7 +39,7 @@ class GameIndex extends Component {
     }
   }
   onGameStart = () => {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: "/pages/GameScene/GameScene",
     });
   };
