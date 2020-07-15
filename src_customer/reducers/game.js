@@ -1,6 +1,6 @@
 import {
   MODIFY_GAMETIMES,
-  SET_ASSET_QUEUE,
+  SET_PRELOADED,
   SET_BEST_SCORE,
 } from '../constants/game';
 
@@ -10,7 +10,7 @@ const initState = {
   gametimes: 5,
   max_rank_count: 50,
   subtitle: "> 赢百元现金券/华为P40 <",
-  asset_queue: null,
+  preloaded: false,
   arrow_count: 10,
   arrow_score: 10,
   best_score: 0,
@@ -34,8 +34,8 @@ export default function reducer(state = initState, action) {
   switch (action.type) {
     case MODIFY_GAMETIMES:
       return { ...state, gametimes: action.times };
-    case SET_ASSET_QUEUE:
-      return { ...state, asset_queue: action.asset_queue };
+    case SET_PRELOADED:
+      return { ...state, preloaded: action.preloaded };
     case SET_BEST_SCORE:
       return { ...state, best_score: action.score };
     default:

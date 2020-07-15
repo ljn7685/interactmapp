@@ -244,7 +244,7 @@ class GameScene extends Component {
         );
     }
 }
-const mapgameToProps = ({ game }) => {
+const mapStateToProps = ({ game }) => {
     return {
         asset: game.asset_queue,
         arrow_count: game.arrow_count,
@@ -260,7 +260,7 @@ const mapDispatchToProps = {
 };
 
 const wrapper = connect(
-    mapgameToProps,
+    mapStateToProps,
     mapDispatchToProps
 )(
     useImgLoader(GameScene, [guide_gif, start_heart_gif, success_angel_gif], {

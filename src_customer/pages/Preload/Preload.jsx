@@ -4,7 +4,7 @@ import Taro from "@tarojs/taro";
 import * as PIXI from "@tbminiapp/pixi-miniprogram-engine";
 import { View, Image, Canvas } from "@tarojs/components";
 import { connect } from "react-redux";
-import { setAssetQueue } from "../../actions/game";
+import { setPreloaded } from "../../actions/game";
 
 import * as style from "./Preload.module.scss";
 import arrow_png from "../../assets/images/loading_arrow.png";
@@ -54,7 +54,12 @@ class Loading extends Component {
     };
   }
   componentDidMount() {
-    this.onCanvasReady();
+    if(!this.props.preloaded){
+      this.onCanvasReady();
+    } else {
+      this.setState({ progress: 1 });
+      this.onComplete()
+    }
   }
   getBarWidth(progress) {
     const contentWidth = progress_width - content_padding;
@@ -112,6 +117,7 @@ class Loading extends Component {
         url: "/pages/GameIndex/GameIndex",
       });
     }, 500);
+    this.props.setPreloaded(true);
   };
   render() {
     const barWidth = this.getBarWidth(this.state.progress);
@@ -142,9 +148,13 @@ class Loading extends Component {
     );
   }
 }
-
-const mapDispatchToProps = {
-  setAssetQueue,
+const mapStateToProps = ({ game }) => {
+  return {
+      preloaded: game.preloaded,
+  };
 };
-const wrapper = connect(null, mapDispatchToProps)(Loading);
+const mapDispatchToProps = {
+  setPreloaded,
+};
+const wrapper = connect(mapStateToProps, mapDispatchToProps)(Loading);
 export default wrapper;

@@ -1,6 +1,6 @@
 import {
   MODIFY_GAMETIMES,
-  SET_ASSET_QUEUE,
+  SET_PRELOADED,
   SET_BEST_SCORE,
 } from "../constants/game";
 
@@ -8,8 +8,8 @@ export const modifyGametimes = (times) => {
   return { type: MODIFY_GAMETIMES, times };
 };
 
-export const setAssetQueue = (asset_queue) => {
-  return { type: SET_ASSET_QUEUE, asset_queue };
+export const setPreloaded = (preloaded) => {
+  return { type: SET_PRELOADED, preloaded };
 };
 
 export const setBestScore = (score) => {
