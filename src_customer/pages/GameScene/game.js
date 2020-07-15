@@ -73,7 +73,6 @@ class Game extends EventEmitter {
         let children = this.stage.children;
         let ratio = this.height / this.designHeight;
         for (let child of children) {
-            console.log("child", child);
             if (child.origonY === undefined) {
                 child.origonY = child.y;
             }
@@ -176,7 +175,6 @@ class Game extends EventEmitter {
     }
 
     onPointStart = (e) => {
-        console.log(e);
         this.pull_start = true;
         this.pulling = false;
         this.pull_pos = [e.touches[0].clientX, e.touches[0].clientY];
@@ -305,11 +303,7 @@ class Game extends EventEmitter {
             this.turntable.stop();
         }
     }
-    destroy() {
-        if (this.app) {
-            this.app.removeChild(this.stage.canvas);
-        }
-    }
+    destroy() {}
 
     gameReady() {
         this.bow.addArrow();

@@ -13,7 +13,7 @@ import icon_rule from "../../assets/images/icon_rule.png";
 import guide_gif from "../../assets/images/guide.gif";
 import start_heart_gif from "../../assets/images/start_heart.gif";
 import success_angel_gif from "../../assets/images/success_angel.gif";
-// import GameResult from "../GameResult/GameResult";
+import GameResult from "../GameResult/GameResult";
 import useImgLoader from "../../components/img-loader/useImgLoader";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import ToastBox from "../../components/toast/toast";
@@ -29,8 +29,8 @@ class GameScene extends Component {
             showHeart: false,
             showSuccessAngel: false,
             showGameResult: false,
-            // isSuccess: false,
-            // score: 0,
+            isSuccess: false,
+            score: 0,
             game: new Game(),
         };
     }
@@ -125,17 +125,17 @@ class GameScene extends Component {
             },
         });
     }
-    onGameOver = ({ score }) => {
-        // if (score > this.props.best_score) {
-        //     this.props.setBestScore(score);
-        // }
+    onGameOver = ({ score, isSuccess }) => {
+        if (score > this.props.best_score) {
+            this.props.setBestScore(score);
+        }
         this.setState({
             showGameResult: true,
-            // isSuccess,
-            // score,
+            isSuccess,
+            score,
         });
         console.log("onGameOver");
-        this.onRestart();
+        // this.onRestart();
     };
     onRestart = () => {
         console.log("onRestart");
@@ -150,6 +150,7 @@ class GameScene extends Component {
                 showGuide: true,
                 showHeart: false,
                 showSuccessAngel: false,
+                showGameResult: false,
             });
         }
     };
@@ -175,8 +176,8 @@ class GameScene extends Component {
             showHeart,
             showSuccessAngel,
             showGameResult,
-            // isSuccess,
-            // score,
+            isSuccess,
+            score,
             game,
         } = this.state;
         const { imgList } = this.props;
@@ -232,13 +233,13 @@ class GameScene extends Component {
                         mode="widthFix"
                     />
                 ) : null}
-                {/* {showGameResult ? (
-          <GameResult
-            isSuccess={isSuccess}
-            score={score}
-            onRestart={this.onRestart}
-          ></GameResult>
-        ) : null} */}
+                {showGameResult ? (
+                    <GameResult
+                        isSuccess={isSuccess}
+                        score={score}
+                        onRestart={this.onRestart}
+                    ></GameResult>
+                ) : null}
                 <ToastBox ref={(ref) => (this.toast = ref)}></ToastBox>
             </View>
         );
@@ -246,7 +247,6 @@ class GameScene extends Component {
 }
 const mapStateToProps = ({ game }) => {
     return {
-        asset: game.asset_queue,
         arrow_count: game.arrow_count,
         arrow_score: game.arrow_score,
         best_score: game.best_score,

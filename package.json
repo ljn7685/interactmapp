@@ -46,6 +46,7 @@
     "@tweenjs/tween.js": "^18.6.0",
     "@types/pixi.js": "^5.0.0",
     "bump.js": "^1.0.3",
+    "classnames": "^2.2.6",
     "eventemitter3": "^4.0.4",
     "nervjs": "^1.5.7",
     "react": "^16.10.0",
