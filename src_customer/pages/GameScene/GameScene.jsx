@@ -32,6 +32,7 @@ class GameScene extends Component {
             isSuccess: false,
             score: 0,
             game: new Game(),
+            restart_times: props.max_fail_times,
         };
     }
 
@@ -139,20 +140,31 @@ class GameScene extends Component {
     };
     onRestart = () => {
         console.log("onRestart");
-        if (this.props.gametimes <= 0) {
+        const { isSuccess, restart_times } = this.state;
+        const { gametimes, max_fail_times } = this.props;
+        if (restart_times === 0 && gametimes === 0) {
             this.toast.info("暂无游戏次数", 2000);
-        } else {
-            this.props.modifyGametimes(this.props.gametimes - 1);
-            const { game } = this.state;
-            game.restart();
-            this.showGuide();
+            return;
+        }
+        if (isSuccess || restart_times === 0) {
             this.setState({
-                showGuide: true,
-                showHeart: false,
-                showSuccessAngel: false,
-                showGameResult: false,
+                restart_times: max_fail_times,
+            });
+            this.props.modifyGametimes(this.props.gametimes - 1);
+        } else {
+            this.setState({
+                restart_times: restart_times - 1,
             });
         }
+        const { game } = this.state;
+        game.restart();
+        this.showGuide();
+        this.setState({
+            showGuide: true,
+            showHeart: false,
+            showSuccessAngel: false,
+            showGameResult: false,
+        });
     };
     changeHeart = (visible) => {
         this.setState({
@@ -179,6 +191,7 @@ class GameScene extends Component {
             isSuccess,
             score,
             game,
+            restart_times,
         } = this.state;
         const { imgList } = this.props;
         return (
@@ -238,6 +251,7 @@ class GameScene extends Component {
                         isSuccess={isSuccess}
                         score={score}
                         onRestart={this.onRestart}
+                        restart_times={restart_times}
                     ></GameResult>
                 ) : null}
                 <ToastBox ref={(ref) => (this.toast = ref)}></ToastBox>
@@ -252,6 +266,7 @@ const mapStateToProps = ({ game }) => {
         best_score: game.best_score,
         gametimes: game.gametimes,
         game_duration: game.game_duration,
+        max_fail_times: game.max_fail_times,
     };
 };
 const mapDispatchToProps = {

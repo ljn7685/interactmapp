@@ -7,8 +7,9 @@ import {
 import default_avatar from "../assets/images/avatar.png";
 
 const initState = {
-  gametimes: 5,
+  gametimes: 1,
   max_rank_count: 50,
+  max_fail_times: 3,
   subtitle: "> 赢百元现金券/华为P40 <",
   preloaded: false,
   arrow_count: 10,
