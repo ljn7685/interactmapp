@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+
 import Modal from "../../components/Modal/Modal";
 import styles from "./GameRule.module.scss";
 import { View, Text, Image } from "@tarojs/components";
@@ -9,7 +11,7 @@ class GameRule extends Component {
         super(props);
     }
     render() {
-        const { onClose } = this.props;
+        const { onClose, game_rule } = this.props;
         const header = (
             <View className={styles["header-wrapper"]}>
                 <Image
@@ -43,39 +45,22 @@ class GameRule extends Component {
                 closeBtn={closeBtn}
             >
                 <View className={styles["activity-time"]}>
-                    活动时间：X月Y日——W月Z日
+                    活动时间：{game_rule.start_date}——{game_rule.end_date}
                 </View>
-                <Text className={styles["activity-rule"]}>
-                    <Text className={styles["title"]}>
-                        1.在此期间，通过以下方式可获得 游戏机会：
+                {game_rule.rules.map((item) => (
+                    <Text className={styles["activity-rule"]}>
+                        <Text className={styles["title"]}>{item.title}</Text>
+                        <Text className={styles["desc"]}>{item.desc}</Text>
                     </Text>
-                    <Text className={styles["desc"]}>
-                        {`*首次参与活动，游戏机会*1（该游戏机会不会重复享有）
-                        *关注店铺，游戏机会*1（该游戏机会不会重复享有）
-                        *每日收藏1款产品，游戏机会*1（每日限获1次）
-                        *分享1款产品给好友，仅有当好友打开分享链接后，游戏机会*1（机会可叠加，奖励次数到账或有系统延迟，视为正常现象）
-                        `}
-                    </Text>
-                </Text>
-                <Text className={styles["activity-rule"]}>
-                    <Text className={styles["title"]}>2.奖品明细</Text>
-                    <Text className={styles["desc"]}>
-                        {`一等奖：大于12只口红 
-                        二等奖：9-11只口红
-                        三等奖：7-8只口红
-                        幸运奖：5-6只口红
-                        `}
-                    </Text>
-                </Text>
-                <Text className={styles["activity-rule"]}>
-                    <Text className={styles["title"]}>3.活动说明</Text>
-                    <Text className={styles["desc"]}>
-                        将底部的口红向上滑动即可插入转盘，规定时间内若碰到其他口红则挑战失败。
-                    </Text>
-                </Text>
+                ))}
             </Modal>
         );
     }
 }
-
-export default GameRule;
+const mapStateToProps = ({ game }) => {
+    return {
+        game_rule: game.game_rule,
+    };
+};
+const wrapper = connect(mapStateToProps, null)(GameRule);
+export default wrapper;
