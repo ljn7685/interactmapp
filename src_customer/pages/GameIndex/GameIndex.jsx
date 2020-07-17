@@ -12,9 +12,9 @@ import start_heart from "../../assets/images/start_heart.gif";
 import icon_gift from "../../assets/images/icon_gift.png";
 import icon_rule from "../../assets/images/icon_rule.png";
 import icon_rank from "../../assets/images/icon_rank.png";
-import ToastBox from "../../components/toast/toast";
 
-// import GameRule from "../GameRule/GameRule";
+import GameRule from "../GameRule/GameRule";
+import ToastBox from "../../components/toast/toast";
 class GameIndex extends Component {
   constructor(props) {
     super(props);
@@ -48,7 +48,7 @@ class GameIndex extends Component {
     this.setState({ showRule: !showRule });
   };
   render() {
-    // const { showRule } = this.state;
+    const { showRule } = this.state;
     return (
       <View className={styles["bg"]} ref={(ref) => (this.root = ref)}>
         <View className={styles["title"]}>
@@ -129,7 +129,7 @@ class GameIndex extends Component {
             <Text className='side-btn-desc'>排行榜</Text>
           </View>
         </View>
-        {/* {showRule ? <GameRule></GameRule> : null} */}
+        {showRule ? <GameRule onClose={()=>{this.setState({showRule:false})}}></GameRule> : null}
         <ToastBox ref={(ref) => (this.toast = ref)}></ToastBox>
       </View>
     );

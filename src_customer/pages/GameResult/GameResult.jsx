@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import { connect } from "react-redux";
-
 import Modal from "../../components/Modal/Modal";
 import styles from "./GameResult.module.scss";
 import { Text, View } from "@tarojs/components";
@@ -29,7 +27,7 @@ class GameResult extends Component {
                 ) : restart_times > 0 ? (
                     <Text className={styles["fail-tip"]}>
                         {`啊哦～差一点点就过关咯! 
-                        
+
                         动动手指，再战一次呗～～`}
                     </Text>
                 ) : (

@@ -37,7 +37,7 @@ class Modal extends PureComponent {
     render() {
         const {
             visible,
-            clostBtn,
+            closeBtn,
             header,
             footer,
             children,
@@ -56,7 +56,7 @@ class Modal extends PureComponent {
                 <View className={`${styles["container"]} ${containerStyle}`}>
                     <View className={`${styles["header"]} ${headerStyle}`}>
                         {header}
-                        {clostBtn ? clostBtn : null}
+                        {closeBtn ? closeBtn : null}
                     </View>
                     <View className={`${styles["content"]} ${contentStyle}`}>
                         {children}
