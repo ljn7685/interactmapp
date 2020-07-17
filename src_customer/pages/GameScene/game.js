@@ -42,10 +42,8 @@ class Game extends EventEmitter {
         this.ticker = app.ticker;
         this.stage = app.stage;
         this.assets = {
-            get: (name, type) => {
-                return resources[
-                    `/assets/images/${name}.${type ? type : "png"}`
-                ].texture;
+            get: (name) => {
+                return resources[name].texture;
             },
         };
         this.config = config;

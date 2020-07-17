@@ -31,20 +31,20 @@ const content_padding = 9;
 const progress_width = 507;
 const point_width = 29;
 const resources = [
-  start_player,
-  start_turntable,
-  turntable,
-  turntable_line,
-  game_title_icon,
-  start_heart,
-  loading_bg,
-  bow,
-  arrow,
-  success_angel,
-  fail_angel,
-  win_title,
-  lose_title,
-  result_bg,
+  {name:"start_player",url:start_player},
+  {name:"start_turntable",url:start_turntable},
+  {name:"turntable",url:turntable},
+  {name:"turntable_line",url:turntable_line},
+  {name:"game_title_icon",url:game_title_icon},
+  {name:"start_heart",url:start_heart},
+  {name:"loading_bg",url:loading_bg},
+  {name:"bow",url:bow},
+  {name:"arrow",url:arrow},
+  {name:"success_angel",url:success_angel},
+  {name:"fail_angel",url:fail_angel},
+  {name:"win_title",url:win_title},
+  {name:"lose_title",url:lose_title},
+  {name:"result_bg",url:result_bg}
 ];
 class Loading extends Component {
   constructor(props) {
