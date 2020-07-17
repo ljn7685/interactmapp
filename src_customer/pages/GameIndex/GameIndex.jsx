@@ -43,7 +43,7 @@ class GameIndex extends Component {
       url: "/pages/GameScene/GameScene",
     });
   };
-  showRuleModal = () => {
+  onClickRule = () => {
     const { showRule } = this.state;
     this.setState({ showRule: !showRule });
   };
@@ -101,7 +101,7 @@ class GameIndex extends Component {
         </View>
         <View className={styles["game-desc"]}>连续参与游戏成功率更高哦</View>
         <View className='sidebar'>
-          <View className='side-btn' onClick={this.showRuleModal}>
+          <View className='side-btn' onClick={this.onClickRule}>
             <Image
               src={icon_rule}
               alt=''
@@ -129,7 +129,7 @@ class GameIndex extends Component {
             <Text className='side-btn-desc'>排行榜</Text>
           </View>
         </View>
-        {showRule ? <GameRule onClose={()=>{this.setState({showRule:false})}}></GameRule> : null}
+        {showRule ? <GameRule onClose={this.onClickRule}></GameRule> : null}
         <ToastBox ref={(ref) => (this.toast = ref)}></ToastBox>
       </View>
     );

@@ -16,6 +16,7 @@ import success_angel_gif from "../../assets/images/success_angel.gif";
 import GameResult from "../GameResult/GameResult";
 import useImgLoader from "../../components/img-loader/useImgLoader";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
+import GameRule from "../GameRule/GameRule";
 import ToastBox from "../../components/toast/toast";
 import Bump from "bump.js";
 
@@ -29,6 +30,7 @@ class GameScene extends Component {
             showHeart: false,
             showSuccessAngel: false,
             showGameResult: false,
+            showRule: false,
             isSuccess: false,
             score: 0,
             game: new Game(),
@@ -181,13 +183,17 @@ class GameScene extends Component {
             showGuide: false,
         });
     };
-
+    onClickRule = () => {
+        const { showRule } = this.state;
+        this.setState({ showRule: !showRule });
+    };
     render() {
         const {
             showGuide,
             showHeart,
             showSuccessAngel,
             showGameResult,
+            showRule,
             isSuccess,
             score,
             game,
@@ -212,7 +218,7 @@ class GameScene extends Component {
                         e.stopPropagation();
                     }}
                 >
-                    <View className="side-btn" to="/rule">
+                    <View className="side-btn" onClick={this.onClickRule}>
                         <Image
                             src={icon_rule}
                             alt=""
@@ -253,6 +259,9 @@ class GameScene extends Component {
                         onRestart={this.onRestart}
                         restart_times={restart_times}
                     ></GameResult>
+                ) : null}
+                {showRule ? (
+                    <GameRule onClose={this.onClickRule}></GameRule>
                 ) : null}
                 <ToastBox ref={(ref) => (this.toast = ref)}></ToastBox>
             </View>
