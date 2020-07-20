@@ -81,12 +81,6 @@ class GameIndex extends Component {
             className={styles["preview-content"] + " " + styles["player"]}
             mode='widthFix'
           />
-          <Image
-            src={start_heart}
-            alt=''
-            className={styles["preview-content"] + " " + styles["heart"]}
-            mode='widthFix'
-          />
         </View>
         <View className={styles["game-info"]}>
           当前游戏次数: {this.props.gametimes}
@@ -124,15 +118,6 @@ class GameIndex extends Component {
               mode='widthFix'
             ></Image>
             <Text className='side-btn-desc'>我的礼品</Text>
-          </View>
-          <View className='side-btn' to='/gamerank' key='rank'>
-            <Image
-              src={icon_rank}
-              alt=''
-              className='side-img'
-              mode='widthFix'
-            ></Image>
-            <Text className='side-btn-desc'>排行榜</Text>
           </View>
         </View>
         {showRule ? <GameRule onClose={this.onClickRule}></GameRule> : null}
