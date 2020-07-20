@@ -40,6 +40,18 @@ const initState = {
             },
         ],
     },
+    prizes: [
+        {
+            amount: 50,
+            desc: `50元优惠券
+            满499元可用`,
+        },
+        {
+            amount: 100,
+            desc: `100元优惠券
+            满1000元可用`,
+        },
+    ],
     user_id: "007",
     rank_list: [
         {

@@ -1,3 +1,4 @@
+@import "../../styles/mixin.scss";
 .container {
     width: 551px;
     height: 410px;
@@ -5,4 +6,60 @@
 .header {
     width: 551px;
     height: 81px;
+}
+.content {
+    width: 511px;
+    height: 303px;
+    display: flex;
+    justify-content: space-between;
+    .noprize {
+        width: 511px;
+        height: 303px;
+        line-height: 303px;
+        text-align: center;
+        font-size: 26px;
+        color: #9c9ce6;
+    }
+    .prize-item {
+        width: 247px;
+        height: 257px;
+        background-color: #ffffff;
+        border-radius: 20px;
+        margin-top: 46px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        .prize-desc {
+            font-size: 24px;
+            color: #9c9ce6;
+            width: 200px;
+            text-align: center;
+        }
+        .prize-content {
+            width: 154px;
+            height: 72px;
+            position: relative;
+            .prize-amount {
+                position: absolute;
+                font-size: 40px;
+                color: #ffffff;
+                left: 33px;
+                top: 0;
+                line-height: 72px;
+                height: 72px;
+                text-align: left;
+            }
+            .prize-amount.three {
+                font-size: 40px;
+            }
+            .prize-amount.two {
+                font-size: 48px;
+            }
+            .prize-img {
+                width: 154px;
+                height: 72px;
+            }
+        }
+    }
 }
