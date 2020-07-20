@@ -15,12 +15,14 @@ import icon_rank from "../../assets/images/icon_rank.png";
 
 import GameRule from "../GameRule/GameRule";
 import ToastBox from "../../components/toast/toast";
+import GamePrize from "../GamePrize/GamePrize";
 class GameIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isRotate: true,
       showRule: false,
+      showPrize: false,
     };
   }
 
@@ -47,8 +49,12 @@ class GameIndex extends Component {
     const { showRule } = this.state;
     this.setState({ showRule: !showRule });
   };
+  onClickPrize = () => {
+    const { showPrize } = this.state;
+    this.setState({ showPrize: !showPrize });
+  }
   render() {
-    const { showRule } = this.state;
+    const { showRule, showPrize } = this.state;
     return (
       <View className={styles["bg"]} ref={(ref) => (this.root = ref)}>
         <View className={styles["title"]}>
@@ -101,7 +107,7 @@ class GameIndex extends Component {
         </View>
         <View className={styles["game-desc"]}>连续参与游戏成功率更高哦</View>
         <View className='sidebar'>
-          <View className='side-btn' onClick={this.onClickRule}>
+          <View className='side-btn' onClick={this.onClickRule} key='rule'>
             <Image
               src={icon_rule}
               alt=''
@@ -110,7 +116,7 @@ class GameIndex extends Component {
             ></Image>
             <Text className='side-btn-desc'>游戏规则</Text>
           </View>
-          <View className='side-btn' to='/gift'>
+          <View className='side-btn' onClick={this.onClickPrize} key="prize">
             <Image
               src={icon_gift}
               alt=''
@@ -119,7 +125,7 @@ class GameIndex extends Component {
             ></Image>
             <Text className='side-btn-desc'>我的礼品</Text>
           </View>
-          <View className='side-btn' to='/gamerank'>
+          <View className='side-btn' to='/gamerank' key='rank'>
             <Image
               src={icon_rank}
               alt=''
@@ -130,6 +136,7 @@ class GameIndex extends Component {
           </View>
         </View>
         {showRule ? <GameRule onClose={this.onClickRule}></GameRule> : null}
+        {showPrize ? <GamePrize onClose={this.onClickPrize}></GamePrize> : null}
         <ToastBox ref={(ref) => (this.toast = ref)}></ToastBox>
       </View>
     );

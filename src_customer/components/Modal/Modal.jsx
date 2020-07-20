@@ -53,12 +53,25 @@ class Modal extends PureComponent {
                 ref={(ref) => (this.root = ref)}
                 onTouchStart={(event) => event.stopPropagation()}
             >
-                <View className={`${styles["container"]} ${containerStyle}`}>
-                    <View className={`${styles["header"]} ${headerStyle}`}>
+                <View
+                    className={classnames({
+                        [styles.container]: styles.container,
+                        [containerStyle]: containerStyle,
+                    })}
+                >
+                    <View
+                        className={classnames({
+                            [styles.header]: styles.header,
+                            [headerStyle]: headerStyle,
+                        })}
+                    >
                         {header}
                         {closeBtn ? closeBtn : null}
                     </View>
-                    <View className={`${styles["content"]} ${contentStyle}`}>
+                    <View className={classnames({
+                            [styles.content]: styles.content,
+                            [contentStyle]: contentStyle,
+                        })}>
                         {children}
                     </View>
                     {footer}
