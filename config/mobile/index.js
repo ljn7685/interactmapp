@@ -1,5 +1,4 @@
 const path = require('path');
-
 module.exports = {
     projectName: 'tradembmapp',
     date: '2019-10-15',
@@ -83,6 +82,7 @@ module.exports = {
              */
             // {from: 'public/tradePublic/',to: 'dist_mb/client/tradePublic/'},
             // {from: 'public/tradePolyfills/',to: 'dist_mb/client/tradePolyfills/'},
+            {from: 'public/util/',to: 'dist_mb/client/util'},
             {from: 'public/mapp_common/',to: 'dist_mb/client/mapp_common/'},
             {from: 'public/',to: 'src_mb/public/'},
             // {from: 'assets/',to: 'dist_mb/client/assets/'},
@@ -94,7 +94,6 @@ module.exports = {
         'components': path.resolve(__dirname,'../..','src_mb/components'),
         'pages': path.resolve(__dirname,'../..','src_mb/pages'),
         'assets': path.resolve(__dirname,'../..','src_mb/assets'),
-        'pcComponents': path.resolve(__dirname,'../..','src_mb/components'),
         '@/constants': path.resolve(__dirname,'../..','src_mb/constants'),
     },
     NODE_ENV: 'development',
