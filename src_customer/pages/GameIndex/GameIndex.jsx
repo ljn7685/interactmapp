@@ -27,23 +27,30 @@ class GameIndex extends Component {
   }
 
   componentDidMount() {
-    let { showToast, msg } = getCurrentInstance().router.params;
+    let { no_enough_times } = getCurrentInstance().router.params;
     console.log(getCurrentInstance().router.params);
-    if (showToast) {
-      this.setState({
-        isRotate: false,
-      });
-      this.toast.info(msg, 2000, () => {
-        this.setState({
-          isRotate: true,
-        });
-      });
+    if (no_enough_times) {
+      this.showNoEnoughTimes()
     }
   }
-  onGameStart = () => {
-    Taro.redirectTo({
-      url: "/pages/GameScene/GameScene",
+  showNoEnoughTimes() {
+    this.setState({
+      isRotate: false,
     });
+    this.toast.info("暂无游戏次数", 2000, () => {
+      this.setState({
+        isRotate: true,
+      });
+    });
+  }
+  onGameStart = () => {
+    if (this.props.gametimes <= 0) {
+      this.showNoEnoughTimes();
+    } else {
+      Taro.redirectTo({
+        url: "/pages/GameScene/GameScene",
+      });
+    }
   };
   onClickRule = () => {
     const { showRule } = this.state;

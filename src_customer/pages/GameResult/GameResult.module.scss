@@ -40,10 +40,13 @@
 .use-button {
     width: 340px;
     height: 100px;
+    position: absolute;
+    top: 315px;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: #9dd6fd;
     border-radius: 50px;
     border: solid 2px #ffb9da;
-    margin-top: 103px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,10 +59,19 @@
     min-height: 1154px;
     background: url("../../assets/images/result_bg.png") no-repeat;
     background-size: 100% auto;
-}
-.content {
-    width: 510px;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.content {
+    width: 510px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 530px;
+}
+.footer {
+    margin-top: 70px;
+    width: 66px;
 }

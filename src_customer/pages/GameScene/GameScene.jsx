@@ -41,9 +41,10 @@ class GameScene extends Component {
     componentDidMount() {
         console.log("didmount");
         if (this.props.gametimes <= 0) {
-            Taro.navigateTo(
-                "/pages/GameIndex/GameIndex?showToast=true&msg=暂无游戏次数"
-            );
+            Taro.redirectTo({
+                url:
+                    "/pages/GameIndex/GameIndex?no_enough_times=true",
+            });
         } else {
             this.props.modifyGametimes(this.props.gametimes - 1);
             this.onCanvasReady();

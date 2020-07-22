@@ -68,6 +68,7 @@ module.exports = {
                 to: "dist_customer/client/mapp_common/",
             },
             { from: "public/", to: "src_customer/public/" },
+            { from: "public/util/", to: "dist_customer/client/util" },
             // {from: 'assets/',to: 'dist_customer/client/assets/'},
         ],
         options: {},
@@ -81,11 +82,6 @@ module.exports = {
         components: path.resolve(__dirname, "../..", "src_customer/components"),
         pages: path.resolve(__dirname, "../..", "src_customer/pages"),
         assets: path.resolve(__dirname, "../..", "src_customer/assets"),
-        pcComponents: path.resolve(
-            __dirname,
-            "../..",
-            "src_customer/components"
-        ),
         "@/constants": path.resolve(
             __dirname,
             "../..",

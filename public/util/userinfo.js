@@ -99,7 +99,7 @@ export async function authorize () {
     try {
         let { authRes, authErr } = await new Promise((resolve) => {
             my.authorize({
-                scopes: '*',
+                scopes: 'scope.userInfo',
                 success: (authRes) => {
                     console.warn('authorize', authRes);
                     setUserInfo({ accessToken: authRes.accessToken });

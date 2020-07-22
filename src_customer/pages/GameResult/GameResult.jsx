@@ -2,22 +2,37 @@ import React, { Component } from "react";
 
 import Modal from "../../components/Modal/Modal";
 import styles from "./GameResult.module.scss";
-import { Text, View } from "@tarojs/components";
+import { Text, View, Image } from "@tarojs/components";
+import Taro from "@tarojs/taro";
+import close_btn_img from "../../assets/images/close_btn.png";
 class GameResult extends Component {
     constructor(props) {
         super(props);
         this.state = {};
     }
+    onClickClose = () => {
+        Taro.redirectTo({
+            url: "/pages/GameIndex/GameIndex",
+        });
+    };
     render() {
         const { isSuccess, onRestart, restart_times } = this.props;
         let headerStyle =
             styles["header"] +
             " " +
             (isSuccess ? styles["win-header"] : styles["lose-header"]);
-
+        const footer = !isSuccess && restart_times > 0 && (
+            <Image
+                src={close_btn_img}
+                mode="widthFix"
+                className={styles["footer"]}
+                onClick={this.onClickClose}
+            ></Image>
+        );
         return (
             <Modal
                 visible={true}
+                footer={footer}
                 headerStyle={headerStyle}
                 contentStyle={styles["content"]}
                 containerStyle={styles["container"]}
@@ -25,10 +40,15 @@ class GameResult extends Component {
                 {isSuccess ? (
                     <Text className={styles["success-tip"]}>恭喜你!</Text>
                 ) : restart_times > 0 ? (
-                    <Text className={styles["fail-tip"]}>
-                        {`啊哦～差一点点就过关咯! 
-
-                        动动手指，再战一次呗～～`}
+                    <Text
+                        className={styles["fail-tip"]}
+                        style={{ marginTop: "28px" }}
+                    >
+                        {`天呐！运气爆棚！
+                        
+                        获得一次复活机会
+                        
+                        关闭视为放弃复活机会哦～`}
                     </Text>
                 ) : (
                     <Text className={styles["fail-tip"]}>
