@@ -25,6 +25,7 @@ class TurnTable extends Container {
     arrows = null;
     table = null;
     speed = 72;
+    arrow_height = 0;
     get arrow_scale() {
         return arrow_scale;
     }
@@ -71,9 +72,10 @@ class TurnTable extends Container {
         });
     }
     isHitArrow(arrow) {
+        let rotation = (this.conatiner.rotation / (2 * Math.PI)) * 360;
         return this.arrows.some((item) => {
             // return this.game.bump.hit(item.arrow, arrow, false, false, true);
-            return Math.abs(item.arrow.rotation + this.conatiner.rotation) <= 6;
+            return Math.abs(item.arrow.rotation - rotation) <= 6;
         });
     }
     getHitBottom() {
@@ -84,7 +86,14 @@ class TurnTable extends Container {
         );
     }
     getBottom() {
-        return this.y + this.height * this.scale.y;
+        return (
+            this.y +
+            (this.table.y +
+                this.table.height -
+                arrow_head_height +
+                this.arrow_height * arrow_scale) *
+                this.scale.y
+        );
     }
     addArrow(rotation) {
         if (rotation === undefined) {
@@ -92,6 +101,7 @@ class TurnTable extends Container {
         }
         let arrow = new Sprite(this.assets.get("arrow"));
         this.conatiner.addChild(arrow);
+        this.arrow_height = arrow.height;
         arrow.scale.x = arrow.scale.y = arrow_scale;
         arrow.rotation = -((2 * Math.PI) / 360) * rotation;
         arrow.pivot.x = arrow.width / 2;
@@ -122,9 +132,11 @@ class TurnTable extends Container {
         this.conatiner.x = this.conatiner.pivot.x = center_x;
         this.conatiner.y = this.conatiner.pivot.y = center_y;
         const line_img = this.assets.get("turntable_line");
-        this.width = line_img.width;
-        this.height = line_img.height;
-        container.addChild(new Sprite(line_img));
+        const line = new Sprite(line_img);
+        this.width = line.width;
+        this.height = line.height;
+        console.log("turntable height", line.height);
+        container.addChild(line);
         const table_img = this.assets.get("turntable");
         let table = (this.table = new Sprite(table_img));
         container.addChild(table);
