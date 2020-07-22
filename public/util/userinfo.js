@@ -24,22 +24,21 @@ export const userInfoInit = (callback = NOOP) => {
             callback:(userInfoEntry) => {
                 console.warn("userInfoEntry", userInfoEntry);
                 setUserInfo(userInfoEntry);
-            },
-        });
-        fetchUserInfoFromTcUser({
-            nick,
-            callback:(newUserInfo) => {
-                // 添加一些便于使用的userInfo相关内容
-                // 判断是否是子账号
-                if (!isEmpty(newUserInfo.sub_nick)) {
-                    newUserInfo.subUserNick = newUserInfo.sub_nick;
-                }
-                console.warn("fetchUserInfoFromTcUser", newUserInfo);
-                setUserInfo(newUserInfo);
-                userInfoDeferred.resolve();
-                events.userInfoCallback.emit(newUserInfo);
-                callback(newUserInfo);
-                let userInfo = getUserInfo();
+                fetchUserInfoFromTcUser({
+                    nick,
+                    callback:(newUserInfo) => {
+                        // 添加一些便于使用的userInfo相关内容
+                        // 判断是否是子账号
+                        if (!isEmpty(newUserInfo.sub_nick)) {
+                            newUserInfo.subUserNick = newUserInfo.sub_nick;
+                        }
+                        console.warn("fetchUserInfoFromTcUser", newUserInfo);
+                        setUserInfo(newUserInfo);
+                        userInfoDeferred.resolve();
+                        events.userInfoCallback.emit(newUserInfo);
+                        callback(newUserInfo);
+                    },
+                });
             },
         });
     });
@@ -159,7 +158,7 @@ export const fetchUserInfoFromTcUser = ({ callback, nick  }) => {
     }
     api({
         apiName:ENV.userApiName,
-        path:'/tc/user',
+        method:ENV.userMethod,
         args,
         callback:res => {
             const newUserInfo = res;
@@ -168,7 +167,7 @@ export const fetchUserInfoFromTcUser = ({ callback, nick  }) => {
                 Object.assign(newUserInfo, res.userInfo);
             }
             callback(newUserInfo);
-        },
+        }
     });
 };
 
