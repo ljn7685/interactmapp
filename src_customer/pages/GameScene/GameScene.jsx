@@ -201,6 +201,7 @@ class GameScene extends Component {
             restart_times,
         } = this.state;
         const { imgList } = this.props;
+        const ratio = game.getRatio()
         return (
             <View
                 id="gameroot"
@@ -235,6 +236,7 @@ class GameScene extends Component {
                         alt=""
                         className="guide"
                         mode="widthFix"
+                        style={{transform:`translateX(-23.913%) scale(${ratio})`}}
                     />
                 ) : null}
                 {showHeart && imgList[1].loaded ? (
@@ -243,6 +245,7 @@ class GameScene extends Component {
                         alt=""
                         className="heart"
                         mode="widthFix"
+                        style={{transform:`translateX(-50%) scale(${ratio})`}}
                     />
                 ) : null}
                 {showSuccessAngel && imgList[2].loaded ? (
@@ -251,6 +254,7 @@ class GameScene extends Component {
                         alt=""
                         className="success-angel"
                         mode="widthFix"
+                        style={{transform:`translateX(-50%) scale(${ratio})`}}
                     />
                 ) : null}
                 {showGameResult ? (

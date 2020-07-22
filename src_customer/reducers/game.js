@@ -7,15 +7,15 @@ import {
 import default_avatar from "../assets/images/avatar.png";
 
 const initState = {
-    gametimes: 1,
+    gametimes: 10,
     max_rank_count: 50,
-    max_fail_times: 3,
+    max_fail_times: 6,
     subtitle: "> 赢百元现金券/华为P40 <",
     preloaded: false,
     arrow_count: 10,
     arrow_score: 10,
     best_score: 0,
-    game_duration: 100000,
+    game_duration: 60000,
     game_rule: {
         start_date: "X月Y日",
         end_date: "W月Z日",

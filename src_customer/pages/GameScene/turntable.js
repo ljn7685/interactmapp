@@ -2,7 +2,6 @@ import TWEEN from "@tweenjs/tween.js";
 
 import { Container, Sprite } from "@tbminiapp/pixi-miniprogram-engine";
 
-
 const arrow_scale = 0.746;
 const arrow_head_height = 38 * arrow_scale;
 const center_x = 335;
@@ -68,13 +67,13 @@ class TurnTable extends Container {
     isShootSuccess() {
         let rotation = (this.conatiner.rotation / (2 * Math.PI)) * 360;
         return this.arrows.every((item) => {
-            return Math.abs(item.rotation - rotation) > 10;
+            return Math.abs(item.rotation - rotation) > 6;
         });
     }
     isHitArrow(arrow) {
         return this.arrows.some((item) => {
-            return this.game.bump.hit(item.arrow, arrow, false, false, true);
-            // return item.arrow.rotation === -this.conatiner.rotation;
+            // return this.game.bump.hit(item.arrow, arrow, false, false, true);
+            return Math.abs(item.arrow.rotation + this.conatiner.rotation) <= 6;
         });
     }
     getHitBottom() {
@@ -108,7 +107,7 @@ class TurnTable extends Container {
         return arrow;
     }
     addSpeed() {
-        this.speed *= 1.1;
+        this.speed *= 1.06;
         if (this.tween) {
             TWEEN.remove(this.tween);
         }

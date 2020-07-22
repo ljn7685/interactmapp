@@ -99,14 +99,7 @@ class GameIndex extends Component {
           >
             开始游戏 赢好礼
           </View>
-          <Button
-            className={styles["game-times"] + " " + styles["button"]}
-            to='/task'
-          >
-            获取游戏次数
-          </Button>
         </View>
-        <View className={styles["game-desc"]}>连续参与游戏成功率更高哦</View>
         <View className='sidebar'>
           <View className='side-btn' onClick={this.onClickRule} key='rule'>
             <Image

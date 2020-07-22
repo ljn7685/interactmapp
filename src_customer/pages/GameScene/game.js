@@ -125,17 +125,21 @@ class Game extends EventEmitter {
             assets: this.assets,
             game: this,
         }));
-        turntable.x = 39;
+        // turntable.x = 39;
         turntable.y = 350;
         this.stage.addChild(turntable);
-        // this.setHorizontalCenter(turntable);
+        this.setHorizontalCenter(turntable);
+    }
+    setHorizontalCenter(obj) {
+        obj.pivot.x = obj.width / 2;
+        obj.x = this.width / 2;
     }
     initBow() {
         let bow = (this.bow = new Bow({ assets: this.assets }));
         bow.x = 196;
         bow.y = 1253;
         this.stage.addChild(bow);
-        // this.setHorizontalCenter(bow);
+        this.setHorizontalCenter(bow);
     }
     initArrowTotal() {
         //当前分数
@@ -149,11 +153,14 @@ class Game extends EventEmitter {
         //设置当前分数的位置
         this.arrowTotal.x = 93;
         this.arrowTotal.y = 1183;
+        this.onSceneResize();
     }
     setArrowCount(count) {
-        this.arrow_count = count;
-        this.removeArrowTotal();
-        this.initArrowTotal();
+        if (count >= 0 && count <= this.config.arrow_count) {
+            this.arrow_count = count;
+            this.removeArrowTotal();
+            this.initArrowTotal();
+        }
     }
     removeArrowTotal() {
         if (this.arrowTotal) {
@@ -216,7 +223,7 @@ class Game extends EventEmitter {
                 {
                     y: this.bow.getFlyY(distance),
                 },
-                600
+                400
             )
             .onUpdate((object, elapsed) => {
                 arrow.scale.x = 1 + (this.turntable.arrow_scale - 1) * elapsed;
@@ -226,6 +233,7 @@ class Game extends EventEmitter {
                     if (this.turntable.isHitArrow(arrow)) {
                         // console.log("hit other arrow");
                         tween.stop();
+                        TWEEN.remove(tween)
                         this.onShootFail();
                     }
                 }
@@ -300,6 +308,7 @@ class Game extends EventEmitter {
         if (this.turntable) {
             this.turntable.stop();
         }
+        TWEEN.removeAll()
     }
     destroy() {}
 

@@ -9,6 +9,7 @@
   top: 64.347%;
   left: 50%;
   transform: translateX(-23.913%);
+  transform-origin:50% 0;
   pointer-events: none;
 }
 .heart {
@@ -17,6 +18,7 @@
   left: 50%;
   transform: translateX(-50%);
   top: 19.7%;
+  transform-origin:50% 0;
   height: 45.67%;
 }
 .success-angel {
@@ -25,6 +27,7 @@
   left: 50%;
   transform: translateX(-50%);
   top: 31.95%;
+  transform-origin:50% 0;
   width: 46.666%;
 }
 .canvas {
