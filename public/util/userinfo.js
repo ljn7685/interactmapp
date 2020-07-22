@@ -1,6 +1,7 @@
 import { api, entry, initphpSessionIdDeferred, authDeferred, testUser } from "./api";
 import { ENV } from "@/constants/env";
-import { getDeferred, isEmpty, isIDE, showConfirmModal, NOOP, setUserInfo, getUserInfo } from "./index";
+import { getDeferred, isEmpty, isIDE, showConfirmModal, NOOP } from "./index";
+import { setUserInfo, getUserInfo } from "./userInfoChanger";
 import { events } from "mapp_common/utils/eventManager";
 import { storage } from "mapp_common/utils/storage";
 import Taro from "@tarojs/taro";
@@ -25,7 +26,6 @@ export const userInfoInit = (callback = NOOP) => {
                 setUserInfo(userInfoEntry);
             },
         });
-        console.log(nick)
         fetchUserInfoFromTcUser({
             nick,
             callback:(newUserInfo) => {
@@ -40,7 +40,6 @@ export const userInfoInit = (callback = NOOP) => {
                 events.userInfoCallback.emit(newUserInfo);
                 callback(newUserInfo);
                 let userInfo = getUserInfo();
-                console.log('~~~~~~~~~~~~~`',userInfo);
             },
         });
     });
@@ -99,7 +98,7 @@ export async function authorize () {
     try {
         let { authRes, authErr } = await new Promise((resolve) => {
             my.authorize({
-                scopes: '*',
+                scopes: 'scope.userInfo',
                 success: (authRes) => {
                     console.warn('authorize', authRes);
                     setUserInfo({ accessToken: authRes.accessToken });

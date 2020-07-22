@@ -1,5 +1,6 @@
 import Taro from "@tarojs/taro";
-import {  NOOP, isIDE, showConfirmModal, getDeferred, sleep, getUserInfo  } from "./index";
+import {  NOOP, isIDE, showConfirmModal, getDeferred, sleep  } from "./index";
+import { getUserInfo } from "./userInfoChanger";
 import { ENV } from "@/constants/env";
 import { getCloud } from "mapp_common/utils/cloud";
 import moment from "mapp_common/utils/moment";
@@ -75,7 +76,6 @@ export function api (
         path: method,
         ...rest,
         callback: (res) => {
-            console.log('newArgs~~~~~~~~~', res)
             if (checkLogin(res)) {
                 success(res, apiName, 'application', newArgs);
             } else {
@@ -156,7 +156,6 @@ export const getphpSessionIdDeferred = () => {
  * @param errCallback
  */
 export function applicationApi ({ args, apiName, path, method = 'POST', headers = {}, version = 1, callback, errCallback }) {
-    phpSessionIdDeferred.then(() => {
         let _path = getUserInfo().userNick;
         !_path && (_path = path);
         !_path && (_path = '/');
@@ -168,13 +167,14 @@ export function applicationApi ({ args, apiName, path, method = 'POST', headers 
                 }
             });
         }
+        let newPhpSessionId = getUserInfo().phpSessionId ? getUserInfo().phpSessionId : phpSessionId;
         let data = {
             path: '#' + _path,
             method,
             headers,
             body: {
                 api_name: apiName,
-                phpSessionId: phpSessionId,
+                phpSessionId: newPhpSessionId,
                 version: version,
                 ...args,
 
@@ -206,8 +206,9 @@ export function applicationApi ({ args, apiName, path, method = 'POST', headers 
                 errCallback(error);
             }
         });
-    });
 };
+
+
 
 /**
  * 入口 取phpsessionid
@@ -273,6 +274,7 @@ export async function entry ({ accessToken, callback = NOOP, errCallback = NOOP 
     let userInfo = {
         userId: data.user_id,
         userNick: data.nick,
+        phpSessionId : phpSessionId
     };
     callback(userInfo);
 }
