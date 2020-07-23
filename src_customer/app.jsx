@@ -5,12 +5,26 @@ import configStore from './store'
 
 
 import './app.scss'
+import { setActivityEnded, setUserInfo } from './actions/game'
+import { userInfoInit } from "../public/util/userinfo";
 
 const store = configStore()
 
 class App extends Component {
   componentDidMount () {
-   
+    const state = store.getState()
+    if (!state.userinfo) {
+      userInfoInit((userinfo) => {
+          console.log(userinfo, "33");
+          if (userinfo.code === 500 && userinfo.msg === "活动已经结束") {
+            store.dispatch(setActivityEnded(true));
+          } else {
+            store.dispatch(setActivityEnded(false));
+          }
+          store.dispatch(setUserInfo(userinfo))
+          console.log(state.activity_ended);
+      });
+    }
   }
 
   componentDidShow () {}

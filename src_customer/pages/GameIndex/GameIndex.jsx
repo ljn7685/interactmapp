@@ -20,7 +20,6 @@ import {
     favorShop,
     joinGame,
 } from "../../actions/game";
-import { userInfoInit } from "../../public/util/userinfo";
 class GameIndex extends Component {
     constructor(props) {
         super(props);
@@ -30,20 +29,7 @@ class GameIndex extends Component {
             showPrize: false,
         };
     }
-
     componentDidMount() {
-        if (!this.props.userinfo) {
-            userInfoInit((userinfo) => {
-                console.log(userinfo, "33");
-                if (userinfo.code === 500 && userinfo.msg === "活动已经结束") {
-                    this.props.setActivityEnded(true);
-                } else {
-                    this.props.setActivityEnded(false);
-                }
-                this.props.setUserInfo(userinfo);
-                console.log(this.props.activity_ended);
-            });
-        }
         let { no_enough_times } = getCurrentInstance().router.params;
         console.log(getCurrentInstance().router.params);
         if (no_enough_times) {
