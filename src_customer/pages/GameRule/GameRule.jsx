@@ -35,9 +35,9 @@ class GameRule extends Component {
                 onClick={onClose}
             ></Image>
         );
-        const start_date = new Date(game_rule.start_date)
-        const end_date = new Date(game_rule.end_date)
-        const date = `${start_date.getMonth()+1}月${start_date.getDate()}日——${end_date.getMonth()+1}月${end_date.getDate()}日`
+        const start_date = new Date(game_rule.start_date.replace(/-/g,"/"))
+        const end_date = new Date(game_rule.end_date.replace(/-/g,"/"))
+        const date = `${start_date.getFullYear()}年${start_date.getMonth()+1}月${start_date.getDate()}日——${end_date.getFullYear()}年${end_date.getMonth()+1}月${end_date.getDate()}日`
         return (
             <Modal
                 containerStyle={styles["container"]}

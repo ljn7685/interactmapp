@@ -1,6 +1,6 @@
 .container {
     width: 565px;
-    height: 830px;
+    height: 780px;
     background-color: #ffebf2;
     border-radius: 40px;
     border: solid 7px #fdb8da;
@@ -40,12 +40,13 @@
     }
 }
 .content {
-    width: 464px;
+    width: 500px;
     height: 654px;
     .activity-time {
         font-size: 26px;
         color: #c96a90;
         margin-top: 37px;
+        font-weight: bold;
     }
     .activity-rule {
         display: flex;
@@ -53,12 +54,14 @@
         .title {
             font-size: 26px;
             margin-top: 26px;
+            font-weight: bold;
             color: #c96a90;
         }
         .desc {
             margin-top: 14px;
-            font-size: 22px;
+            font-size: 24px;
             color: #c96a90;
+            line-height: 34px;
         }
     }
 }

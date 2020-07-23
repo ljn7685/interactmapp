@@ -32,16 +32,18 @@ class GameIndex extends Component {
     }
 
     componentDidMount() {
-        userInfoInit((userinfo) => {
-            console.log(userinfo, "33");
-            if (userinfo.code === 500 && userinfo.msg === "活动已经结束") {
-                this.props.setActivityEnded(true);
-            } else {
-                this.props.setActivityEnded(false);
-            }
-            this.props.setUserInfo(userinfo);
-            console.log(this.props.activity_ended);
-        });
+        if (!this.props.userinfo) {
+            userInfoInit((userinfo) => {
+                console.log(userinfo, "33");
+                if (userinfo.code === 500 && userinfo.msg === "活动已经结束") {
+                    this.props.setActivityEnded(true);
+                } else {
+                    this.props.setActivityEnded(false);
+                }
+                this.props.setUserInfo(userinfo);
+                console.log(this.props.activity_ended);
+            });
+        }
         let { no_enough_times } = getCurrentInstance().router.params;
         console.log(getCurrentInstance().router.params);
         if (no_enough_times) {
@@ -49,14 +51,7 @@ class GameIndex extends Component {
         }
     }
     showNoEnoughTimes() {
-        this.setState({
-            isRotate: false,
-        });
-        this.toast.info("已经参与过游戏咯", 2000, () => {
-            this.setState({
-                isRotate: true,
-            });
-        });
+        this.toast.info("已经参与过游戏咯", 2000);
     }
     onGameStart = () => {
         if (this.props.gametimes <= 0) {
@@ -71,11 +66,7 @@ class GameIndex extends Component {
         const { userinfo, gametimes } = this.props;
         console.log("index userinfo", userinfo);
         this.props.favorShop(userinfo, () => {
-            this.props.joinGame(
-                userinfo,
-                gametimes,
-                this.onGameStart
-            );
+            this.props.joinGame(userinfo, gametimes, this.onGameStart);
         });
     };
     onClickRule = () => {
@@ -109,6 +100,7 @@ class GameIndex extends Component {
                         className={`${styles["preview-turntable"]} ${
                             this.state.isRotate ? styles["preview-rotate"] : ""
                         }`}
+                        key={start_turntable}
                         mode="widthFix"
                     />
                     <Image
@@ -117,6 +109,7 @@ class GameIndex extends Component {
                         className={
                             styles["preview-content"] + " " + styles["player"]
                         }
+                        key={start_player}
                         mode="widthFix"
                     />
                 </View>

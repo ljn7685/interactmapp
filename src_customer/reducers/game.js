@@ -11,7 +11,7 @@ import { storage } from "mapp_common/utils/storage";
 import default_avatar from "../assets/images/avatar.png";
 
 const initState = {
-    gametimes: 0,
+    gametimes: 10,
     max_rank_count: 50,
     max_fail_times: 0,
     revive_times: 0,
@@ -25,26 +25,24 @@ const initState = {
     is_follow: false,
     userinfo: null,
     game_rule: {
-        start_date: "X月Y日",
-        end_date: "W月Z日",
+        start_date: "2020-01-01 00:00:00",
+        end_date: "2020-12-31 00:00:00",
         rules: [
             {
-                title: "1.在此期间，通过以下方式可获得 游戏机会：",
-                desc: `*首次参与活动，游戏机会*1（该游戏机会不会重复享有）
-                *关注店铺，游戏机会*1（该游戏机会不会重复享有）
-                *每日收藏1款产品，游戏机会*1（每日限获1次）
-                *分享1款产品给好友，仅有当好友打开分享链接后，游戏机会*1（机会可叠加，奖励次数到账或有系统延迟，视为正常现象）`,
+                title: "一.活动介绍：",
+                desc: `1.从店铺首页或商品详情页进入丘比特之箭页面即可开始游戏；
+                2.活动期间，可通过关注店铺获取游戏次数；
+                3.游戏成功，即可获得奖励；`,
             },
             {
-                title: "2.奖品明细",
-                desc: `一等奖：大于12只口红
-            二等奖：9-11只口红
-            三等奖：7-8只口红
-            幸运奖：5-6只口红`,
+                title: "二.玩法介绍：",
+                desc: `1.向后拉动弓箭，手指离开屏幕弓箭射出，若弓箭触碰到转盘中的其他弓箭则挑战失败；
+                2.规定时间内弓箭未使用完毕，则挑战失败；`,
             },
             {
-                title: "3.活动说明",
-                desc: `将底部的口红向上滑动即可插入转盘，规定时间内若碰到其他口红则挑战失败。`,
+                title: "三.奖励规则：",
+                desc: `1.优惠券可在卡券包中查看，店铺内购买商品时可使用；
+                2.每人每日只可领取一个奖励；`,
             },
         ],
     },
