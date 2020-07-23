@@ -156,8 +156,11 @@ export const fetchUserInfoFromTcUser = ({ callback, nick  }) => {
         args.nick = testUser.nickName;
         args.access_token = testUser.access_token;
     }
+    
     const options = Taro.getLaunchOptionsSync()
-    args.active_id = options.query && options.query.activity_id || 6;
+    const active_id = (options.query && options.query.activity_id) ? options.query.activity_id : 6;
+    storage.setItemSync('active_id', active_id)
+    args.active_id = active_id;
     console.log('options',options,'args',args);
     api({
         apiName:ENV.userApiName,

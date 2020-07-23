@@ -4,14 +4,16 @@ import {
     SET_BEST_SCORE,
     SET_ACTIVITY_ENDED,
     MODIFY_REVIVE_TIMES,
+    SET_USER_INFO,
+    SET_FAVOR_SHOP,
 } from "../constants/game";
-
+import { storage } from "mapp_common/utils/storage";
 import default_avatar from "../assets/images/avatar.png";
 
 const initState = {
-    gametimes: 10,
+    gametimes: 0,
     max_rank_count: 50,
-    max_fail_times: 6,
+    max_fail_times: 0,
     revive_times: 0,
     subtitle: "> 赢百元现金券/华为P40 <",
     preloaded: false,
@@ -21,7 +23,7 @@ const initState = {
     game_duration: 60000,
     activity_ended: false,
     is_follow: false,
-    user_info: null,
+    userinfo: null,
     game_rule: {
         start_date: "X月Y日",
         end_date: "W月Z日",
@@ -90,6 +92,24 @@ export default function reducer(state = initState, action) {
             return { ...state, best_score: action.score };
         case SET_ACTIVITY_ENDED:
             return { ...state, activity_ended: action.isEnded };
+        case SET_USER_INFO:
+            const {userinfo} = action;
+            const {game_rule} = state;
+            game_rule.start_date = userinfo.start_date;
+            game_rule.end_date = userinfo.end_date;
+            const active_id = Number(storage.getItemSync('active_id'))
+            userinfo.active_id = active_id;
+            return {
+                ...state,
+                is_follow: Boolean(action.userinfo.is_follow),
+                max_fail_times: userinfo.game_number,
+                subtitle: userinfo.sub_title,
+                game_rule,
+                userinfo,
+            };
+        case SET_FAVOR_SHOP:
+            state.userinfo.is_follow = 1;
+            return { ...state, is_follow: true };
         default:
             return state;
     }

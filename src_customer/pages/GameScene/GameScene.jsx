@@ -8,6 +8,7 @@ import Game from "./game";
 import {
     modifyGametimes,
     modifyReviveTimes,
+    userRevive,
     setBestScore,
 } from "../../actions/game";
 
@@ -44,19 +45,26 @@ class GameScene extends Component {
     componentDidMount() {
         console.log("didmount");
         const { revive } = getCurrentInstance().router.params;
-        const { revive_times, gametimes, max_fail_times } = this.props;
+        const {
+            revive_times,
+            gametimes,
+            max_fail_times,
+            userinfo,
+        } = this.props;
         if (this.props.gametimes <= 0 && !revive) {
             Taro.redirectTo({
                 url: "/pages/GameIndex/GameIndex?no_enough_times=true",
             });
         } else {
             if (revive) {
-                this.props.modifyReviveTimes(revive_times - 1);
+                this.props.userRevive(userinfo, revive_times, () => {
+                    this.onCanvasReady();
+                });
             } else {
                 this.props.modifyReviveTimes(max_fail_times);
                 this.props.modifyGametimes(gametimes - 1);
+                this.onCanvasReady();
             }
-            this.onCanvasReady();
         }
     }
     componentWillUnmount() {
@@ -282,11 +290,13 @@ const mapStateToProps = ({ game }) => {
         game_duration: game.game_duration,
         max_fail_times: game.max_fail_times,
         revive_times: game.revive_times,
+        userinfo: game.userinfo,
     };
 };
 const mapDispatchToProps = {
     modifyGametimes,
     modifyReviveTimes,
+    userRevive,
     setBestScore,
 };
 

@@ -14,7 +14,12 @@ import icon_rule from "../../assets/images/icon_rule.png";
 import GameRule from "../GameRule/GameRule";
 import ToastBox from "../../components/toast/toast";
 import GamePrize from "../GamePrize/GamePrize";
-import { setActivityEnded } from "../../actions/game";
+import {
+    setActivityEnded,
+    setUserInfo,
+    favorShop,
+    joinGame,
+} from "../../actions/game";
 import { userInfoInit } from "../../public/util/userinfo";
 class GameIndex extends Component {
     constructor(props) {
@@ -34,6 +39,7 @@ class GameIndex extends Component {
             } else {
                 this.props.setActivityEnded(false);
             }
+            this.props.setUserInfo(userinfo);
             console.log(this.props.activity_ended);
         });
         let { no_enough_times } = getCurrentInstance().router.params;
@@ -46,7 +52,7 @@ class GameIndex extends Component {
         this.setState({
             isRotate: false,
         });
-        this.toast.info("暂无游戏次数", 2000, () => {
+        this.toast.info("已经参与过游戏咯", 2000, () => {
             this.setState({
                 isRotate: true,
             });
@@ -61,6 +67,17 @@ class GameIndex extends Component {
             });
         }
     };
+    onFavorShop = () => {
+        const { userinfo, gametimes } = this.props;
+        console.log("index userinfo", userinfo);
+        this.props.favorShop(userinfo, () => {
+            this.props.joinGame(
+                userinfo,
+                gametimes,
+                this.onGameStart
+            );
+        });
+    };
     onClickRule = () => {
         const { showRule } = this.state;
         this.setState({ showRule: !showRule });
@@ -71,7 +88,7 @@ class GameIndex extends Component {
     };
     render() {
         const { showRule, showPrize } = this.state;
-        const { activity_ended } = this.props;
+        const { activity_ended, is_follow } = this.props;
         return (
             <View className={styles["bg"]} ref={(ref) => (this.root = ref)}>
                 <View className={styles["title"]}>
@@ -112,11 +129,11 @@ class GameIndex extends Component {
                             className={
                                 styles["start-game"] + " " + styles["button"]
                             }
-                            onClick={()=>{}}
+                            onClick={() => {}}
                         >
                             活动已经结束
                         </View>
-                    ) : (
+                    ) : is_follow ? (
                         <View
                             className={
                                 styles["start-game"] + " " + styles["button"]
@@ -124,6 +141,15 @@ class GameIndex extends Component {
                             onClick={this.onGameStart}
                         >
                             开始游戏 赢好礼
+                        </View>
+                    ) : (
+                        <View
+                            className={
+                                styles["start-game"] + " " + styles["button"]
+                            }
+                            onClick={this.onFavorShop}
+                        >
+                            关注店铺 获取游戏次数
                         </View>
                     )}
                 </View>
@@ -171,10 +197,15 @@ const mapStateToProps = ({ game }) => {
         gametimes: game.gametimes,
         subtitle: game.subtitle,
         activity_ended: game.activity_ended,
+        is_follow: game.is_follow,
+        userinfo: game.userinfo,
     };
 };
 const mapDispatchToProps = {
     setActivityEnded,
+    setUserInfo,
+    favorShop,
+    joinGame,
 };
 const wrapper = connect(mapStateToProps, mapDispatchToProps)(GameIndex);
 export default wrapper;

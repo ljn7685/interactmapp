@@ -35,6 +35,9 @@ class GameRule extends Component {
                 onClick={onClose}
             ></Image>
         );
+        const start_date = new Date(game_rule.start_date)
+        const end_date = new Date(game_rule.end_date)
+        const date = `${start_date.getMonth()+1}月${start_date.getDate()}日——${end_date.getMonth()+1}月${end_date.getDate()}日`
         return (
             <Modal
                 containerStyle={styles["container"]}
@@ -45,10 +48,10 @@ class GameRule extends Component {
                 closeBtn={closeBtn}
             >
                 <View className={styles["activity-time"]}>
-                    活动时间：{game_rule.start_date}——{game_rule.end_date}
+                    活动时间：{date}
                 </View>
-                {game_rule.rules.map((item) => (
-                    <Text className={styles["activity-rule"]}>
+                {game_rule.rules.map((item,index) => (
+                    <Text className={styles["activity-rule"]} key={index}>
                         <Text className={styles["title"]}>{item.title}</Text>
                         <Text className={styles["desc"]}>{item.desc}</Text>
                     </Text>
