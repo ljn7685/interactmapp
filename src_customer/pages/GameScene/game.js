@@ -31,6 +31,8 @@ class Game extends EventEmitter {
     pull_pos = null;
     designHeight = 1624;
     state = 0;
+
+    isFlying = false;
     /**
      *
      * @param {PIXI.Application} app
@@ -180,6 +182,7 @@ class Game extends EventEmitter {
     }
 
     onPointStart = (e) => {
+        if (this.isFlying) return;
         this.pull_start = true;
         this.pulling = false;
         this.pull_pos = [e.touches[0].clientX, e.touches[0].clientY];
@@ -217,6 +220,7 @@ class Game extends EventEmitter {
     };
 
     arrowFlying(arrow) {
+        this.isFlying = true;
         let distance = this.bow.getArrowY() - this.turntable.getHitBottom();
         let tween = new Tween(arrow)
             .to(
@@ -233,12 +237,14 @@ class Game extends EventEmitter {
                     if (this.turntable.isHitArrow(arrow)) {
                         // console.log("hit other arrow");
                         tween.stop();
-                        TWEEN.remove(tween)
+                        TWEEN.remove(tween);
+                        this.isFlying = false;
                         this.onShootFail();
                     }
                 }
             })
             .onComplete(() => {
+                this.isFlying = false;
                 console.log("flyComplete");
                 if (this.turntable.isShootSuccess()) {
                     this.onShootSuccess();
@@ -308,7 +314,7 @@ class Game extends EventEmitter {
         if (this.turntable) {
             this.turntable.stop();
         }
-        TWEEN.removeAll()
+        TWEEN.removeAll();
     }
     destroy() {}
 
