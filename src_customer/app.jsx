@@ -3,7 +3,6 @@ import { Provider } from 'react-redux'
 
 import configStore from './store'
 
-import {userInfoInit} from "../public/util/userinfo"
 
 import './app.scss'
 
@@ -11,7 +10,7 @@ const store = configStore()
 
 class App extends Component {
   componentDidMount () {
-    userInfoInit()
+   
   }
 
   componentDidShow () {}

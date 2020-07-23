@@ -16,12 +16,13 @@ class GameResult extends Component {
         });
     };
     render() {
-        const { isSuccess, onRestart, restart_times } = this.props;
+        const { isSuccess, onRestart, revive_times } = this.props;
+        console.log('reveie times',revive_times)
         let headerStyle =
             styles["header"] +
             " " +
             (isSuccess ? styles["win-header"] : styles["lose-header"]);
-        const footer = !isSuccess && restart_times > 0 && (
+        const footer = !isSuccess && revive_times > 0 && (
             <Image
                 src={close_btn_img}
                 mode="widthFix"
@@ -39,7 +40,7 @@ class GameResult extends Component {
             >
                 {isSuccess ? (
                     <Text className={styles["success-tip"]}>恭喜你!</Text>
-                ) : restart_times > 0 ? (
+                ) : revive_times > 0 ? (
                     <Text
                         className={styles["fail-tip"]}
                         style={{ marginTop: "28px" }}
@@ -67,7 +68,7 @@ class GameResult extends Component {
                     <View className={styles["use-button"]}>
                         <Text className={styles["text"]}>立即兑换</Text>
                     </View>
-                ) : restart_times > 0 ? (
+                ) : revive_times > 0 ? (
                     <View className={styles["use-button"]} onClick={onRestart}>
                         <Text className={styles["text"]}>再战一次</Text>
                     </View>

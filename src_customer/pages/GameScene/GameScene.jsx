@@ -5,7 +5,11 @@ import { View, Image, Text, Canvas } from "@tarojs/components";
 import * as PIXI from "@tbminiapp/pixi-miniprogram-engine";
 
 import Game from "./game";
-import { modifyGametimes, setBestScore } from "../../actions/game";
+import {
+    modifyGametimes,
+    modifyReviveTimes,
+    setBestScore,
+} from "../../actions/game";
 
 import "./GameScene.scss";
 import "../../styles/common.scss";
@@ -34,19 +38,24 @@ class GameScene extends Component {
             isSuccess: false,
             score: 0,
             game: new Game(),
-            restart_times: props.max_fail_times,
         };
     }
 
     componentDidMount() {
         console.log("didmount");
-        if (this.props.gametimes <= 0) {
+        const { revive } = getCurrentInstance().router.params;
+        const { revive_times, gametimes, max_fail_times } = this.props;
+        if (this.props.gametimes <= 0 && !revive) {
             Taro.redirectTo({
-                url:
-                    "/pages/GameIndex/GameIndex?no_enough_times=true",
+                url: "/pages/GameIndex/GameIndex?no_enough_times=true",
             });
         } else {
-            this.props.modifyGametimes(this.props.gametimes - 1);
+            if (revive) {
+                this.props.modifyReviveTimes(revive_times - 1);
+            } else {
+                this.props.modifyReviveTimes(max_fail_times);
+                this.props.modifyGametimes(gametimes - 1);
+            }
             this.onCanvasReady();
         }
     }
@@ -143,31 +152,17 @@ class GameScene extends Component {
     };
     onRestart = () => {
         console.log("onRestart");
-        const { isSuccess, restart_times } = this.state;
-        const { gametimes, max_fail_times } = this.props;
-        if (restart_times === 0 && gametimes === 0) {
+        const { isSuccess } = this.state;
+        const { gametimes, revive_times } = this.props;
+        if (revive_times === 0 && gametimes === 0) {
             this.toast.info("暂无游戏次数", 2000);
             return;
         }
-        if (isSuccess || restart_times === 0) {
-            this.setState({
-                restart_times: max_fail_times,
-            });
-            this.props.modifyGametimes(this.props.gametimes - 1);
+        if (isSuccess || revive_times === 0) {
+            Taro.redirectTo({ url: "/pages/GameScene/GameScene?revive=false" });
         } else {
-            this.setState({
-                restart_times: restart_times - 1,
-            });
+            Taro.redirectTo({ url: "/pages/GameScene/GameScene?revive=true" });
         }
-        const { game } = this.state;
-        game.restart();
-        this.showGuide();
-        this.setState({
-            showGuide: true,
-            showHeart: false,
-            showSuccessAngel: false,
-            showGameResult: false,
-        });
     };
     changeHeart = (visible) => {
         this.setState({
@@ -198,10 +193,9 @@ class GameScene extends Component {
             isSuccess,
             score,
             game,
-            restart_times,
         } = this.state;
-        const { imgList } = this.props;
-        const ratio = game.getRatio()
+        const { imgList, revive_times } = this.props;
+        const ratio = game.getRatio();
         return (
             <View
                 id="gameroot"
@@ -236,7 +230,9 @@ class GameScene extends Component {
                         alt=""
                         className="guide"
                         mode="widthFix"
-                        style={{transform:`translateX(-23.913%) scale(${ratio})`}}
+                        style={{
+                            transform: `translateX(-23.913%) scale(${ratio})`,
+                        }}
                     />
                 ) : null}
                 {showHeart && imgList[1].loaded ? (
@@ -245,7 +241,9 @@ class GameScene extends Component {
                         alt=""
                         className="heart"
                         mode="widthFix"
-                        style={{transform:`translateX(-50%) scale(${ratio})`}}
+                        style={{
+                            transform: `translateX(-50%) scale(${ratio})`,
+                        }}
                     />
                 ) : null}
                 {showSuccessAngel && imgList[2].loaded ? (
@@ -254,7 +252,9 @@ class GameScene extends Component {
                         alt=""
                         className="success-angel"
                         mode="widthFix"
-                        style={{transform:`translateX(-50%) scale(${ratio})`}}
+                        style={{
+                            transform: `translateX(-50%) scale(${ratio})`,
+                        }}
                     />
                 ) : null}
                 {showGameResult ? (
@@ -262,7 +262,7 @@ class GameScene extends Component {
                         isSuccess={isSuccess}
                         score={score}
                         onRestart={this.onRestart}
-                        restart_times={restart_times}
+                        revive_times={revive_times}
                     ></GameResult>
                 ) : null}
                 {showRule ? (
@@ -281,10 +281,12 @@ const mapStateToProps = ({ game }) => {
         gametimes: game.gametimes,
         game_duration: game.game_duration,
         max_fail_times: game.max_fail_times,
+        revive_times: game.revive_times,
     };
 };
 const mapDispatchToProps = {
     modifyGametimes,
+    modifyReviveTimes,
     setBestScore,
 };
 

@@ -316,18 +316,6 @@ class Game extends EventEmitter {
         this.bow.addArrow();
     }
 
-    restart() {
-        console.log("restart");
-        this.ticker.start();
-        this.turntable.reset();
-        this.bow.reset();
-        this.bow.addArrow();
-        this.setArrowCount(this.config.arrow_count);
-        this.countdown.restart();
-        this.state = 0;
-        this.score = 0;
-    }
-
     gameOver() {
         this.state = 1;
         this.nextTick(() => {

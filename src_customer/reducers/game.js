@@ -2,6 +2,8 @@ import {
     MODIFY_GAMETIMES,
     SET_PRELOADED,
     SET_BEST_SCORE,
+    SET_ACTIVITY_ENDED,
+    MODIFY_REVIVE_TIMES,
 } from "../constants/game";
 
 import default_avatar from "../assets/images/avatar.png";
@@ -10,12 +12,16 @@ const initState = {
     gametimes: 10,
     max_rank_count: 50,
     max_fail_times: 6,
+    revive_times: 0,
     subtitle: "> 赢百元现金券/华为P40 <",
     preloaded: false,
     arrow_count: 10,
     arrow_score: 10,
     best_score: 0,
     game_duration: 60000,
+    activity_ended: false,
+    is_follow: false,
+    user_info: null,
     game_rule: {
         start_date: "X月Y日",
         end_date: "W月Z日",
@@ -76,10 +82,14 @@ export default function reducer(state = initState, action) {
     switch (action.type) {
         case MODIFY_GAMETIMES:
             return { ...state, gametimes: action.times };
+        case MODIFY_REVIVE_TIMES:
+            return { ...state, revive_times: action.times };
         case SET_PRELOADED:
             return { ...state, preloaded: action.preloaded };
         case SET_BEST_SCORE:
             return { ...state, best_score: action.score };
+        case SET_ACTIVITY_ENDED:
+            return { ...state, activity_ended: action.isEnded };
         default:
             return state;
     }
