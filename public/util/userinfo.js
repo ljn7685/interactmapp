@@ -1,6 +1,7 @@
 import { api, entry, initphpSessionIdDeferred, authDeferred, testUser } from "./api";
 import { ENV } from "@/constants/env";
-import { getDeferred, isEmpty, isIDE, showConfirmModal, NOOP, setUserInfo, getUserInfo } from "./index";
+import { getDeferred, isEmpty, isIDE, showConfirmModal, NOOP } from "./index";
+import { setUserInfo, getUserInfo } from "./userInfoChanger";
 import { events } from "mapp_common/utils/eventManager";
 import { storage } from "mapp_common/utils/storage";
 import Taro from "@tarojs/taro";
@@ -23,24 +24,21 @@ export const userInfoInit = (callback = NOOP) => {
             callback:(userInfoEntry) => {
                 console.warn("userInfoEntry", userInfoEntry);
                 setUserInfo(userInfoEntry);
-            },
-        });
-        console.log(nick)
-        fetchUserInfoFromTcUser({
-            nick,
-            callback:(newUserInfo) => {
-                // 添加一些便于使用的userInfo相关内容
-                // 判断是否是子账号
-                if (!isEmpty(newUserInfo.sub_nick)) {
-                    newUserInfo.subUserNick = newUserInfo.sub_nick;
-                }
-                console.warn("fetchUserInfoFromTcUser", newUserInfo);
-                setUserInfo(newUserInfo);
-                userInfoDeferred.resolve();
-                events.userInfoCallback.emit(newUserInfo);
-                callback(newUserInfo);
-                let userInfo = getUserInfo();
-                console.log('~~~~~~~~~~~~~`',userInfo);
+                fetchUserInfoFromTcUser({
+                    nick,
+                    callback:(newUserInfo) => {
+                        // 添加一些便于使用的userInfo相关内容
+                        // 判断是否是子账号
+                        if (!isEmpty(newUserInfo.sub_nick)) {
+                            newUserInfo.subUserNick = newUserInfo.sub_nick;
+                        }
+                        console.warn("fetchUserInfoFromTcUser", newUserInfo);
+                        setUserInfo(newUserInfo);
+                        userInfoDeferred.resolve();
+                        events.userInfoCallback.emit(newUserInfo);
+                        callback(newUserInfo);
+                    },
+                });
             },
         });
     });
@@ -160,7 +158,7 @@ export const fetchUserInfoFromTcUser = ({ callback, nick  }) => {
     }
     api({
         apiName:ENV.userApiName,
-        path:'/tc/user',
+        method:ENV.userMethod,
         args,
         callback:res => {
             const newUserInfo = res;
@@ -169,7 +167,7 @@ export const fetchUserInfoFromTcUser = ({ callback, nick  }) => {
                 Object.assign(newUserInfo, res.userInfo);
             }
             callback(newUserInfo);
-        },
+        }
     });
 };
 

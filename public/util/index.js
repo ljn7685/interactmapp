@@ -1,14 +1,7 @@
 import Taro from "@tarojs/taro";
 import { ENV } from "@/constants/env";
-import { storage } from "mapp_common/utils/storage";
 
 export const NOOP = () => {};
-
-let _userInfo = {
-    vipFlag: 0,
-    userNick: 'sinpo0',
-
-};
 
 /**
  * 是否是ide 最好把这个在上传的时候改成return false 鬼知道千牛的my.qn里有什么 不同人还不一样的
@@ -95,34 +88,6 @@ export function getDeferred ()  {
     promise.resolve = resolve;
     promise.reject = reject;
     return promise;
-};
-
-
-
-export const getUserInfo = () => {
-    return _userInfo || {};
-};
-
-export const saveUserInfo = () => {
-    let cacheKeys = [
-        'vipFlag'//, 'userNick','user_id',
-    ];
-    let cache = {};
-    cacheKeys.map(key => {
-        if (_userInfo[key] !== undefined) {
-            cache[key] = _userInfo[key];
-        }
-    });
-    if (Object.keys(cache).length != 0) {
-        storage.setItem('userInfo', cache);
-    }
-};
-
-export const setUserInfo = (newUserInfo) => {
-    console.log('setUserInfo',newUserInfo);
-    _userInfo = { ..._userInfo, ...newUserInfo };
-    saveUserInfo();
-    return _userInfo;
 };
 
 // 动画延时

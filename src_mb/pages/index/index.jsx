@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, Button, Text } from '@tarojs/components'
+import { View, Button } from '@tarojs/components'
 
 import { add, minus, asyncAdd } from '../../actions/counter'
+import { api } from "../../public/util/api";
+import { getUserInfo  } from "../../public/util/userInfoChanger";
+import { getCloud } from '../../public/mapp_common/utils/cloud'
+import { userInfoInit } from '../../public/util/userInfo';
 
 import './index.scss'
 
@@ -27,19 +31,31 @@ class Index extends Component {
 
   componentWillUnmount () { }
 
-  componentDidShow () { }
+  componentDidShow () { 
+  }
 
   componentDidHide () { }
 
   render () {
     return (
       <View className='index'>
+      <Button className='add_btn' onClick={()=>{
+        console.log(getUserInfo());  
+        api({
+          apiName:'aiyong.interactb.user.data.set',
+          method:'/interactive/setInertActBUserData',
+          args: {
+    
+          },
+          callback:res => {
+             console.log('~~~~~~~~~~~~~~~~~~~~',res)
+          },
+          errCallback: err => {
+            console.log(err)
+          }
+        });
+      }}>+</Button>
         互动游戏mb端
-        <Button className='add_btn' onClick={this.props.add}>+</Button>
-        <Button className='dec_btn' onClick={this.props.dec}>-</Button>
-        <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>
-        <View><Text>{this.props.counter.num}</Text></View>
-        <View><Text>Hello, World</Text></View>
       </View>
     )
   }
