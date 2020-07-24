@@ -211,7 +211,6 @@ class Game extends EventEmitter {
         if (this.pulling) {
             this.pulling = false;
             this.bow.setPullDistance(0);
-            this.setArrowCount(this.arrow_count - 1);
             let arrow = this.bow.arrow;
             if (arrow) {
                 this.arrowFlying(arrow);
@@ -257,6 +256,7 @@ class Game extends EventEmitter {
     onShootFail() {
         console.log("onShootFail");
         if (this.state === 1) return;
+        this.setArrowCount(this.arrow_count - 1);
         this.bow.reset();
         this.bow.addArrow();
         this.turntable.setNormalAngel(false);
@@ -266,6 +266,7 @@ class Game extends EventEmitter {
     onShootSuccess() {
         console.log("onShootSuccess");
         if (this.state === 1) return;
+        this.setArrowCount(this.arrow_count - 1);
         this.score += this.config.arrow_score;
         this.bow.reset();
         this.turntable.setNormalAngel(false);

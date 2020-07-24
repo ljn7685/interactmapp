@@ -159,7 +159,9 @@ export const fetchUserInfoFromTcUser = ({ callback, nick  }) => {
     
     const options = Taro.getLaunchOptionsSync()
     const active_id = (options.query && options.query.activity_id) ? options.query.activity_id : 6;
+    const ename = (options.query && options.query.ename)?options.query.ename:"615cd6e30f714cf99442021f77ed198e";
     storage.setItemSync('active_id', active_id)
+    storage.setItemSync('ename', ename)
     args.active_id = active_id;
     console.log('options',options,'args',args);
     api({

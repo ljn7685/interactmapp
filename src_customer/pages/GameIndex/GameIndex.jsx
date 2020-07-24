@@ -30,10 +30,15 @@ class GameIndex extends Component {
         };
     }
     componentDidMount() {
-        let { no_enough_times } = getCurrentInstance().router.params;
+        let {
+            no_enough_times,
+            successfully_received,
+        } = getCurrentInstance().router.params;
         console.log(getCurrentInstance().router.params);
         if (no_enough_times) {
             this.showNoEnoughTimes();
+        } else if (successfully_received) {
+            this.toast.info("领取成功", 2000);
         }
     }
     showNoEnoughTimes() {

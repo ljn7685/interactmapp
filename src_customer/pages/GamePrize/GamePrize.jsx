@@ -25,7 +25,7 @@ class GamePrize extends Component {
                     prizes.map((item) => (
                         <View className={styles["prize-item"]}>
                             <Text className={styles["prize-desc"]}>
-                                {item.desc}
+                                {item.benefit_name}
                             </Text>
                             <View className={styles["prize-content"]}>
                                 <Text

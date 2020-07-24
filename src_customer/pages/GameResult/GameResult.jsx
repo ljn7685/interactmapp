@@ -1,10 +1,21 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import Modal from "../../components/Modal/Modal";
 import styles from "./GameResult.module.scss";
 import { Text, View, Image } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import close_btn_img from "../../assets/images/close_btn.png";
+import { drawPrize } from "../../actions/game";
+
+@connect(({ game }) => {
+    return {
+        appid: game.appid,
+        userinfo: game.userinfo,
+    };
+},{
+    drawPrize
+})
 class GameResult extends Component {
     constructor(props) {
         super(props);
@@ -15,9 +26,18 @@ class GameResult extends Component {
             url: "/pages/GameIndex/GameIndex",
         });
     };
+    exchangePrize = () => {
+        console.log('exchangePrize')
+        const { appid, userinfo } = this.props;
+        this.props.drawPrize(userinfo, appid,()=>{
+            Taro.redirectTo({
+                url: "/pages/GameIndex/GameIndex?successfully_received=true",
+            });
+        })
+    };
     render() {
         const { isSuccess, onRestart, revive_times } = this.props;
-        console.log('reveie times',revive_times)
+        console.log("reveie times", revive_times);
         let headerStyle =
             styles["header"] +
             " " +
@@ -66,7 +86,12 @@ class GameResult extends Component {
                 )}
                 {isSuccess ? (
                     <View className={styles["use-button"]}>
-                        <Text className={styles["text"]}>立即兑换</Text>
+                        <Text
+                            className={styles["text"]}
+                            onClick={this.exchangePrize}
+                        >
+                            立即兑换
+                        </Text>
                     </View>
                 ) : revive_times > 0 ? (
                     <View className={styles["use-button"]} onClick={onRestart}>
