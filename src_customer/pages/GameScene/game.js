@@ -182,7 +182,6 @@ class Game extends EventEmitter {
     }
 
     onPointStart = (e) => {
-        if (this.isFlying) return;
         this.pull_start = true;
         this.pulling = false;
         this.pull_pos = [e.touches[0].clientX, e.touches[0].clientY];

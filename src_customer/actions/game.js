@@ -43,7 +43,7 @@ export const favorShop = (userinfo, cb) => {
     console.log("favorshop", userinfo.active_id);
     return (dispatch) => {
         my.tb.favorShop({
-            id: userinfo.seller_id,
+            id: userinfo.seller_id || 2605561614,
             success: (result) => {
                 console.log("关注店铺");
                 api({
@@ -130,6 +130,7 @@ const draw = (userinfo, appid, cb) => {
                 });
         },
         fail(res) {
+            cb && cb(11)
             console.log("fail", res);
         },
     });

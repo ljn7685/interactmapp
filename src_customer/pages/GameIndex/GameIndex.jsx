@@ -57,7 +57,7 @@ class GameIndex extends Component {
         const { userinfo, gametimes } = this.props;
         console.log("index userinfo", userinfo);
         this.props.favorShop(userinfo, () => {
-            this.props.joinGame(userinfo, gametimes, this.onGameStart);
+            this.props.joinGame(userinfo, gametimes);
         });
     };
     onClickRule = () => {

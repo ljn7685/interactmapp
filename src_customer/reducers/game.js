@@ -12,7 +12,7 @@ import { storage } from "mapp_common/utils/storage";
 import default_avatar from "../assets/images/avatar.png";
 
 const initState = {
-    gametimes: 10,
+    gametimes: 0,
     max_rank_count: 50,
     max_fail_times: 0,
     revive_times: 0,
