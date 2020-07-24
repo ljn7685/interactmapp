@@ -20,11 +20,14 @@ class ActivityCard extends Component {
         this.state = {
         }
     }
-
+/**
+ * 去创建页面的页面
+ * @param {*} value 
+ */
     goToCreatePage = (value)=>{
         console.log('dddd');
         // this.props.goToPage(value);
-        this.props.changeTitleAction(value)
+        this.props.changeTitleAction(value, 'create')
     }
 
 

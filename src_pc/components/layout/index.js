@@ -4,6 +4,8 @@ import './index.scss';
 import Taro from '@tarojs/taro';
 import { changeTitleAction } from '../hotActivity/actions';
 import { connect } from 'react-redux';
+import { getUserInfo } from '../../../public/util/userInfoChanger';
+import {api} from '../../public/util/api';
 
 @connect(({hotReducer})=>({
     hotReducer
@@ -41,7 +43,7 @@ class Layout extends Component {
                 <View className={`layout-activity ${isShow == '热门活动' || hotReducer.title == '热门活动' ? 'action' : ''}`} onClick={this.goToHotPage.bind(this,'热门活动')}>热门活动</View>
                 <View className={`layout-management ${isShow == '活动管理' && hotReducer.title !== '热门活动' ? 'action' : ''}`} onClick={this.goToHotPage.bind(this,'活动管理')}>活动管理</View>
                 <View className='layout-bottom'>
-                    <View className='icno-kefu'>XX</View>
+                    <View className='icno-kefu iconfont'>&#xe65b;</View>
                     <View className='contact'>联系客服</View>
                 </View>
             </View>

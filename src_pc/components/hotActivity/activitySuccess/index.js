@@ -31,6 +31,10 @@ class ActivitySuccess extends Component {
         Taro.setClipboardData({
             data: data,
             success: function (res) {
+                Taro.showToast({
+                    title: '复制成功',
+                    duration: 2000
+                })
             }
         })
     }
@@ -39,7 +43,7 @@ class ActivitySuccess extends Component {
         return (
             <View className='success-box'>
                 <View className='success-top'>
-                    <View className='success-icno'>《</View>
+                    <View className='success-icno iconfont'>&#xe600;</View>
                     <View className='success-txt'>恭喜！活动创建成功</View>
                 </View>
                 <View className='success-content'>

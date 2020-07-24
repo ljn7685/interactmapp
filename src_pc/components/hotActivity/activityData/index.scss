@@ -11,6 +11,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        .empty-data-icno{
+            font-size: 180px;
+            color: #0863FF;
+        }
     }
     .data-top{
         display: flex;

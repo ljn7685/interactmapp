@@ -12,9 +12,11 @@
     height: 89%;
     .success-top{
         display: flex;
+        align-items: center;
         .success-icno{
             margin-right: 24px;
-            font-size: 32px;
+            font-size: 40px;
+            color: #3D7FFF;
         }
         .success-txt{
             font-size: 32px;

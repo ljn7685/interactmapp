@@ -102,11 +102,46 @@
             }
         }
         .coupon-img-box{
-            width: 360px;
-            height: 160px;
-            border: 1px solid #ccc;
             margin-top: 16px;
             margin-left: 128px;
+            display: flex;
+            align-items: center;
+            .coupon-jump{
+                width: 360px;
+                height: 160px;
+                border: 2px solid #CCCCCC;
+            }
+            .coupon-box-content{
+                background: #FFFFFF;
+                margin-left: 48px;
+                width: 360px;
+                height: 160px;
+                border: 2px solid #CCCCCC;
+                .coupon-top{
+                    display: flex;
+                    align-items: center;
+                    padding-top: 16px;
+                    padding-left: 16px;
+                    .coupon-price{
+                        font-size: 40px;
+                        color: #0863FF;
+                    }
+                    .coupon-info{
+                        margin-left: 120px;
+                        font-size: 24px;
+                        color: #333333;
+                        .info-limit{
+                            color: #767676;
+                        }
+                    }
+                }
+                .coupon-time{
+                    margin-top: 28px;
+                    margin-left: 34px;
+                    font-size: 20px;
+                    color: #767676;
+                }
+            }
         }
     }
     .rules-box{
@@ -122,12 +157,18 @@
             display: flex;
             flex-direction: column;
             line-height: 36px;
+            Text{
+                font-family: PingFangSC-Regular;
+            }
         }
     }
     .create-bottom{
         margin-top: 48px;
         padding-left: 128px;
         display: flex;
+        .edit-box{
+            display: flex;
+        }
         .sure-btu{
             width: 252px;
             height: 84px;
@@ -136,6 +177,7 @@
             color: #fff;
             line-height: 84px;
             text-align: center;
+            cursor: pointer;
         }
         .give-up{
             width: 252px;
@@ -148,6 +190,7 @@
             text-align: center;
             background: #fff;
             margin-left: 80px;
+            cursor: pointer;
         }
     }
 }
