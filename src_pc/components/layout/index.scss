@@ -1,0 +1,63 @@
+.layout-box{
+    width: 396px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: PingFangSC-Semibold;
+    background: #fff;
+    .layout-top{
+        display: flex;
+        flex-direction: column;
+        margin-top: 48px;
+        align-items: center;
+        .logo{
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+        }
+        .layout-title{
+            font-size: 32px;
+            color: #333333;
+            margin-top: 36px;
+        }
+        .layout-desc{
+            font-size: 24px;
+            color: #999999;
+            margin-top: 18px;
+        }
+    }
+    .layout-activity{
+        font-size: 28px;
+        color: #333333;
+        margin-left: 72px;
+        margin-top: 74px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    .layout-management{
+        margin-left: 72px;
+        font-size: 28px;
+        color: #333333;
+        margin-top: 76px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    .action{
+        color: #3D7FFF;
+    }
+    .layout-bottom{
+        position: absolute;
+        bottom: 44px;
+        display: flex;
+        margin-left: 62px;
+        align-items: center;
+        .icno-kefu{
+            font-size: 36px;
+            color: #3D7FFF;
+        }
+        .contact{
+            font-size: 28px;
+            color: #29292C;
+        }
+    }
+}

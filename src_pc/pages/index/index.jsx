@@ -1,45 +1,25 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { View, Button, Text } from '@tarojs/components'
+import React, { Component } from 'react';
+import {  View } from '@tarojs/components';
+import Layout from '../../components/layout/index';
+import './index.scss';
+import HotActivity from '../../components/hotActivity/index';
+import Taro from '@tarojs/taro';
 
-import { add, minus, asyncAdd } from '../../actions/counter'
-
-import './index.scss'
-
-
-@connect(({ counter }) => ({
-  counter
-}), (dispatch) => ({
-  add () {
-    dispatch(add())
-  },
-  dec () {
-    dispatch(minus())
-  },
-  asyncAdd () {
-    dispatch(asyncAdd())
-  }
-}))
 class Index extends Component {
-  componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+  constructor(props) {
+    super(props);
+  }
+  componentDidMount(){
+    Taro.showModal({
+      title:'123'
+    })
   }
 
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
-
-  render () {
+  render() {
     return (
-      <View className='index'>
-        互动游戏pc端
-        <Button className='add_btn' onClick={this.props.add}>+</Button>
-        <Button className='dec_btn' onClick={this.props.dec}>-</Button>
-        <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>
-        <View><Text>{this.props.counter.num}</Text></View>
-        <View><Text>Hello, World</Text></View>
+      <View className='interactmapp'>
+        <Layout />
+        <HotActivity />
       </View>
     )
   }

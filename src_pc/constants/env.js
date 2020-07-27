@@ -13,6 +13,7 @@ export const ENV = {
     appName:'爱用互动',
     platform:'mapp',
     entryApiName:'aiyong.interact.user.info.get',
-    userApiName:'aiyong.user.info.get',
+    userApiName:'aiyong.interactb.user.data.set',
+    userMethod: '/interactive/setInertActBUserData',
     version: '0.0.1',
 };

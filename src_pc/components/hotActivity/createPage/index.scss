@@ -1,0 +1,207 @@
+.create-page{
+    background: #fff;
+    border-radius: 16px;
+    margin: 32px 48px 0 48px;
+    display: flex;
+    flex-direction: column;
+    font-family: PingFangSC-Regular;
+    padding-left: 64px;
+    padding-bottom: 42px;
+    .name-box{
+        display: flex;
+        margin-top: 32px;
+        align-items: center;
+        font-size: 24px;
+        color: #767676;
+        position: relative;
+        .name-input{
+            width: 510px;
+            height: 56px;
+            margin: 0 32px;
+            font-size: 28px;
+            color: #333333;
+        }
+        .name-num{
+            position: absolute;
+            font-size: 24px;
+            color: #CCCCCC;
+            left: 568px;
+        }
+    }
+    .activity-time{
+        display: flex;
+        margin-top: 32px;
+        align-items: center;
+        font-size: 24px;
+        color: #767676;
+        .time-txt{
+            margin-right: 32px;
+        }
+        .time-input{
+            width: 200px;
+            height: 56px;
+            font-size: 28px;
+            color: #333333;
+        }
+        .time-to{
+            margin: 0 16px;
+        }
+    }
+    .res-box{
+        display: flex;
+        margin-top: 32px;
+        align-items: center;
+        font-size: 24px;
+        color: #767676;
+        .res-input{
+            width: 128px;
+            height: 56px;
+            margin-left: 32px;
+            font-size: 28px;
+            color: #333333;
+        }
+        .unit{
+            font-size: 24px;
+            color: #333333;
+            margin-right: 32px;
+            margin-left: 8px;
+        }
+    }
+    .coupon-box{
+        margin-top: 32px;
+        .coupon-top{
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            color: #767676;
+            .coupon{
+                font-size: 28px;
+                color: #333333;
+                margin: 0 32px;
+            }
+            .refresh{
+                font-size: 24px;
+                color: #0863FF;
+            }
+        }
+        .warn-bar{
+            display: flex;
+            width: 768px;
+            height: 44px;
+            background: rgba(245,166,35,0.20);
+            line-height: 44px;
+            margin-left: 128px;
+            margin-top: 16px;
+            .warn-icno{
+                color: red;
+                margin-left: 18px;
+            }
+            .warn-txt{
+                font-size: 24px;
+                color: #FF6100;
+            }
+        }
+        .coupon-img-box{
+            margin-top: 16px;
+            margin-left: 128px;
+            display: flex;
+            align-items: center;
+            .coupon-jump{
+                width: 360px;
+                height: 160px;
+                border: 2px solid #CCCCCC;
+            }
+            .coupon-box-content{
+                background: #FFFFFF;
+                margin-left: 48px;
+                width: 360px;
+                height: 160px;
+                border: 2px solid #CCCCCC;
+                .coupon-top{
+                    display: flex;
+                    align-items: center;
+                    padding-top: 16px;
+                    padding-left: 16px;
+                    .coupon-price{
+                        font-size: 40px;
+                        color: #0863FF;
+                    }
+                    .coupon-info{
+                        margin-left: 120px;
+                        font-size: 24px;
+                        color: #333333;
+                        .info-limit{
+                            color: #767676;
+                        }
+                    }
+                }
+                .coupon-time{
+                    margin-top: 28px;
+                    margin-left: 34px;
+                    font-size: 20px;
+                    color: #767676;
+                }
+            }
+        }
+    }
+    .rules-box{
+        margin-top: 32px;
+        font-size: 24px;
+        color: #767676;
+        display: flex;
+        .rules-content{
+            font-size: 28px;
+            color: #333333;
+            margin-left: 32px;
+            width: 876px;
+            display: flex;
+            flex-direction: column;
+            line-height: 36px;
+            Text{
+                font-family: PingFangSC-Regular;
+            }
+        }
+    }
+    .create-bottom{
+        margin-top: 48px;
+        padding-left: 128px;
+        display: flex;
+        .edit-box{
+            display: flex;
+        }
+        .sure-btu{
+            width: 252px;
+            height: 84px;
+            background: #0863FF;
+            border-radius: 22px;
+            color: #fff;
+            line-height: 84px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .give-up{
+            width: 252px;
+            height: 84px;
+            border: 2px solid #0863FF;
+            border-radius: 22px;
+            font-size: 36px;
+            color: #0863FF;
+            line-height: 84px;
+            text-align: center;
+            background: #fff;
+            margin-left: 80px;
+            cursor: pointer;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
