@@ -58,7 +58,7 @@ export const AddPrize = (prize_id) => {
     return { type: ADD_PRIZE, prize_id };
 };
 
-function tbShopFavor() {
+function tbShopFavor(userinfo) {
     return new Promise((resolve, reject) => {
         my.tb.checkShopFavoredStatus({
             id: userinfo.seller_id,
