@@ -58,31 +58,52 @@ export const AddPrize = (prize_id) => {
     return { type: ADD_PRIZE, prize_id };
 };
 
+function tbShopFavor() {
+    return new Promise((resolve, reject) => {
+        my.tb.checkShopFavoredStatus({
+            id: userinfo.seller_id,
+            success: (res) => {
+                console.log("favor status", res);
+                if (res.isFavor) {
+                    resolve(res);
+                } else {
+                    my.tb.favorShop({
+                        id: userinfo.seller_id,
+                        success: resolve,
+                        fail: reject,
+                    });
+                }
+            },
+            fail: (res) => {
+                console.log("favor status fail", res);
+                reject(res);
+            },
+        });
+    });
+}
+
 export const favorShop = (userinfo, cb) => {
     console.log("favorshop", userinfo.active_id);
     return (dispatch) => {
-        my.tb.favorShop({
-            id: userinfo.seller_id,
-            success: (result) => {
-                console.log("关注店铺");
-                api({
-                    apiName: "aiyong.interactc.user.data.update",
-                    method: "/interactive/updateInterActCData",
-                    args: {
-                        game_stage: 1,
-                        active_id: userinfo.active_id,
-                    },
-                    callback: (res) => {
-                        console.log("~~~~~~~~~~~~~~~~~~~~", res);
-                        dispatch(setFavorShop());
-                        dispatch(addGametimes());
-                        cb && cb();
-                    },
-                    errCallback: (err) => {
-                        console.log(err);
-                    },
-                });
-            },
+        tbShopFavor(userinfo).then((res) => {
+            console.log("关注店铺");
+            api({
+                apiName: "aiyong.interactc.user.data.update",
+                method: "/interactive/updateInterActCData",
+                args: {
+                    game_stage: 1,
+                    active_id: userinfo.active_id,
+                },
+                callback: (res) => {
+                    console.log("~~~~~~~~~~~~~~~~~~~~", res);
+                    dispatch(setFavorShop());
+                    dispatch(addGametimes());
+                    cb && cb();
+                },
+                errCallback: (err) => {
+                    console.log(err);
+                },
+            });
         });
     };
 };

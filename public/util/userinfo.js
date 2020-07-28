@@ -157,18 +157,8 @@ export const fetchUserInfoFromTcUser = ({ callback, nick  }) => {
         args.access_token = testUser.access_token;
     }
     
-    const options = Taro.getLaunchOptionsSync()
-    if (!(options.query && options.query.activeID)){
-        console.log('options',options);
-        showConfirmModal({ title: '提示', content: '啊哦～活动走丢了！', showCancel: false, onConfirm: ()=>{
-            my.exit()
-        }})
-        return;
-    }
-    const active_id = options.query.activeID;
-    storage.setItemSync('active_id', active_id)
-    args.active_id = active_id;
-    console.log('options',options,'args',args);
+    args.active_id = getUserInfo().active_id;
+    console.log('args',args);
     api({
         apiName:ENV.userApiName,
         method:ENV.userMethod,

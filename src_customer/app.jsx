@@ -5,25 +5,43 @@ import configStore from './store'
 
 
 import './app.scss'
-import { setActivityEnded, setUserInfo } from './actions/game'
+import { setActivityEnded, setUserInfo as setUserInfoAction } from './actions/game'
 import { userInfoInit } from "../public/util/userinfo";
+import { getUserInfo, setUserInfo } from '../public/util/userInfoChanger'
+import { showConfirmModal } from '../public/util'
+import Taro from "@tarojs/taro";
 
 const store = configStore()
 
 class App extends Component {
   componentDidMount () {
+    if (!this.getLaunchParams()) return;
     const state = store.getState()
     if (!state.userinfo) {
-      userInfoInit((userinfo) => {
+      userInfoInit(() => {
+          const userinfo = getUserInfo()
           console.log(userinfo, "33");
           if (userinfo.code === 500 && userinfo.msg === "活动已经结束") {
             store.dispatch(setActivityEnded(true));
           } else {
             store.dispatch(setActivityEnded(false));
           }
-          store.dispatch(setUserInfo(userinfo))
+          store.dispatch(setUserInfoAction(userinfo))
           console.log(store.getState().game.activity_ended);
       });
+    }
+  }
+  getLaunchParams () {
+    const options = Taro.getLaunchOptionsSync()
+    if (!(options.query && options.query.activeID)){
+        console.log('options',options);
+        showConfirmModal({ title: '提示', content: '啊哦～活动走丢了！', showCancel: false, onConfirm: ()=>{
+            my.exit()
+        }})
+        return false;
+    } else {
+      setUserInfo({ active_id: options.query.activeID })
+      return true;
     }
   }
 

@@ -96,8 +96,6 @@ export default function reducer(state = initState, action) {
             const { game_rule, gametimes } = state;
             game_rule.start_date = userinfo.start_date;
             game_rule.end_date = userinfo.end_date;
-            const active_id = Number(storage.getItemSync("active_id"));
-            userinfo.active_id = active_id;
             if (typeof userinfo.active_rewards === "string") {
                 userinfo.active_rewards = JSON.parse(userinfo.active_rewards);
             }
