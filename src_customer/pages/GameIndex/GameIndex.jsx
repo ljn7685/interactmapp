@@ -45,6 +45,16 @@ class GameIndex extends Component {
         this.toast.info("已经参与过游戏咯", 2000);
     }
     onGameStart = () => {
+        const { userinfo, joinGame } = this.props;
+        if (!userinfo.is_join) {
+            joinGame(userinfo, () => {
+                this.redirectToGame();
+            });
+        } else {
+            this.redirectToGame();
+        }
+    };
+    redirectToGame = () => {
         if (this.props.gametimes <= 0) {
             this.showNoEnoughTimes();
         } else {
@@ -56,9 +66,7 @@ class GameIndex extends Component {
     onFavorShop = () => {
         const { userinfo, gametimes } = this.props;
         console.log("index userinfo", userinfo);
-        this.props.favorShop(userinfo, () => {
-            this.props.joinGame(userinfo, gametimes);
-        });
+        this.props.favorShop(userinfo);
     };
     onClickRule = () => {
         const { showRule } = this.state;

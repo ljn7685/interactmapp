@@ -6,8 +6,8 @@ import * as PIXI from "@tbminiapp/pixi-miniprogram-engine";
 
 import Game from "./game";
 import {
-    modifyGametimes,
-    modifyReviveTimes,
+    minusGametimes,
+    resetReviveTimes,
     userRevive,
     setBestScore,
 } from "../../actions/game";
@@ -45,24 +45,19 @@ class GameScene extends Component {
     componentDidMount() {
         console.log("didmount");
         const { revive } = getCurrentInstance().router.params;
-        const {
-            revive_times,
-            gametimes,
-            max_fail_times,
-            userinfo,
-        } = this.props;
+        const { userinfo } = this.props;
         if (this.props.gametimes <= 0 && !revive) {
             Taro.redirectTo({
                 url: "/pages/GameIndex/GameIndex?no_enough_times=true",
             });
         } else {
             if (revive) {
-                this.props.userRevive(userinfo, revive_times, () => {
+                this.props.userRevive(userinfo, () => {
                     this.onCanvasReady();
                 });
             } else {
-                this.props.modifyReviveTimes(max_fail_times);
-                this.props.modifyGametimes(gametimes - 1);
+                this.props.resetReviveTimes();
+                this.props.minusGametimes();
                 this.onCanvasReady();
             }
         }
@@ -159,9 +154,9 @@ class GameScene extends Component {
         // this.onRestart();
     };
     onRestart = () => {
-        console.log("onRestart");
         const { isSuccess } = this.state;
         const { gametimes, revive_times } = this.props;
+        console.log("onRestart", gametimes, revive_times, isSuccess);
         if (revive_times === 0 && gametimes === 0) {
             this.toast.info("暂无游戏次数", 2000);
             return;
@@ -294,8 +289,8 @@ const mapStateToProps = ({ game }) => {
     };
 };
 const mapDispatchToProps = {
-    modifyGametimes,
-    modifyReviveTimes,
+    minusGametimes,
+    resetReviveTimes,
     userRevive,
     setBestScore,
 };

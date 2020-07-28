@@ -22,7 +22,7 @@ class App extends Component {
             store.dispatch(setActivityEnded(false));
           }
           store.dispatch(setUserInfo(userinfo))
-          console.log(state.activity_ended);
+          console.log(store.getState().game.activity_ended);
       });
     }
   }

@@ -158,10 +158,15 @@ export const fetchUserInfoFromTcUser = ({ callback, nick  }) => {
     }
     
     const options = Taro.getLaunchOptionsSync()
-    const active_id = (options.query && options.query.activity_id) ? options.query.activity_id : 19;
-    const ename = (options.query && options.query.ename)?options.query.ename:"615cd6e30f714cf99442021f77ed198e";
+    if (!(options.query && options.query.activeID)){
+        console.log('options',options);
+        showConfirmModal({ title: '提示', content: '啊哦～活动走丢了！', showCancel: false, onConfirm: ()=>{
+            my.exit()
+        }})
+        return;
+    }
+    const active_id = options.query.activeID;
     storage.setItemSync('active_id', active_id)
-    storage.setItemSync('ename', ename)
     args.active_id = active_id;
     console.log('options',options,'args',args);
     api({

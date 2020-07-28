@@ -1,12 +1,15 @@
 import {
-    MODIFY_GAMETIMES,
+    ADD_GAMETIMES,
+    MINUS_GAMETIMES,
     SET_PRELOADED,
     SET_BEST_SCORE,
     SET_ACTIVITY_ENDED,
-    MODIFY_REVIVE_TIMES,
+    MINUS_REVIVE_TIMES,
+    RESET_REVIVE_TIMES,
     SET_USER_INFO,
     SET_FAVOR_SHOP,
     ADD_PRIZE,
+    SET_JOIN_GAME,
 } from "../constants/game";
 import { storage } from "mapp_common/utils/storage";
 import default_avatar from "../assets/images/avatar.png";
@@ -71,28 +74,43 @@ const initState = {
 };
 export default function reducer(state = initState, action) {
     switch (action.type) {
-        case MODIFY_GAMETIMES:
-            return { ...state, gametimes: action.times };
-        case MODIFY_REVIVE_TIMES:
-            return { ...state, revive_times: action.times };
+        case ADD_GAMETIMES:
+            return { ...state, gametimes: state.gametimes + 1 };
+        case MINUS_GAMETIMES:
+            return { ...state, gametimes: state.gametimes - 1 };
+        case MINUS_REVIVE_TIMES:
+            return { ...state, revive_times: state.revive_times - 1 };
+        case RESET_REVIVE_TIMES:
+            return { ...state, revive_times: state.max_fail_times };
         case SET_PRELOADED:
             return { ...state, preloaded: action.preloaded };
         case SET_BEST_SCORE:
             return { ...state, best_score: action.score };
         case SET_ACTIVITY_ENDED:
             return { ...state, activity_ended: action.isEnded };
+        case SET_JOIN_GAME:
+            state.userinfo.is_join = 1;
+            return { ...state };
         case SET_USER_INFO:
             const { userinfo } = action;
-            const { game_rule } = state;
+            const { game_rule, gametimes } = state;
             game_rule.start_date = userinfo.start_date;
             game_rule.end_date = userinfo.end_date;
             const active_id = Number(storage.getItemSync("active_id"));
             userinfo.active_id = active_id;
-            userinfo.ename = storage.getItemSync("ename");
+            if (typeof userinfo.active_rewards === "string") {
+                userinfo.active_rewards = JSON.parse(userinfo.active_rewards);
+            }
+            userinfo.ename = userinfo.active_rewards.ename;
             return {
                 ...state,
                 is_follow: Boolean(action.userinfo.is_follow),
                 max_fail_times: userinfo.game_number,
+                revive_times: userinfo.game_number,
+                gametimes:
+                    userinfo.is_follow && !userinfo.is_join
+                        ? gametimes + 1
+                        : gametimes,
                 subtitle: userinfo.sub_title,
                 game_rule,
                 userinfo,
@@ -101,7 +119,7 @@ export default function reducer(state = initState, action) {
             state.userinfo.is_follow = 1;
             return { ...state, is_follow: true };
         case ADD_PRIZE:
-            const active_rewards = state.userinfo.active_rewards;
+            const active_rewards = state.userinfo.active_rewards.datas;
             const prize_id = action.prize_id;
             const newPrizes =
                 active_rewards instanceof Array

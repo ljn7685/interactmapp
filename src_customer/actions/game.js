@@ -1,22 +1,33 @@
 import {
-    MODIFY_GAMETIMES,
+    ADD_GAMETIMES,
+    MINUS_GAMETIMES,
     SET_PRELOADED,
     SET_BEST_SCORE,
     SET_ACTIVITY_ENDED,
     SET_USER_INFO,
-    MODIFY_REVIVE_TIMES,
+    MINUS_REVIVE_TIMES,
+    RESET_REVIVE_TIMES,
     SET_FAVOR_SHOP,
     ADD_PRIZE,
+    SET_JOIN_GAME,
 } from "../constants/game";
 import { api } from "../../public/util/api";
 import { getCloud } from "mapp_common/utils/cloud";
 
-export const modifyGametimes = (times) => {
-    return { type: MODIFY_GAMETIMES, times };
+export const addGametimes = () => {
+    return { type: ADD_GAMETIMES };
 };
 
-export const modifyReviveTimes = (times) => {
-    return { type: MODIFY_REVIVE_TIMES, times };
+export const minusGametimes = () => {
+    return { type: MINUS_GAMETIMES };
+};
+
+export const minusReviveTimes = () => {
+    return { type: MINUS_REVIVE_TIMES };
+};
+
+export const resetReviveTimes = () => {
+    return { type: RESET_REVIVE_TIMES };
 };
 
 export const setPreloaded = (preloaded) => {
@@ -35,6 +46,14 @@ export const setUserInfo = (userinfo) => {
     return { type: SET_USER_INFO, userinfo };
 };
 
+export const setJoinGame = () => {
+    return { type: SET_JOIN_GAME };
+};
+
+export const setFavorShop = () => {
+    return { type: SET_FAVOR_SHOP };
+};
+
 export const AddPrize = (prize_id) => {
     return { type: ADD_PRIZE, prize_id };
 };
@@ -43,7 +62,7 @@ export const favorShop = (userinfo, cb) => {
     console.log("favorshop", userinfo.active_id);
     return (dispatch) => {
         my.tb.favorShop({
-            id: userinfo.seller_id || 2605561614,
+            id: userinfo.seller_id,
             success: (result) => {
                 console.log("关注店铺");
                 api({
@@ -55,7 +74,8 @@ export const favorShop = (userinfo, cb) => {
                     },
                     callback: (res) => {
                         console.log("~~~~~~~~~~~~~~~~~~~~", res);
-                        dispatch({ type: SET_FAVOR_SHOP });
+                        dispatch(setFavorShop());
+                        dispatch(addGametimes());
                         cb && cb();
                     },
                     errCallback: (err) => {
@@ -67,7 +87,7 @@ export const favorShop = (userinfo, cb) => {
     };
 };
 
-export const joinGame = (userinfo, game_times, cb) => {
+export const joinGame = (userinfo, cb) => {
     return (dispatch) => {
         api({
             apiName: "aiyong.interactc.user.data.update",
@@ -78,7 +98,7 @@ export const joinGame = (userinfo, game_times, cb) => {
             },
             callback: (res) => {
                 console.log("~~~~~~~~~~~~~~~~~~~~", res);
-                dispatch(modifyGametimes(game_times + 1));
+                dispatch(setJoinGame());
                 cb && cb();
             },
             errCallback: (err) => {
@@ -88,7 +108,7 @@ export const joinGame = (userinfo, game_times, cb) => {
     };
 };
 
-export const userRevive = (userinfo, revive_times, cb) => {
+export const userRevive = (userinfo, cb) => {
     return (dispatch) => {
         api({
             apiName: "aiyong.interactc.user.data.update",
@@ -99,7 +119,7 @@ export const userRevive = (userinfo, revive_times, cb) => {
             },
             callback: (res) => {
                 console.log("~~~~~~~~~~~~~~~~~~~~", res);
-                dispatch(modifyReviveTimes(revive_times + 1));
+                dispatch(minusReviveTimes());
                 cb && cb();
             },
             errCallback: (err) => {
@@ -130,7 +150,6 @@ const draw = (userinfo, appid, cb) => {
                 });
         },
         fail(res) {
-            cb && cb(11)
             console.log("fail", res);
         },
     });
