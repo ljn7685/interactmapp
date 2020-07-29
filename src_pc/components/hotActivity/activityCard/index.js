@@ -5,13 +5,13 @@ import { changeTitleAction } from '../actions';
 
 import { connect } from 'react-redux';
 
-@connect(({hotReducer})=>({
-    hotReducer
-}), (dispatch) => ({
-    changeTitleAction (title, titleType) {
-        dispatch(changeTitleAction(title, titleType))
-      }
-  }))
+// @connect(({hotReducer})=>({
+//     hotReducer
+// }), (dispatch) => ({
+//     changeTitleAction (title, titleType) {
+//         dispatch(changeTitleAction(title, titleType))
+//       }
+//   }))
 
 class ActivityCard extends Component {
 
@@ -38,6 +38,7 @@ goToYuque = ()=>{
 }
 
     render() {
+        const { changeTitleAction } = this.props;
         return (
             <View className='activity-box'>
                 {/* 小模块 */}
@@ -54,7 +55,7 @@ goToYuque = ()=>{
                         <View className='instructions-info'>3.设置的奖品越吸引人，买家的参与度就会越高哦</View>
                     </View>
                     <View className='activity-bottom'>
-                        <View className='create-activity' onClick={this.goToCreatePage.bind(this,'创建丘比特之箭活动')}>立即创建</View>
+                        <View className='create-activity' onClick={changeTitleAction.bind(this,'创建丘比特之箭活动', 'create')}>立即创建</View>
                         <View className='help' onClick={this.goToYuque}>
                             <View className='icno-help iconfont'>&#xe6b5;</View>
                             <View className='txt-help'>帮助文档</View>
@@ -66,4 +67,9 @@ goToYuque = ()=>{
     }
 }
 
-export default ActivityCard;
+//将store里面的值映射为props
+
+const mapDispatchToProps = {
+    changeTitleAction
+}
+export default connect(state => state.hotReducer, mapDispatchToProps)(ActivityCard);

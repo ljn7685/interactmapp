@@ -7,17 +7,6 @@ import Taro from '@tarojs/taro';
 import { isEmpty } from '../../utils/index';
 import { connect } from 'react-redux';
 
-@connect(({ hotReducer }) => ({
-    hotReducer
-}), (dispatch) => ({
-    changeTitleAction(title, titleType, activityID) {
-        dispatch(changeTitleAction(title, titleType, activityID))
-    },
-    getActivityByIdAction(id, operType) {
-        dispatch(getActivityByIdAction(id, operType))
-    }
-}))
-
 class AllActivity extends Component {
 
     constructor(props) {
@@ -71,9 +60,9 @@ class AllActivity extends Component {
     }
     /**
      * 点击导航的热门活动
-     * @param {*} id 
+     * @param {*} 
      */
-    goToCreatePage = (id) => {
+    goToCreatePage = () => {
         this.props.changeTitleAction('热门活动', 'hotActivity');
     }
     /**
@@ -184,6 +173,7 @@ class AllActivity extends Component {
                 method:'/interactive/getUserCreateInterActData',
                 args: args,
                 callback:res => {
+                    console.log('~~~~~~~~~~~~~~', res)
                    let data = res.map((item)=>{
                         if(item.active_status == 2){
                             item.status = '已结束';
@@ -317,4 +307,9 @@ class AllActivity extends Component {
     }
 }
 
-export default AllActivity;
+//将store里面的值映射为props
+const mapDispatchToProps = {
+    changeTitleAction,
+    getActivityByIdAction
+}
+export default connect(state => state.hotReducer, mapDispatchToProps)(AllActivity);

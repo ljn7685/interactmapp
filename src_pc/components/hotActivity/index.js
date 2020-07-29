@@ -9,14 +9,6 @@ import ActivityData from './activityData/index';
 import { connect } from 'react-redux';
 import { changeTitleAction } from './actions';
 
-@connect(({ hotReducer }) => ({
-    hotReducer
-}), (dispatch) => ({
-    changeTitleAction(title, titleType) {
-        dispatch(changeTitleAction(title, titleType))
-    }
-}))
-
 class HotActivity extends Component {
 
     constructor(props) {
@@ -25,42 +17,52 @@ class HotActivity extends Component {
 
         }
     }
-    backToAllActivity = () => {
-        this.props.changeTitleAction('活动管理', 'management');
-    }
+
+    // backToAllActivity = () => {
+    //     this.props.changeTitleAction('活动管理', 'management');
+    // }
 
     render() {
 
-        const { hotReducer } = this.props;
+        const { titleType, title, changeTitleAction } = this.props;
         return (
             <View className='content-box'>
                 <View className='sesecond-title'>
                     {
-                        hotReducer.titleType == 'data' && <View className='back-icno iconfont' onClick={this.backToAllActivity} >&#xe669;</View>
+                        titleType == 'data' && <View className='back-icno iconfont' onClick={changeTitleAction.bind(this, '活动管理', 'management')} >&#xe669;</View>
                     }
-                    {hotReducer.title}
+                    {title}
                 </View>
                 <View className='content'>
                     {
-                        hotReducer.titleType === 'hotActivity' && <ActivityCard />
+                        titleType === 'hotActivity' && <ActivityCard />
                     }
                     {
-                        hotReducer.titleType == 'create' && <CreatePage />
+                        titleType == 'create' && <CreatePage />
                     }
                     {
-                        hotReducer.titleType === 'success' && <ActivitySuccess />
+                        titleType === 'success' && <ActivitySuccess />
                     }
                     {
-                        hotReducer.titleType === 'management' && <AllActivity />
+                        titleType === 'management' && <AllActivity />
                     }
                     {
-                        hotReducer.titleType == 'data' && <ActivityData />
+                        titleType == 'data' && <ActivityData />
                     }
-
                 </View>
             </View>
         );
     }
 }
+//将store里面的值映射为props
+const mapStateToProps = ({hotReducer}) => {
+    return {
+        titleType: hotReducer.titleType,
+        title: hotReducer.title
+    }
+}
+const mapDispatchToProps = {
+    changeTitleAction
+}
 
-export default HotActivity;
+export default connect(mapStateToProps, mapDispatchToProps)(HotActivity);

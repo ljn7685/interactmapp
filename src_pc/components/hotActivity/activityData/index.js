@@ -4,19 +4,7 @@ import './index.scss';
 import { api } from '../../../public/util/api';
 import { isEmpty } from '../../utils/index';
 import Taro from '@tarojs/taro';
-import { changeTitleAction, getActivityByIdAction } from '../actions';
 import { connect } from 'react-redux';
-
-@connect(({ hotReducer }) => ({
-    hotReducer
-}), (dispatch) => ({
-    changeTitleAction(title, titleType) {
-        dispatch(changeTitleAction(title, titleType))
-    },
-    getActivityByIdAction(id) {
-        dispatch(getActivityByIdAction(id))
-    }
-}))
 
 class ActivityData extends Component {
 
@@ -34,8 +22,8 @@ class ActivityData extends Component {
         this.getDataByID()
     }
     getDataByID = async () => {
-        let data = await this.getDataByIdApi({ 'activeID': this.props.hotReducer.activityID, 'pageNo': this.pageNo, 'pageSize': this.pageSize });
-        if(this.pageNo > 1 && isEmpty(data.data)){
+        let data = await this.getDataByIdApi({ 'activeID': this.props.activityID, 'pageNo': this.pageNo, 'pageSize': this.pageSize });
+        if (this.pageNo > 1 && isEmpty(data.data)) {
             Taro.showToast({
                 title: '已经是最后一页了',
                 duration: 2000
@@ -56,9 +44,9 @@ class ActivityData extends Component {
      * @param {*} type 
      */
 
-    turnPage = (type)=>{
-        if(type == 'up'){
-            if(this.pageNo == 1){
+    turnPage = (type) => {
+        if (type == 'up') {
+            if (this.pageNo == 1) {
                 Taro.showToast({
                     title: '已经是最前页了',
                     duration: 2000
@@ -66,7 +54,7 @@ class ActivityData extends Component {
                 return;
             }
             this.pageNo -= 1;
-        }else{
+        } else {
             this.pageNo += 1;
         }
         this.getDataByID()
@@ -102,7 +90,7 @@ class ActivityData extends Component {
                     dataList.map((item) => {
                         return (
                             <View className='data-content-tip' key={item.create_date}>
-                                <View className='tip-date'>{item.create_date.substring(0,10)}</View>
+                                <View className='tip-date'>{item.create_date.substring(0, 10)}</View>
                                 <View className='tip-num'>{item.num ? item.num : 0}</View>
                                 <View className='tip-join'>{item.joinNum ? item.joinNum : 0}</View>
                                 <View className='tip-follw'>{item.follow ? item.follow : 0}</View>
@@ -149,13 +137,15 @@ class ActivityData extends Component {
                             <View className='reward'>领取奖励人数</View>
                         </View>
                         <View className='data-content'>
-                            <View className='total-box'>
-                                <View className='total-data'>总计</View>
-                                <View className='total-num'>{dataAll.total_num ? dataAll.total_num : 0}</View>
-                                <View className='total-join'>{dataAll.total_join ? dataAll.total_join : 0}</View>
-                                <View className='total-follw'>{dataAll.total_follow ? dataAll.total_follow : 0}</View>
-                                <View className='total-reward'>{dataAll.total_reward ? dataAll.total_reward : 0}</View>
-                            </View>
+                            {
+                                this.pageNo == 1 && <View className='total-box'>
+                                    <View className='total-data'>总计</View>
+                                    <View className='total-num'>{dataAll.total_num ? dataAll.total_num : 0}</View>
+                                    <View className='total-join'>{dataAll.total_join ? dataAll.total_join : 0}</View>
+                                    <View className='total-follw'>{dataAll.total_follow ? dataAll.total_follow : 0}</View>
+                                    <View className='total-reward'>{dataAll.total_reward ? dataAll.total_reward : 0}</View>
+                                </View>
+                            }
                             {
                                 this.dataContentTip()
                             }
@@ -168,4 +158,11 @@ class ActivityData extends Component {
     }
 }
 
-export default ActivityData;
+//将store里面的值映射为props
+const mapStateToProps = ({ hotReducer }) => {
+    return {
+        activityID: hotReducer.activityID,
+    }
+}
+
+export default connect(mapStateToProps)(ActivityData);
