@@ -3,6 +3,20 @@ import React, { PureComponent } from "react";
 import styles from "./modal.module.scss";
 import classnames from "classnames";
 import { View } from "@tarojs/components";
+/**
+ * 模态窗
+ *      支持属性
+ *          visible    控制蒙层的展现
+ *          closeBtn   关闭按钮
+ *          header     头部元素
+ *          footer     尾部元素
+ *          children   内容元素
+ *          containerStyle     弹窗样式
+ *          headerStyle        头部样式
+ *          contentStyle       内容样式
+ * @class Modal
+ * @extends {PureComponent}
+ */
 class Modal extends PureComponent {
     constructor(props) {
         super(props);

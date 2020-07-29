@@ -65,7 +65,7 @@ function tbShopFavor(userinfo) {
             success: (res) => {
                 console.log("favor status", res);
                 if (res.isFavor) {
-                    resolve(res);
+                    reject(res);
                 } else {
                     my.tb.favorShop({
                         id: userinfo.seller_id,
@@ -85,26 +85,34 @@ function tbShopFavor(userinfo) {
 export const favorShop = (userinfo, cb) => {
     console.log("favorshop", userinfo.active_id);
     return (dispatch) => {
-        tbShopFavor(userinfo).then((res) => {
-            console.log("关注店铺");
-            api({
-                apiName: "aiyong.interactc.user.data.update",
-                method: "/interactive/updateInterActCData",
-                args: {
-                    game_stage: 1,
-                    active_id: userinfo.active_id,
-                },
-                callback: (res) => {
-                    console.log("~~~~~~~~~~~~~~~~~~~~", res);
-                    dispatch(setFavorShop());
-                    dispatch(addGametimes());
-                    cb && cb();
-                },
-                errCallback: (err) => {
-                    console.log(err);
-                },
+        tbShopFavor(userinfo)
+            .then((res) => {
+                console.log("关注店铺");
+                api({
+                    apiName: "aiyong.interactc.user.data.update",
+                    method: "/interactive/updateInterActCData",
+                    args: {
+                        game_stage: 1,
+                        active_id: userinfo.active_id,
+                    },
+                    callback: (res) => {
+                        console.log("~~~~~~~~~~~~~~~~~~~~", res);
+                        dispatch(setFavorShop());
+                        dispatch(addGametimes());
+                        cb && cb();
+                    },
+                    errCallback: (err) => {
+                        console.log(err);
+                    },
+                });
+            })
+            .catch((res) => {
+                Taro.showToast({
+                    title: "关注店铺失败",
+                    icon: "fail",
+                    duration: 2000,
+                });
             });
-        });
     };
 };
 
@@ -162,9 +170,11 @@ const draw = (userinfo, appid, cb) => {
                         app_name: `promotioncenter-${appid}`,
                     },
                 })
-                .then((result) => {
-                    console.log(JSON.stringify(result));
-                    cb && cb(result["alibaba_benefit_draw_response"].prize_id);
+                .then((res) => {
+                    console.log(JSON.stringify(res));
+                    if (res.result.result_success) {
+                        cb && cb(res.prize_id);
+                    }
                 })
                 .catch((e) => {
                     console.log(e.message);
