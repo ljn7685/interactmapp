@@ -4,15 +4,6 @@ import './index.scss';
 import { changeTitleAction } from '../actions';
 
 import { connect } from 'react-redux';
-
-// @connect(({hotReducer})=>({
-//     hotReducer
-// }), (dispatch) => ({
-//     changeTitleAction (title, titleType) {
-//         dispatch(changeTitleAction(title, titleType))
-//       }
-//   }))
-
 class ActivityCard extends Component {
 
     constructor(props) {
