@@ -122,7 +122,6 @@ export function api (
             callback(res);
 
         }catch (e) {
-            debugger;
             console.error('api-callback-error', formatError(e));
         }
     }

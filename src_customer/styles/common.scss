@@ -1,0 +1,21 @@
+.sidebar {
+  position: absolute;
+  top: 13.215%;
+  right: 14px;
+  z-index: 2;
+  .side-btn {
+    display: flex;
+    flex-direction: column;
+    color: #ffffff;
+    margin-bottom: 31px;
+    align-items: center;
+    .side-img {
+      display: block;
+      margin-bottom: 8px;
+      width: 72px;
+    }
+    .side-btn-desc {
+      font-size: 19px;
+    }
+  }
+}

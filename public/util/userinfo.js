@@ -156,6 +156,9 @@ export const fetchUserInfoFromTcUser = ({ callback, nick  }) => {
         args.nick = testUser.nickName;
         args.access_token = testUser.access_token;
     }
+    
+    args.active_id = getUserInfo().active_id;
+    console.log('args',args);
     api({
         apiName:ENV.userApiName,
         method:ENV.userMethod,

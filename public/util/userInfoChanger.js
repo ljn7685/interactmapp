@@ -16,7 +16,7 @@ export const saveUserInfo = () => {
 
 export const setUserInfo = (newUserInfo) => {
     console.log('setUserInfo',newUserInfo);
-    _userInfo = { ..._userInfo, ...newUserInfo };
+    _userInfo = { ...getUserInfo(), ...newUserInfo };
     saveUserInfo();
     return _userInfo;
 };

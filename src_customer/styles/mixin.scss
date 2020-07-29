@@ -1,0 +1,24 @@
+@mixin background($url: "", $width: auto, $height: auto) {
+  width: $width;
+  height: $height;
+  background: url($url) no-repeat;
+  background-size: 100% 100%;
+}
+@mixin flex($fd: row, $jc: flex-start, $ai: stretch) {
+  display: flex;
+  flex-direction: $fd;
+  justify-content: $jc;
+  align-items: $ai;
+}
+@mixin ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+@mixin avatar {
+  border-radius: 50%;
+  overflow: hidden;
+  img {
+    width: 100%;
+  }
+}
