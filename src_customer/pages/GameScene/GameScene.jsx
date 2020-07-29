@@ -12,16 +12,16 @@ import {
     setBestScore,
 } from "../../actions/game";
 
-import "./GameScene.scss";
+import "./gameScene.scss";
 import "../../styles/common.scss";
 import icon_rule from "../../assets/images/icon_rule.png";
 import guide_gif from "../../assets/images/guide.gif";
 import start_heart_gif from "../../assets/images/start_heart.gif";
 import success_angel_gif from "../../assets/images/success_angel.gif";
-import GameResult from "../GameResult/GameResult";
-import useImgLoader from "../../components/img-loader/useImgLoader";
+import GameResult from "../gameResult/gameResult";
+import useImgLoader from "../../components/imgLoader/useImgLoader";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
-import GameRule from "../GameRule/GameRule";
+import GameRule from "../gameRule/gameRule";
 import ToastBox from "../../components/toast/toast";
 import Bump from "bump.js";
 
@@ -48,7 +48,7 @@ class GameScene extends Component {
         const { userinfo } = this.props;
         if (this.props.gametimes <= 0 && !revive) {
             Taro.redirectTo({
-                url: "/pages/GameIndex/GameIndex?no_enough_times=true",
+                url: "/pages/gameIndex/gameIndex?no_enough_times=true",
             });
         } else {
             if (revive) {
@@ -162,9 +162,9 @@ class GameScene extends Component {
             return;
         }
         if (isSuccess || revive_times === 0) {
-            Taro.redirectTo({ url: "/pages/GameScene/GameScene?revive=false" });
+            Taro.redirectTo({ url: "/pages/gameScene/gameScene?revive=false" });
         } else {
-            Taro.redirectTo({ url: "/pages/GameScene/GameScene?revive=true" });
+            Taro.redirectTo({ url: "/pages/gameScene/gameScene?revive=true" });
         }
     };
     changeHeart = (visible) => {

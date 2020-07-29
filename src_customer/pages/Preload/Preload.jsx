@@ -6,7 +6,7 @@ import { View, Image, Canvas } from "@tarojs/components";
 import { connect } from "react-redux";
 import { setPreloaded } from "../../actions/game";
 
-import * as style from "./Preload.module.scss";
+import * as style from "./preload.module.scss";
 import arrow_png from "../../assets/images/loading_arrow.png";
 import loading_thumb from "../../assets/images/loading_thumb.png";
 
@@ -114,7 +114,7 @@ class Loading extends Component {
     console.log("onComplete");
     setTimeout(() => {
       Taro.redirectTo({
-        url: "/pages/GameIndex/GameIndex",
+        url: "/pages/gameIndex/gameIndex",
       });
     }, 500);
     this.props.setPreloaded(true);

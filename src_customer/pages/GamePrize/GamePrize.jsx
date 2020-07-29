@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import GameModal from "../../components/GameModal/GameModal";
-import styles from "./GamePrize.module.scss";
+import GameModal from "../../components/gameModal/gameModal";
+import styles from "./gamePrize.module.scss";
 import coupon_img from "../../assets/images/coupon.png";
 import { View, Text, Image } from "@tarojs/components";
 class GamePrize extends Component {

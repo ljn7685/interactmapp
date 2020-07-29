@@ -1,8 +1,8 @@
 export default {
   pages: [
-    "pages/Preload/Preload",
-    "pages/GameIndex/GameIndex",
-    "pages/GameScene/GameScene",
+    "pages/preload/preload",
+    "pages/gameIndex/gameIndex",
+    "pages/gameScene/gameScene",
   ],
   window: {
     backgroundTextStyle: "light",

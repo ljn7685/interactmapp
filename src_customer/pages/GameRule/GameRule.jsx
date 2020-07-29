@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import * as moment from 'moment';
 
-import Modal from "../../components/Modal/Modal";
-import styles from "./GameRule.module.scss";
+import Modal from "../../components/modal/modal";
+import styles from "./gameRule.module.scss";
 import { View, Text, Image } from "@tarojs/components";
 import heart_img from "../../assets/images/rule_heart.png";
 import close_btn_img from "../../assets/images/close_btn.png";
@@ -35,9 +36,9 @@ class GameRule extends Component {
                 onClick={onClose}
             ></Image>
         );
-        const start_date = new Date(game_rule.start_date.replace(/-/g,"/"))
-        const end_date = new Date(game_rule.end_date.replace(/-/g,"/"))
-        const date = `${start_date.getFullYear()}年${start_date.getMonth()+1}月${start_date.getDate()}日——${end_date.getFullYear()}年${end_date.getMonth()+1}月${end_date.getDate()}日`
+        const start_date = moment(game_rule.start_date).format('YYYY年MM月DD日')
+        const end_date = moment(game_rule.end_date).format('YYYY年MM月DD日')
+        const date = `${start_date}——${end_date}`
         return (
             <Modal
                 containerStyle={styles["container"]}

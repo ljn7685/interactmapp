@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import Modal from "../../components/Modal/Modal";
-import styles from "./GameResult.module.scss";
+import Modal from "../../components/modal/modal";
+import styles from "./gameResult.module.scss";
 import { Text, View, Image } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import close_btn_img from "../../assets/images/close_btn.png";
@@ -23,7 +23,7 @@ class GameResult extends Component {
     }
     onClickClose = () => {
         Taro.redirectTo({
-            url: "/pages/GameIndex/GameIndex",
+            url: "/pages/gameIndex/gameIndex",
         });
     };
     exchangePrize = () => {
@@ -31,7 +31,7 @@ class GameResult extends Component {
         const { appid, userinfo } = this.props;
         this.props.drawPrize(userinfo, appid,()=>{
             Taro.redirectTo({
-                url: "/pages/GameIndex/GameIndex?successfully_received=true",
+                url: "/pages/gameIndex/gameIndex?successfully_received=true",
             });
         })
     };

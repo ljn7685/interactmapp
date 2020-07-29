@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { View, Image, Text } from "@tarojs/components";
 import classnames from "classnames";
-import Modal from "../Modal/Modal";
-import styles from "./GameModal.module.scss";
+import Modal from "../modal/modal";
+import styles from "./gameModal.module.scss";
 import heart_img from "../../assets/images/rule_heart.png";
 import close_btn_img from "../../assets/images/close_btn.png";
 class GameModal extends Component {

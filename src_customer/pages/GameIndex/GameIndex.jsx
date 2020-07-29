@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Image, Text, Button } from "@tarojs/components";
 
-import styles from "./GameIndex.module.scss";
+import styles from "./gameIndex.module.scss";
 import "../../styles/common.scss";
 import titleIcon from "../../assets/images/game_title_icon.png";
 import start_turntable from "../../assets/images/start_turntable.png";
@@ -11,9 +11,9 @@ import start_player from "../../assets/images/start_player.png";
 import icon_gift from "../../assets/images/icon_gift.png";
 import icon_rule from "../../assets/images/icon_rule.png";
 
-import GameRule from "../GameRule/GameRule";
+import GameRule from "../gameRule/gameRule";
 import ToastBox from "../../components/toast/toast";
-import GamePrize from "../GamePrize/GamePrize";
+import GamePrize from "../gamePrize/gamePrize";
 import {
     setActivityEnded,
     setUserInfo,
@@ -59,7 +59,7 @@ class GameIndex extends Component {
             this.showNoEnoughTimes();
         } else {
             Taro.redirectTo({
-                url: "/pages/GameScene/GameScene",
+                url: "/pages/gameScene/gameScene",
             });
         }
     };

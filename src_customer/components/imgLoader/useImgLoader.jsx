@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Image } from "@tarojs/components";
 //引入图片预加载组件
-import ImgLoader from "./img-loader";
+import ImgLoader from "./imgLoader";
 function useImgLoader(WrappedComponent, images, style) {
     return class extends Component {
         constructor(props) {
