@@ -10,9 +10,11 @@ import {
     SET_FAVOR_SHOP,
     ADD_PRIZE,
     SET_JOIN_GAME,
+    SET_REWARDS,
 } from "../constants/game";
 import { api } from "../../public/util/api";
 import { getCloud } from "mapp_common/utils/cloud";
+import Taro from "@tarojs/taro"
 
 export const addGametimes = () => {
     return { type: ADD_GAMETIMES };
@@ -44,6 +46,10 @@ export const setActivityEnded = (isEnded) => {
 
 export const setUserInfo = (userinfo) => {
     return { type: SET_USER_INFO, userinfo };
+};
+
+export const setRewards = (rewards) => {
+    return { type: SET_REWARDS, rewards };
 };
 
 export const setJoinGame = () => {
@@ -157,6 +163,24 @@ export const userRevive = (userinfo, cb) => {
         });
     };
 };
+const queryPrizes = (userinfo, appid) => {
+    return getCloud()
+        .topApi.invoke({
+            api: "alibaba.benefit.query",
+            data: {
+                ename: userinfo.ename,
+                app_name: `promotioncenter-${appid}`,
+            },
+        })
+        .then((res) => {
+            console.log("query prize", res);
+            return res;
+        })
+        .catch((res) => {
+            console.log("query prize fail", res);
+            return res;
+        });
+};
 const draw = (userinfo, appid, cb) => {
     my.authorize({
         scopes: "scope.benefitSend",
@@ -198,8 +222,11 @@ export const drawPrize = (userinfo, appid, cb) => {
                 },
                 callback: (res) => {
                     console.log("~~~~~~~~~~~~~~~~~~~~", res, prize_id);
-                    dispatch(AddPrize(prize_id));
-                    cb && cb();
+                    queryPrizes(userinfo, appid).then((res) => {
+                        dispatch(setRewards(res.result.datas));
+                        dispatch(AddPrize(prize_id));
+                        cb && cb();
+                    });
                 },
                 errCallback: (err) => {
                     console.log(err);

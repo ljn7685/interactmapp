@@ -10,6 +10,7 @@ import {
     SET_FAVOR_SHOP,
     ADD_PRIZE,
     SET_JOIN_GAME,
+    SET_REWARDS,
 } from "../constants/game";
 import { storage } from "mapp_common/utils/storage";
 import default_avatar from "../assets/images/avatar.png";
@@ -116,12 +117,15 @@ export default function reducer(state = initState, action) {
         case SET_FAVOR_SHOP:
             state.userinfo.is_follow = 1;
             return { ...state, is_follow: true };
+        case SET_REWARDS:
+            state.userinfo.active_rewards.datas = action.rewards
+            return {...state}
         case ADD_PRIZE:
             const active_rewards = state.userinfo.active_rewards.datas;
-            const prize_id = action.prize_id;
+            const prize_id = Number(action.prize_id);
             const newPrizes =
                 active_rewards instanceof Array
-                    ? avtive_rewards.filter(
+                    ? active_rewards.filter(
                           (item) => item.prize_id === prize_id
                       )
                     : active_rewards.prize_id === prize_id
