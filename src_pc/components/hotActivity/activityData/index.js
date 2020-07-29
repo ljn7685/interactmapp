@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Button } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import './index.scss';
 import { api } from '../../../public/util/api';
 import { isEmpty } from '../../utils/index';
@@ -31,12 +31,10 @@ class ActivityData extends Component {
         this.pageSize = 10; //页面条数
     }
     componentDidMount() {
-        console.log('hotReducer', this.props.hotReducer);
         this.getDataByID()
     }
     getDataByID = async () => {
-        let data = await this.getDataByIdApi({ 'activeID': this.props.hotReducer.activityID, 'page': this.pageNo, 'dataNum': this.pageSize });
-        console.log('dadadadadaaaaa', data);
+        let data = await this.getDataByIdApi({ 'activeID': this.props.hotReducer.activityID, 'pageNo': this.pageNo, 'pageSize': this.pageSize });
         if(this.pageNo > 1 && isEmpty(data.data)){
             Taro.showToast({
                 title: '已经是最后一页了',
@@ -84,7 +82,6 @@ class ActivityData extends Component {
                 method: '/interactive/getInteractData',
                 args: args,
                 callback: res => {
-                    console.log('aaaaaaaaaaaa', res)
                     resolve(res)
                 },
                 errCallback: err => {
@@ -98,7 +95,6 @@ class ActivityData extends Component {
      * 数据展现组件
      */
     dataContentTip = () => {
-        const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
         const { dataList } = this.state;
         return (
             <View>

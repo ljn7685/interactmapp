@@ -1,3 +1,6 @@
+*{
+    font-family: PingFangSC-Semibold;
+}
 .activity-box{
     margin-left: 34px;
     margin-top: 40px;
@@ -20,7 +23,7 @@
             color: #000000;
             letter-spacing: 0;
             text-align: center;
-            font-weight: 800;
+            font-weight: 550;
         }
         .activity-tips{
             display: flex;
@@ -39,14 +42,15 @@
             display: flex;
             flex-direction: column;
             font-family: PingFangSC-Regular;
+            color: #767676;
             .instructions-title{
                 font-size: 28px;
             }
             .instructions-info{
                 font-size: 26px;
-                color: #000000;
                 letter-spacing: 0;
                 margin-top: 32px;
+                line-height: 36px;
             }
         }
         .activity-bottom{

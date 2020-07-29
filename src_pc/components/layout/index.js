@@ -6,12 +6,13 @@ import { changeTitleAction } from '../hotActivity/actions';
 import { connect } from 'react-redux';
 import { getUserInfo } from '../../../public/util/userInfoChanger';
 import {api} from '../../public/util/api';
+import {contactCustomerService} from '../../../public/util/openChat';
 
 @connect(({hotReducer})=>({
     hotReducer
 }), (dispatch) => ({
-    changeTitleAction (value) {
-      dispatch(changeTitleAction(value))
+    changeTitleAction (title, titleType) {
+      dispatch(changeTitleAction(title, titleType))
     }
   }))
 
@@ -20,16 +21,30 @@ class Layout extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isShow: '热门活动'
+            isShow: 'hotActivity'
         }
     }
+    /**
+     * 侧边栏点击不同按钮
+     * @param {*} values 
+     */
     goToHotPage =(values)=>{
-        this.props.changeTitleAction(values);
+        //顶部的title
+        let data = '热门活动';
+        if(values == 'management'){
+            data = '活动管理';
+        }
+        this.props.changeTitleAction(data, values);
         this.setState({
             isShow: values
         })
     }
-
+    /**
+     * 联系客服
+     */
+    connectKeFU = ()=>{
+        contactCustomerService()
+    }
     render() {
         const { isShow } = this.state;
         const { hotReducer } = this.props;
@@ -40,9 +55,10 @@ class Layout extends Component {
                     <View className='layout-title'>疯狂飞镖</View>
                     <View className='layout-desc'>由 爱用科技 提供</View>
                 </View>
-                <View className={`layout-activity ${isShow == '热门活动' || hotReducer.title == '热门活动' ? 'action' : ''}`} onClick={this.goToHotPage.bind(this,'热门活动')}>热门活动</View>
-                <View className={`layout-management ${isShow == '活动管理' && hotReducer.title !== '热门活动' ? 'action' : ''}`} onClick={this.goToHotPage.bind(this,'活动管理')}>活动管理</View>
-                <View className='layout-bottom'>
+                {/* 当用户没有数据的时候，点击去“创建数据”，跳转hotActivity的页面，导航栏颜色要变 */}
+                <View className={`layout-item ${isShow == 'hotActivity' || hotReducer.titleType == 'hotActivity' ? 'action' : ''}`} onClick={this.goToHotPage.bind(this,'hotActivity')}>热门活动</View>
+                <View className={`layout-item ${isShow == 'management' && hotReducer.titleType != 'hotActivity' ? 'action' : ''}`} onClick={this.goToHotPage.bind(this,'management')}>活动管理</View>
+                <View className='layout-bottom' onClick={this.connectKeFU}>
                     <View className='icno-kefu iconfont'>&#xe65b;</View>
                     <View className='contact'>联系客服</View>
                 </View>

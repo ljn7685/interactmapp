@@ -16,4 +16,5 @@ export const ENV = {
     userApiName:'aiyong.interactb.user.data.set',
     userMethod: '/interactive/setInertActBUserData',
     version: '0.0.1',
+    userType: 'B'
 };

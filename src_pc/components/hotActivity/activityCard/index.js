@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Button } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import './index.scss';
 import { changeTitleAction } from '../actions';
 
@@ -26,10 +26,16 @@ class ActivityCard extends Component {
  */
     goToCreatePage = (value)=>{
         console.log('dddd');
-        // this.props.goToPage(value);
         this.props.changeTitleAction(value, 'create')
     }
-
+/**
+ * 帮助文档
+ */
+goToYuque = ()=>{
+    my.qn.navigateToWebPage({
+        url: "https://www.yuque.com/books/share/32a46a84-dd07-468e-b1c3-bc648face3de/gwdtvg"
+    });
+}
 
     render() {
         return (
@@ -49,7 +55,7 @@ class ActivityCard extends Component {
                     </View>
                     <View className='activity-bottom'>
                         <View className='create-activity' onClick={this.goToCreatePage.bind(this,'创建丘比特之箭活动')}>立即创建</View>
-                        <View className='help'>
+                        <View className='help' onClick={this.goToYuque}>
                             <View className='icno-help iconfont'>&#xe6b5;</View>
                             <View className='txt-help'>帮助文档</View>
                         </View>
