@@ -26,19 +26,11 @@
             margin-top: 18px;
         }
     }
-    .layout-activity{
+    .layout-item{
         font-size: 28px;
         color: #333333;
         margin-left: 72px;
         margin-top: 74px;
-        font-weight: 700;
-        cursor: pointer;
-    }
-    .layout-management{
-        margin-left: 72px;
-        font-size: 28px;
-        color: #333333;
-        margin-top: 76px;
         font-weight: 700;
         cursor: pointer;
     }
@@ -51,6 +43,7 @@
         display: flex;
         margin-left: 62px;
         align-items: center;
+        cursor: pointer;
         .icno-kefu{
             font-size: 36px;
             color: #3D7FFF;
@@ -58,6 +51,7 @@
         .contact{
             font-size: 28px;
             color: #29292C;
+            margin-left: 12px;
         }
     }
 }

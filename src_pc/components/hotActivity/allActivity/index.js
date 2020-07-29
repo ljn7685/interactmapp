@@ -52,8 +52,7 @@ class AllActivity extends Component {
             this.pageNo -= 1;
             return;
         }
-        if(data){
-            console.log('datadata', data)
+        if(!isEmpty(data)){
             this.setState({
                 dataList: data,
                 isShow: true
@@ -66,7 +65,6 @@ class AllActivity extends Component {
      * @param {*} name 
      */
     goToDataPage = ( name, activityID) => {
-        console.log('opopopo', activityID)
         let title = name + '-活动效果';
         this.props.changeTitleAction(title, 'data', activityID);
 
@@ -76,7 +74,7 @@ class AllActivity extends Component {
      * @param {*} id 
      */
     goToCreatePage = (id) => {
-        this.props.changeTitleAction('热门活动');
+        this.props.changeTitleAction('热门活动', 'hotActivity');
     }
     /**
      * 点击编辑
@@ -141,10 +139,9 @@ class AllActivity extends Component {
      * 复制链接
      * @param {*} value 
      */
-    copyUrl = (value)=>{
-        console.log('fufuufufzhizhiz', value)
+    copyUrl = (value, id)=>{
         Taro.setClipboardData({
-            data: value,
+            data: value + id,
             success:()=>{
                 Taro.showToast({
                     title: '复制成功',
@@ -165,12 +162,11 @@ class AllActivity extends Component {
             method:'/interactive/creatInteract',
             args: { 'activeID': id, 'operationType': 3},
             callback:res => {
-               console.log('~~~~~~~sssddd~~~~sss~~~~~~~~~',res);
                newData[index].active_status = 2;
                newData[index].status = '已结束';
                this.setState({
                 dataList: newData
-               },()=>{console.log('newewew', this.state.dataList)})
+               })
             },
             errCallback: err => {
               console.log('dssdddwww',err)
@@ -188,7 +184,6 @@ class AllActivity extends Component {
                 method:'/interactive/getUserCreateInterActData',
                 args: args,
                 callback:res => {
-                   console.log('~~~~~~~~~~~~~~~~~~~~',res)
                    let data = res.map((item)=>{
                         if(item.active_status == 2){
                             item.status = '已结束';
@@ -224,7 +219,7 @@ class AllActivity extends Component {
                         <View className='time-start'>起：{item.start_date}</View>
                         <View className='time-end'>止：{item.end_date}</View>
                                 </View>
-                                <View className='content-url' onClick={this.copyUrl.bind(this,item.active_url)}>复制链接</View>
+                                <View className='content-url' onClick={this.copyUrl.bind(this,item.active_url, item.id)}>复制链接</View>
                                 <View className='oper-box'>
                                     <View className='edit-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '修改')} style={{display:`${item.active_status == 2 ? 'none':''}`}}>修改活动</View>
                                     <View className='copy-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '创建')} style={{display:`${item.active_status == 2 ? '':'none'}`}}>复制活动</View>
@@ -262,26 +257,26 @@ class AllActivity extends Component {
         const { isShowSelect, status } = this.state;
         return (
             <View className='select-box'>
-                <View className='selected'>
+                <View className='selected' onClick={this.selectStatu.bind(this, 'pullDown')}>
                     <View className='select-txt'>{status}</View>
-                    <View className='select-icno iconfont' onClick={this.selectStatu.bind(this, 'pullDown')}>&#xe642;</View>
+                    <View className='select-icno iconfont'>&#xe642;</View>
                 </View>
 
                 <View className='select-down-box' className={`select-down-box ${isShowSelect ? 'show-select':'no-border'} `}>
                     <View className='select-item' onClick={this.selectStatu.bind(this, '进行中')}>
-                        <View className='sure-icno' style={{ opacity: `${status == '进行中' ? '1' : '0'}` }}>\/</View>
+                        <View className='sure-icno iconfont' style={{ opacity: `${status == '进行中' ? '1' : '0'}` }}>&#xe613;</View>
                         <View className='item-txt'>进行中</View>
                     </View>
                     <View className='select-item' onClick={this.selectStatu.bind(this, '已结束')}>
-                        <View className='sure-icno' style={{ opacity: `${status == '已结束' ? '1' : '0'}` }}>\/</View>
+                        <View className='sure-icno iconfont' style={{ opacity: `${status == '已结束' ? '1' : '0'}` }}>&#xe613;</View>
                         <View className='item-txt'>已结束</View>
                     </View>
                     <View className='select-item' onClick={this.selectStatu.bind(this, '未开始')}>
-                        <View className='sure-icno' style={{ opacity: `${status == '未开始' ? '1' : '0'}` }}>\/</View>
+                        <View className='sure-icno iconfont' style={{ opacity: `${status == '未开始' ? '1' : '0'}` }}>&#xe613;</View>
                         <View className='item-txt'>未开始</View>
                     </View>
                     <View className='select-item' onClick={this.selectStatu.bind(this, '全部')}>
-                        <View className='sure-icno' style={{ opacity: `${status == '全部' ? '1' : '0'}` }}>\/</View>
+                        <View className='sure-icno iconfont' style={{ opacity: `${status == '全部' ? '1' : '0'}` }}>&#xe613;</View>
                         <View className='item-txt'>全部</View>
                     </View>
                 </View>

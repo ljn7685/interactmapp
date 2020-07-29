@@ -1,11 +1,12 @@
-import { TITLE, SET_DATA } from './actions';
+import { TITLE, SET_DATA, SET_URL } from './actions';
 
 const defaultState = {
     title:'热门活动',//顶部显示的标题
-    titleType: 'null',//是否显示数据页面
+    titleType: 'hotActivity',//是否显示数据页面
     activityData: [], //修改活动配置的时候，需要拿到的配置数据
-    activityID: '', //数据页面需要的活动id
+    activityID: '', //数据页面需要的活动id和修改的时候需要的id
     operType:'', //是修改该是复制活动
+    activityUrl: '',//活动的链接，主要是创建成功的页面需要
 }
 
 export default (state = defaultState, action) => {
@@ -19,8 +20,11 @@ export default (state = defaultState, action) => {
             let newdata = Object.assign({},state, {activityData: action.data});
             return newdata;
         }
+        case SET_URL :{
+            let newdata = Object.assign({},state, {activityUrl: action.data});
+            return newdata;
+        }
         default: 
             return state
-
     }
 }

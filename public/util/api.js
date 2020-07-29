@@ -28,19 +28,17 @@ export function invokeTop ({ api, params, callback, errCallback })  {
             params[key] = params[key].join(',');
         }
     });
-    authDeferred.then(() => {
-        getCloud().topApi.invoke({
-            api: api,
-            data: params,
-        }).then((res) => {
-            successFlag = 1;
-            callback(res);
-        }).catch((err) => {
-            if (successFlag) {
-                return;
-            }
-            errCallback(err);
-        });
+    getCloud().topApi.invoke({
+        api: api,
+        data: params,
+    }).then((res) => {
+        successFlag = 1;
+        callback(res);
+    }).catch((err) => {
+        if (successFlag) {
+            return;
+        }
+        errCallback(err);
     });
 };
 
@@ -190,6 +188,10 @@ export function applicationApi ({ args, apiName, path, method = 'POST', headers 
                 callback(res);
                 return;
             }
+            if(Array.isArray(data)){
+                callback(data);
+                return;
+            }
             // 外加method判断/newmitem/newGetRejectBaby
             try {
                 data = JSON.parse(data);
@@ -222,6 +224,7 @@ export async function entry ({ accessToken, callback = NOOP, errCallback = NOOP 
         version: 1,
         planet: ENV.planet,
         _access_token: accessToken,
+        user_type: ENV.userType
     };
     if (isIDE()) {
         args.user_nick = testUser.nickName;

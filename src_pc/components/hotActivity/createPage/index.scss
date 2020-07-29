@@ -28,45 +28,32 @@
             left: 568px;
         }
     }
-    .activity-time{
-        display: flex;
-        margin-top: 32px;
-        align-items: center;
-        font-size: 24px;
-        color: #767676;
-        .time-txt{
-            margin-right: 32px;
-        }
-        .time-input{
-            width: 200px;
-            height: 56px;
-            font-size: 28px;
-            color: #333333;
-        }
-        .time-to{
-            margin: 0 16px;
-        }
+    .time-txt{
+        margin-right: 32px;
     }
-    .res-box{
-        display: flex;
-        margin-top: 32px;
-        align-items: center;
-        font-size: 24px;
-        color: #767676;
-        .res-input{
-            width: 128px;
-            height: 56px;
-            margin-left: 32px;
-            font-size: 28px;
-            color: #333333;
-        }
-        .unit{
-            font-size: 24px;
-            color: #333333;
-            margin-right: 32px;
-            margin-left: 8px;
-        }
+    .time-input{
+        width: 200px;
+        height: 56px;
+        font-size: 28px;
+        color: #333333;
     }
+    .time-to{
+        margin: 0 16px;
+    }
+    .res-input{
+        width: 128px;
+        height: 56px;
+        margin-left: 32px;
+        font-size: 28px;
+        color: #333333;
+    }
+    .unit{
+        font-size: 24px;
+        color: #333333;
+        margin-right: 32px;
+        margin-left: 8px;
+    }
+
     .coupon-box{
         margin-top: 32px;
         .coupon-top{
@@ -82,6 +69,7 @@
             .refresh{
                 font-size: 24px;
                 color: #0863FF;
+                cursor: pointer;
             }
         }
         .warn-bar{
@@ -89,12 +77,15 @@
             width: 768px;
             height: 44px;
             background: rgba(245,166,35,0.20);
-            line-height: 44px;
             margin-left: 128px;
             margin-top: 16px;
+            align-items: center;
             .warn-icno{
                 color: red;
                 margin-left: 18px;
+                margin-top: 10px;
+                margin-right: 8px;
+                font-size: 36px;
             }
             .warn-txt{
                 font-size: 24px;
@@ -110,38 +101,68 @@
                 width: 360px;
                 height: 160px;
                 border: 2px solid #CCCCCC;
-            }
-            .coupon-box-content{
-                background: #FFFFFF;
-                margin-left: 48px;
-                width: 360px;
-                height: 160px;
-                border: 2px solid #CCCCCC;
-                .coupon-top{
-                    display: flex;
-                    align-items: center;
-                    padding-top: 16px;
-                    padding-left: 16px;
-                    .coupon-price{
-                        font-size: 40px;
-                        color: #0863FF;
-                    }
-                    .coupon-info{
-                        margin-left: 120px;
-                        font-size: 24px;
-                        color: #333333;
-                        .info-limit{
-                            color: #767676;
-                        }
-                    }
-                }
-                .coupon-time{
-                    margin-top: 28px;
-                    margin-left: 34px;
-                    font-size: 20px;
+                margin-right: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                .iconfont{
+                    font-size: 36px;
                     color: #767676;
                 }
+                .jump-txt{
+                    font-size: 24px;
+                    color: #767676;
+                    margin-left: 18px;
+                }
             }
+            .coupon-middle-box{
+                max-height: 368px;
+                overflow-y: scroll;
+                max-width: 2164px;
+            }
+            .coupon-mid-box{
+                display: flex;
+                flex-wrap: wrap;
+                .coupon-box-content{
+                    background: #FFFFFF;
+                    margin-right: 48px;
+                    width: 360px;
+                    height: 160px;
+                    border: 2px solid #CCCCCC;
+                    margin-bottom: 20px;
+                    .coupon-top{
+                        display: flex;
+                        align-items: center;
+                        padding-top: 16px;
+                        padding-left: 16px;
+                        .coupon-price{
+                            font-size: 40px;
+                            color: #0863FF;
+                            width: 120px;
+                        }
+                        .coupon-info{
+                            margin-left: 70px;
+                            font-size: 24px;
+                            color: #333333;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: flex-end;
+                            .info-limit{
+                                color: #767676;
+                                margin-top: 8px;
+                            }
+                        }
+                    }
+                    .coupon-time{
+                        margin-top: 40px;
+                        margin-left: 24px;
+                        font-size: 20px;
+                        color: #767676;
+                    }
+                }
+            }
+
         }
     }
     .rules-box{
@@ -150,13 +171,12 @@
         color: #767676;
         display: flex;
         .rules-content{
-            font-size: 28px;
             color: #333333;
             margin-left: 32px;
             width: 876px;
             display: flex;
             flex-direction: column;
-            line-height: 36px;
+            line-height: 40px;
             Text{
                 font-family: PingFangSC-Regular;
             }

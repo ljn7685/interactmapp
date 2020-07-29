@@ -55,6 +55,11 @@
             font-size: 28px;
             color: #333333;
             margin-left: 32px;
+            padding-left: 20px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+
         }
         .url-copy{
             background: #FFFFFF;

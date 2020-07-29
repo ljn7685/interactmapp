@@ -3,6 +3,7 @@ import { api } from '../../public/util/api';
 
 export const TITLE = "TITLE"; //顶部的标题
 export const SET_DATA = "SET_DATA"; //通过id保存游戏配置数据
+export const SET_URL = "SET_URL";//保存创建成功后的活动url
 
 /**
  * 改变顶部标题
@@ -22,9 +23,19 @@ export const changeTitleAction = (title, titleType, activityID, operType) => {
  * 存储修改的数据
  * @param {*} data 
  */
-export const setEditData = (data)=>{
+export const setEditDataAction = (data)=>{
     return {
         type: SET_DATA,
+        data: data
+    }
+}
+/**
+ * 保存活动创建成功的id
+ * @param {*} data 
+ */
+export const setActivityUrlAction = (data)=>{
+    return {
+        type: SET_URL,
         data: data
     }
 }
@@ -43,10 +54,9 @@ export const getActivityByIdAction = (id, operType)=>{
             },
             callback:res=>{
                 console.log('ididiididid',res)
-                dispatch(setEditData(res.data, id));
+                dispatch(setEditDataAction(res.data, id));
                 dispatch(changeTitleAction(operType + '丘比特之箭活动', 'create', id, operType))
             }
         })
     }
-
 }
