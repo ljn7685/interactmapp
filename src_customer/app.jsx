@@ -18,34 +18,30 @@ const store = configStore();
 class App extends Component {
     componentDidMount() {
         if (!this.getLaunchParams()) return;
-        const state = store.getState();
-        if (!state.userinfo) {
-            userInfoInit(() => {
-                const userinfo = getUserInfo();
-                if (
-                    (userinfo.code === 500 &&
-                        userinfo.msg === "活动已经结束") ||
-                    userinfo.active_status === 2
-                ) {
-                    store.dispatch(setActivityEnded(true));
-                } else {
-                    if (userinfo.active_status === 3) {
-                        showConfirmModal({
-                            title: "提示",
-                            content: "活动未开始！",
-                            showCancel: false,
-                            onConfirm: () => {
-                                my.exit();
-                            },
-                        });
-                        return;
-                    }
-                    store.dispatch(setActivityEnded(false));
+        userInfoInit(() => {
+            const userinfo = getUserInfo();
+            if (
+                (userinfo.code === 500 && userinfo.msg === "活动已经结束") ||
+                userinfo.active_status === 2
+            ) {
+                store.dispatch(setActivityEnded(true));
+            } else {
+                if (userinfo.active_status === 3) {
+                    showConfirmModal({
+                        title: "提示",
+                        content: "活动未开始！",
+                        showCancel: false,
+                        onConfirm: () => {
+                            my.exit();
+                        },
+                    });
+                    return;
                 }
-                store.dispatch(setUserInfoAction(userinfo));
-                console.log(store.getState().game.activity_ended);
-            });
-        }
+                store.dispatch(setActivityEnded(false));
+            }
+            store.dispatch(setUserInfoAction(userinfo));
+            console.log(store.getState().game.activity_ended);
+        });
     }
     getLaunchParams() {
         const options = Taro.getLaunchOptionsSync();

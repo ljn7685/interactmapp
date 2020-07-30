@@ -66,7 +66,9 @@ class GameIndex extends Component {
     onFavorShop = () => {
         const { userinfo, gametimes } = this.props;
         this.props.favorShop(userinfo, () => {
-            this.toast.info("已经参与过游戏咯");
+            if (userinfo.played) {
+                this.toast.info("已经参与过游戏咯");
+            }
         });
     };
     onClickRule = () => {
