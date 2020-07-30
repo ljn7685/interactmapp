@@ -90,7 +90,7 @@ class GameResult extends Component {
                             className={styles["text"]}
                             onClick={this.exchangePrize}
                         >
-                            立即兑换
+                            立即领取
                         </Text>
                     </View>
                 ) : revive_times > 0 ? (

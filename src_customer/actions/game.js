@@ -188,31 +188,38 @@ const queryPrizes = (userinfo, appid) => {
 };
 const draw = (userinfo, appid) => {
     return new Promise((resolve, reject) => {
+        getCloud()
+            .topApi.invoke({
+                api: "alibaba.benefit.draw",
+                data: {
+                    ename: userinfo.ename,
+                    app_name: `promotioncenter-${appid}`,
+                },
+            })
+            .then((res) => {
+                console.log(JSON.stringify(res));
+                if (res.result.result_success) {
+                    resolve(res.prize_id);
+                } else {
+                    reject(res);
+                }
+            })
+            .catch((e) => {
+                console.log(e.message);
+                reject(e);
+            });
+    });
+};
+const authorizeBenefit = () => {
+    return new Promise((resolve, reject) => {
         my.authorize({
             scopes: "scope.benefitSend",
             success: (res) => {
-                console.log(JSON.stringify(res));
-                getCloud()
-                    .topApi.invoke({
-                        api: "alibaba.benefit.draw",
-                        data: {
-                            ename: userinfo.ename,
-                            app_name: `promotioncenter-${appid}`,
-                        },
-                    })
-                    .then((res) => {
-                        console.log(JSON.stringify(res));
-                        if (res.result.result_success) {
-                            resolve(res.prize_id);
-                        }
-                    })
-                    .catch((e) => {
-                        console.log(e.message);
-                        reject(e);
-                    });
+                console.log("authorize success", JSON.stringify(res));
+                resolve(res);
             },
             fail(res) {
-                console.log("fail", res);
+                console.log("authorize fail", JSON.stringify(res));
                 reject(res);
             },
         });
@@ -220,9 +227,10 @@ const draw = (userinfo, appid) => {
 };
 export const drawPrize = (userinfo, appid, cb) => {
     return async (dispatch) => {
-        const queryInfo = await queryPrizes(userinfo, appid);
-        dispatch(setRewards(queryInfo.result.datas));
         try {
+            await authorizeBenefit();
+            const queryInfo = await queryPrizes(userinfo, appid);
+            dispatch(setRewards(queryInfo.result.datas));
             const prize_id = await draw(userinfo, appid);
             api({
                 apiName: "aiyong.interactc.user.data.update",
@@ -243,6 +251,11 @@ export const drawPrize = (userinfo, appid, cb) => {
                 },
                 errCallback: (err) => {
                     console.log(err);
+                    Taro.showToast({
+                        title: "抽奖失败",
+                        icon: "fail",
+                        duration: 2000,
+                    });
                 },
             });
         } catch (e) {
