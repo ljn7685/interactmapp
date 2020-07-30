@@ -103,7 +103,7 @@ export default function reducer(state = initState, action) {
             userinfo.ename = userinfo.active_rewards.ename;
             return {
                 ...state,
-                is_follow: Boolean(action.userinfo.is_follow),
+                is_follow: action.userinfo.is_follow || action.userinfo.favored,
                 max_fail_times: userinfo.game_number,
                 revive_times: userinfo.game_number,
                 gametimes:
