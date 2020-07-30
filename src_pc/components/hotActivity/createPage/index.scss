@@ -7,6 +7,12 @@
     font-family: PingFangSC-Regular PingFang SC;
     padding-left: 64px;
     padding-bottom: 42px;
+
+    .warn-xing{
+        color: red;
+        font-size: 36px;
+        margin-right: 4px;
+    }
     .name-box{
         display: flex;
         margin-top: 32px;
@@ -29,7 +35,7 @@
         }
     }
     .time-txt{
-        margin-right: 32px;
+        margin-right: 30px;
     }
     .time-input{
         width: 200px;
@@ -62,14 +68,25 @@
             font-size: 24px;
             color: #767676;
             .coupon{
+                height: 40px;
+                line-height: 40px;
                 font-size: 28px;
                 color: #333333;
                 margin: 0 32px;
+                border: 2px solid #0863FF;
+                color: #0863FF;
+                padding: 8px 8px;
+                border-radius: 4px;
+                cursor: pointer;
             }
             .refresh{
                 font-size: 24px;
                 color: #0863FF;
                 cursor: pointer;
+            }
+            .prize-num{
+                font-size: 24px;
+                margin-left: 32px;
             }
         }
         .warn-bar{
@@ -92,78 +109,6 @@
                 color: #FF6100;
             }
         }
-        .coupon-img-box{
-            margin-top: 16px;
-            margin-left: 128px;
-            display: flex;
-            align-items: center;
-            .coupon-jump{
-                width: 360px;
-                height: 160px;
-                border: 2px solid #CCCCCC;
-                margin-right: 48px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                .iconfont{
-                    font-size: 36px;
-                    color: #767676;
-                }
-                .jump-txt{
-                    font-size: 24px;
-                    color: #767676;
-                    margin-left: 18px;
-                }
-            }
-            .coupon-middle-box{
-                max-height: 368px;
-                overflow-y: scroll;
-                max-width: 2164px;
-            }
-            .coupon-mid-box{
-                display: flex;
-                flex-wrap: wrap;
-                .coupon-box-content{
-                    background: #FFFFFF;
-                    margin-right: 48px;
-                    width: 360px;
-                    height: 160px;
-                    border: 2px solid #CCCCCC;
-                    margin-bottom: 20px;
-                    .coupon-top{
-                        display: flex;
-                        align-items: center;
-                        padding-top: 16px;
-                        padding-left: 16px;
-                        .coupon-price{
-                            font-size: 40px;
-                            color: #0863FF;
-                            width: 120px;
-                        }
-                        .coupon-info{
-                            margin-left: 70px;
-                            font-size: 24px;
-                            color: #333333;
-                            display: flex;
-                            flex-direction: column;
-                            align-items: flex-end;
-                            .info-limit{
-                                color: #767676;
-                                margin-top: 8px;
-                            }
-                        }
-                    }
-                    .coupon-time{
-                        margin-top: 40px;
-                        margin-left: 24px;
-                        font-size: 20px;
-                        color: #767676;
-                    }
-                }
-            }
-
-        }
     }
     .rules-box{
         margin-top: 32px;
@@ -176,7 +121,8 @@
             width: 876px;
             display: flex;
             flex-direction: column;
-            line-height: 40px;
+            line-height: 50px;
+            letter-spacing: 2px;
             Text{
                 font-family: PingFangSC-Regular;
             }
@@ -200,11 +146,11 @@
             cursor: pointer;
         }
         .give-up{
-            width: 252px;
-            height: 84px;
+            width: 248px;
+            height: 80px;
             border: 2px solid #0863FF;
             border-radius: 22px;
-            font-size: 36px;
+            font-size: 32px;
             color: #0863FF;
             line-height: 84px;
             text-align: center;

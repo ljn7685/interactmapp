@@ -25,10 +25,10 @@ class ActivitySuccess extends Component {
                 data = this.props.hotReducer.activityUrl;
                 break;
             case 'img-one':
-                data = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595332852038&di=4b789f36a4c1e618db284ec9039d89c3&imgtype=0&src=http%3A%2F%2Fa2.att.hudong.com%2F86%2F10%2F01300000184180121920108394217.jpg';
+                data = 'http://q.aiyongbao.com/interact/poster-one.png';
                 break;
             case 'img-two':
-                data = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595332852038&di=4b789f36a4c1e618db284ec9039d89c3&imgtype=0&src=http%3A%2F%2Fa2.att.hudong.com%2F86%2F10%2F01300000184180121920108394217.jpg';
+                data = 'http://q.aiyongbao.com/interact/poster-two.png';
                 break;
         }
         Taro.setClipboardData({
@@ -68,11 +68,11 @@ class ActivitySuccess extends Component {
                         <View className='poster-title'>2.推广海报</View>
                         <View className='poster-img-box'>
                             <View className='poster'>
-                                <Image className='poster-img' src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595332852038&di=4b789f36a4c1e618db284ec9039d89c3&imgtype=0&src=http%3A%2F%2Fa2.att.hudong.com%2F86%2F10%2F01300000184180121920108394217.jpg' alt='poster' />
+                                <Image className='poster-img' src='http://q.aiyongbao.com/interact/poster-one.png' alt='poster' />
                                 <View className='copy-img' onClick={this.copyUrl.bind(this, 'img-one')}>复制图片链接</View>
                             </View>
                             <View className='poster'>
-                                <Image className='poster-img' src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595332852038&di=4b789f36a4c1e618db284ec9039d89c3&imgtype=0&src=http%3A%2F%2Fa2.att.hudong.com%2F86%2F10%2F01300000184180121920108394217.jpg' alt='poster' />
+                                <Image className='poster-img' src='http://q.aiyongbao.com/interact/poster-two.png' alt='poster' />
                                 <View className='copy-img' onClick={this.copyUrl.bind(this, 'img-two')}>复制图片链接</View>
                             </View>
                         </View>

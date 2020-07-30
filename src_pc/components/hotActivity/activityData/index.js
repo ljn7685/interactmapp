@@ -114,7 +114,7 @@ class ActivityData extends Component {
     emptyPageData = () => {
         return (
             <View className='empty-data'>
-                <View className='empty-data-icno iconfont'>&#xe690;</View>
+                <View className='empty-data-icno iconfont'>&#xe687;</View>
                 <View className='empty-data-txt'>暂无数据</View>
             </View>
         )
