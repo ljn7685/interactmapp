@@ -6,9 +6,7 @@ import { changeTitleAction, setActivityUrlAction } from '../actions';
 import { isEmpty } from '../../utils/index';
 import Taro from '@tarojs/taro';
 import { api, invokeTop } from '../../../public/util/api';
-
 import { connect } from 'react-redux';
-
 //c端版本号
 export const version = '0.0.3';
 
@@ -16,24 +14,15 @@ var plugin = requirePlugin("myPlugin");
 let eName;
 //这个bridge用于和插件进行数据通信 
 const bridge = {
-    bizCode: "3000000025552964",
+    bizCode: "3000000012505562",
+    // bizCode: "3000000025552964",//b
     //此处输入想配置的业务身份（消费者端appid）  
     //这个方法用于获取插件中用户选择的奖池ID  
     getCheckBenefitID({ ename, poolID }) {
         eName = ename;
+        console.log(ename, poolID)
     }
 }
-@connect(({ hotReducer }) => ({
-    hotReducer
-}), (dispatch) => ({
-    changeTitleAction(title, titleType) {
-        dispatch(changeTitleAction(title, titleType))
-    },
-    setActivityUrlAction(data) {
-        dispatch(setActivityUrlAction(data))
-    }
-}))
-
 
 class CreatePage extends Component {
     constructor(props) {
@@ -53,23 +42,22 @@ class CreatePage extends Component {
         this.isEdit = false; //是否是编辑页面
     }
     componentWillMount() {
-        const { hotReducer } = this.props;
-        const activityData = this.props.hotReducer.activityData[0];
+        const {activityData, operType} = this.props
         //如果是修改或者复制活动的。为了让input框检测到从reducer里获取到的值
-        if (!isEmpty(hotReducer.operType)) {
+        if (!isEmpty(operType)) {
             let newArgs = Object.assign({}, this.state.args);
-            newArgs.activeName = activityData.active_name;
-            newArgs.subTitle = activityData.sub_title;
-            newArgs.gameNumber = activityData.game_number;
+            newArgs.activeName = activityData[0].active_name;
+            newArgs.subTitle = activityData[0].sub_title;
+            newArgs.gameNumber = activityData[0].game_number;
             //是修改的话，就需要时间和优惠券信息
-            if (hotReducer.operType == '修改') {
-                newArgs.startDate = activityData.start_date.substring(0, 10);
-                newArgs.endDate = activityData.end_date.substring(0, 10);
-                this.cupon = JSON.parse(activityData.active_rewards);
-                this.activeUrl = activityData.active_url;
+            if (operType == '修改') {
+                newArgs.startDate = activityData[0].start_date.substring(0, 10);
+                newArgs.endDate = activityData[0].end_date.substring(0, 10);
+                this.cupon = JSON.parse(activityData[0].active_rewards);
+                this.activeUrl = activityData[0].active_url;
                 this.setState({
                     args: newArgs,
-                    couponData: JSON.parse(activityData.active_rewards).datas
+                    couponData: JSON.parse(activityData[0].active_rewards).datas
                 })
             } else {
                 //复制活动的就不需要时间和优惠券信息
@@ -109,6 +97,7 @@ class CreatePage extends Component {
      * 点击确定按钮
      */
     createActivity = async (type) => {
+        const {activityID, changeTitleAction,setActivityUrlAction } = this.props;
         let operationType = 2;
         if (type == 'sure') {
             //operationType  1-添加新的活动   2-修改活动
@@ -126,18 +115,18 @@ class CreatePage extends Component {
         newArgs.activeRewards = JSON.stringify(this.cupon); //优惠卷
         newArgs.operationType = operationType;//操作类型
         newArgs.activeUrl = encodeURIComponent(this.activeUrl);//活动地址
-        newArgs.activeID = this.props.hotReducer.activityID;
+        newArgs.activeID = activityID;
         if (this.matchTime([newArgs.startDate, newArgs.endDate]) && this.matchNum(newArgs.gameNumber)) {
             let data = await this.createActivityApi(newArgs);
             if (data.code == 200) {
                 if (operationType == 2) {
                     //修改成功后，就回活动管理了
-                    this.props.changeTitleAction('活动管理', 'management');
+                    changeTitleAction('活动管理', 'management');
                 } else {
                     let activeUrl = this.activeUrl + data.activityId;
-                    this.props.changeTitleAction('活动创建成功', 'success');
+                    changeTitleAction('活动创建成功', 'success');
                     //存一个链接，成功页面要拿到的
-                    this.props.setActivityUrlAction(activeUrl);
+                    setActivityUrlAction(activeUrl);
                 }
             }
         }
@@ -157,10 +146,12 @@ class CreatePage extends Component {
         invokeTop({
             api: 'alibaba.benefit.query',
             params: {
-                'ename': eName,
-                'app_name': 'promotioncenter-3000000025552964'
+                'ename': '63c4c83bbf7c4f37b06d9fc3eeec19b0',
+                'app_name': 'promotioncenter-3000000025552964',
+                'award_type': 0
             },
             callback: res => {
+                console.log(res)
                 this.setState({
                     couponData: res.result.datas
                 })
@@ -179,7 +170,6 @@ class CreatePage extends Component {
     matchTime = (type) => {
         for (let i = 0; i < type.length; i++) {
             let res = type[i].match(/^(\d{4})(-)(\d{2})(-)(\d{2})$/);
-            console.log('ss', res)
             if (res == null) {
                 Taro.showModal({
                     title: '请输入正确的时间格式，如2020-01-01',
@@ -236,12 +226,10 @@ class CreatePage extends Component {
                 method: '/interactive/creatInteract',
                 args: args,
                 callback: res => {
-                    console.log('~~~~~~~sssddd~~sssss~~~~~~~~~~~', res)
                     resolve(res);
 
                 },
                 errCallback: err => {
-                    console.log('dssdddwww', err)
                     reject(err)
                 }
             })
@@ -252,8 +240,6 @@ class CreatePage extends Component {
      */
     couponStyle = () => {
         const { couponData } = this.state;
-        let jsx = null;
-        console.log('dedededede', couponData)
         return (
             <View className='coupon-mid-box'>
                 <View className='coupon-jump' onClick={this.navigateToPlugin}>
@@ -282,8 +268,7 @@ class CreatePage extends Component {
 
     render() {
         const { args } = this.state;
-        const { activityData } = this.props.hotReducer;
-        console.log('22121212', activityData)
+        const { title } = this.props;
         return (
             <View className='create-page'>
                 <View className='name-box'>
@@ -340,10 +325,10 @@ class CreatePage extends Component {
                 </View>
                 <View className='create-bottom'>
                     {
-                        this.props.hotReducer.title == '创建丘比特之箭活动' && <View className='sure-btu' onClick={this.createActivity.bind(this, 'sure')}>确认创建活动</View>
+                        title == '创建丘比特之箭活动' && <View className='sure-btu' onClick={this.createActivity.bind(this, 'sure')}>确认创建活动</View>
                     }
                     {
-                        this.props.hotReducer.title == '修改丘比特之箭活动' && <View className='edit-box'>
+                        title == '修改丘比特之箭活动' && <View className='edit-box'>
                             <View className='sure-btu' onClick={this.createActivity.bind(this, 'edit')}>确认修改活动</View>
                             <View className='give-up' onClick={this.giveUpEdit}>放弃修改</View>
                         </View>
@@ -356,4 +341,17 @@ class CreatePage extends Component {
     }
 }
 
-export default CreatePage;
+//将store里面的值映射为props
+const mapStateToProps = ({hotReducer}) => {
+    return {
+        activityData: hotReducer.activityData,
+        title: hotReducer.title,
+        operType: hotReducer.operType,
+        activityID: hotReducer.activityID
+    }
+}
+const mapDispatchToProps = {
+    changeTitleAction,
+    setActivityUrlAction
+}
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePage);

@@ -1,20 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, Button, Image } from '@tarojs/components';
+import { View, Image } from '@tarojs/components';
 import './index.scss';
-import Taro from '@tarojs/taro';
 import { changeTitleAction } from '../hotActivity/actions';
 import { connect } from 'react-redux';
-import { getUserInfo } from '../../../public/util/userInfoChanger';
-import {api} from '../../public/util/api';
-import {contactCustomerService} from '../../../public/util/openChat';
-
-@connect(({hotReducer})=>({
-    hotReducer
-}), (dispatch) => ({
-    changeTitleAction (title, titleType) {
-      dispatch(changeTitleAction(title, titleType))
-    }
-  }))
+import { contactCustomerService } from '../../../public/util/openChat';
 
 class Layout extends Component {
 
@@ -28,10 +17,10 @@ class Layout extends Component {
      * 侧边栏点击不同按钮
      * @param {*} values 
      */
-    goToHotPage =(values)=>{
+    goToHotPage = (values) => {
         //顶部的title
         let data = '热门活动';
-        if(values == 'management'){
+        if (values == 'management') {
             data = '活动管理';
         }
         this.props.changeTitleAction(data, values);
@@ -42,12 +31,13 @@ class Layout extends Component {
     /**
      * 联系客服
      */
-    connectKeFU = ()=>{
+    connectKeFU = () => {
         contactCustomerService()
     }
     render() {
         const { isShow } = this.state;
-        const { hotReducer } = this.props;
+        const { titleType } = this.props;
+        console.log(titleType)
         return (
             <View className='layout-box'>
                 <View className='layout-top'>
@@ -56,8 +46,8 @@ class Layout extends Component {
                     <View className='layout-desc'>由 爱用科技 提供</View>
                 </View>
                 {/* 当用户没有数据的时候，点击去“创建数据”，跳转hotActivity的页面，导航栏颜色要变 */}
-                <View className={`layout-item ${isShow == 'hotActivity' || hotReducer.titleType == 'hotActivity' ? 'action' : ''}`} onClick={this.goToHotPage.bind(this,'hotActivity')}>热门活动</View>
-                <View className={`layout-item ${isShow == 'management' && hotReducer.titleType != 'hotActivity' ? 'action' : ''}`} onClick={this.goToHotPage.bind(this,'management')}>活动管理</View>
+                <View className={`layout-item ${isShow == 'hotActivity' || titleType == 'hotActivity' ? 'action' : ''}`} onClick={this.goToHotPage.bind(this, 'hotActivity')}>热门活动</View>
+                <View className={`layout-item ${isShow == 'management' && titleType != 'hotActivity' ? 'action' : ''}`} onClick={this.goToHotPage.bind(this, 'management')}>活动管理</View>
                 <View className='layout-bottom' onClick={this.connectKeFU}>
                     <View className='icno-kefu iconfont'>&#xe65b;</View>
                     <View className='contact'>联系客服</View>
@@ -66,5 +56,14 @@ class Layout extends Component {
         );
     }
 }
+//将store里面的值映射为props
+const mapStateToProps = ({hotReducer}) => {
+    return {
+        titleType: hotReducer.titleType,
+    }
+}
+const mapDispatchToProps = {
+    changeTitleAction
+}
 
-export default Layout;
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);
