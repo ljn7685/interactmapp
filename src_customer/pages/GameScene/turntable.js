@@ -12,7 +12,9 @@ const default_arrows = [
     { arrow: null, rotation: 120 },
     { arrow: null, rotation: 240 },
 ];
-
+/**
+ * 转盘
+ */
 class TurnTable extends Container {
     constructor(properties) {
         super();
@@ -29,21 +31,39 @@ class TurnTable extends Container {
     get arrow_scale() {
         return arrow_scale;
     }
+    /**
+     * 设置成功天使的显示
+     * @param {boolean} visible 是否可见
+     */
     setSuccessAngel(visible) {
         this.success_angel.visible = visible;
     }
+     /**
+     * 设置失败天使的显示
+     * @param {boolean} visible 是否可见
+     */
     setFailAngel(visible) {
         this.fail_angel.visible = visible;
     }
+     /**
+     * 设置正常天使的显示
+     * @param {boolean} visible 是否可见
+     */
     setNormalAngel(visible) {
         this.normal_angel.visible = visible;
     }
+    /**
+     * 初始化转盘上默认的箭头
+     */
     initArrows() {
         this.arrows = [];
         for (let arrowItem of default_arrows) {
             this.addArrow(arrowItem.rotation);
         }
     }
+    /**
+     * 移除所有箭头
+     */
     removeAllArrow() {
         for (let arrowItem of this.arrows) {
             if (arrowItem.arrow) {
@@ -60,17 +80,27 @@ class TurnTable extends Container {
         this.removeAllArrow();
         this.initArrows();
     }
+    /**
+     * 停止所有动画
+     */
     stop() {
         if (this.tween) {
             this.tween.stop();
         }
     }
+    /**
+     * 是否射击成功
+     */
     isShootSuccess() {
         let rotation = (this.conatiner.rotation / (2 * Math.PI)) * 360;
         return this.arrows.every((item) => {
             return Math.abs(item.rotation - rotation) > 6;
         });
     }
+    /**
+     * 是否碰上其他箭头
+     * @param {*} arrow 
+     */
     isHitArrow(arrow) {
         let rotation = (this.conatiner.rotation / (2 * Math.PI)) * 360;
         return this.arrows.some((item) => {
@@ -78,6 +108,9 @@ class TurnTable extends Container {
             return Math.abs(item.arrow.rotation - rotation) <= 6;
         });
     }
+    /**
+     * 获得转盘射击边缘
+     */
     getHitBottom() {
         return (
             this.y +
@@ -85,6 +118,9 @@ class TurnTable extends Container {
                 this.scale.y
         );
     }
+    /**
+     * 获得转盘底部位置
+     */
     getBottom() {
         return (
             this.y +
@@ -95,6 +131,10 @@ class TurnTable extends Container {
                 this.scale.y
         );
     }
+    /**
+     * 添加箭头
+     * @param {number} rotation 角度
+     */
     addArrow(rotation) {
         if (rotation === undefined) {
             rotation = (this.conatiner.rotation / (2 * Math.PI)) * 360;
@@ -116,6 +156,9 @@ class TurnTable extends Container {
         this.arrows.push({ arrow, rotation });
         return arrow;
     }
+    /**
+     * 加快转盘旋转速度
+     */
     addSpeed() {
         this.speed *= 1.06;
         if (this.tween) {
@@ -157,6 +200,9 @@ class TurnTable extends Container {
         fail_angel.y = 169;
         fail_angel.visible = false;
     }
+    /**
+     * 开始旋转
+     */
     startRotate() {
         if (this.conatiner.rotation === 2 * Math.PI) {
             this.conatiner.rotation = 0;

@@ -68,7 +68,10 @@ export const AddPrize = (index) => {
 export const AddPrizeTip = () => {
     return { type: ADD_PRIZE_TIP };
 };
-
+/**
+ * 淘宝关注店牌API
+ * @param {*} userinfo 
+ */
 function tbShopFavor(userinfo) {
     return new Promise((resolve, reject) => {
         my.tb.checkShopFavoredStatus({
@@ -76,29 +79,40 @@ function tbShopFavor(userinfo) {
             success: (res) => {
                 console.log("favor status", res);
                 if (res.isFavor) {
-                    reject(res);
+                    resolve(res);
                 } else {
                     my.tb.favorShop({
                         id: userinfo.seller_id,
                         success: resolve,
-                        fail: reject,
+                        fail: (res) => {
+                            reject({
+                                msg:
+                                    typeof res.error === "string"
+                                        ? res.error
+                                        : "关注店铺失败",
+                            });
+                        },
                     });
                 }
             },
             fail: (res) => {
                 console.log("favor status fail", res);
-                reject(res);
+                reject({ msg: "查询店铺关注状态失败！" });
             },
         });
     });
 }
-
+/**
+ * 关注店铺action
+ * @param {*} userinfo 
+ * @param {*} cb 
+ */
 export const favorShop = (userinfo, cb) => {
     console.log("favorshop", userinfo.active_id);
     return (dispatch) => {
         tbShopFavor(userinfo)
             .then((res) => {
-                console.log("关注店铺");
+                console.log("关注店铺成功", res);
                 api({
                     apiName: "aiyong.interactc.user.data.update",
                     method: "/interactive/updateInterActCData",
@@ -121,14 +135,18 @@ export const favorShop = (userinfo, cb) => {
             })
             .catch((res) => {
                 Taro.showToast({
-                    title: "关注店铺失败",
+                    title: res.msg,
                     icon: "fail",
                     duration: 2000,
                 });
             });
     };
 };
-
+/**
+ * 参与游戏action
+ * @param {*} userinfo 
+ * @param {*} cb 
+ */
 export const joinGame = (userinfo, cb) => {
     return (dispatch) => {
         api({
@@ -149,7 +167,11 @@ export const joinGame = (userinfo, cb) => {
         });
     };
 };
-
+/**
+ * 用户复活action
+ * @param {*} userinfo 
+ * @param {*} cb 
+ */
 export const userRevive = (userinfo, cb) => {
     return (dispatch) => {
         api({
@@ -227,6 +249,12 @@ const authorizeBenefit = () => {
         });
     });
 };
+/**
+ * 抽奖action
+ * @param {*} userinfo 
+ * @param {*} appid 
+ * @param {*} cb 
+ */
 export const drawPrize = (userinfo, appid, cb) => {
     return async (dispatch) => {
         try {

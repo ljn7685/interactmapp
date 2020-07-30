@@ -80,8 +80,7 @@ class GameResult extends Component {
                 )}
                 {isSuccess && (
                     <Text className={styles["prize-desc"]}>
-                        获得<Text className={styles["prize-num"]}>50</Text>
-                        元优惠券
+                        获得店铺优惠券
                     </Text>
                 )}
                 {isSuccess ? (

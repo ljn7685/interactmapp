@@ -8,6 +8,9 @@ const line_startX = 39;
 const halfWidth = 142;
 const maxDistance =
   arrow_height - arrow_pull_pos - line_startY - arrow_head_height;
+/**
+ * 弓箭
+ */
 class Bow extends Container {
   constructor(properties) {
     super();
@@ -24,6 +27,9 @@ class Bow extends Container {
     this.addChild(this.bow_bg);
     this.width = this.bow_bg.width;
   }
+  /**
+   * 初始化弓箭线
+   */
   initLine() {
     let context = (this.context = new Graphics());
     context.x = 0;
@@ -31,6 +37,9 @@ class Bow extends Container {
     this.addChild(context);
     this.drawLine();
   }
+  /**
+   * 画弓箭的线
+   */
   drawLine() {
     let context = this.context;
     context.clear();
@@ -44,17 +53,26 @@ class Bow extends Container {
     context.lineTo(line_startX + halfWidth + halfWidth, line_startY); //设置末端状态
     context.endFill(); //进行绘制
   }
+  /**
+   * 添加箭头
+   */
   addArrow() {
     this.arrow = new Sprite(this.assets.get("arrow"));
     this.addChild(this.arrow);
     this.pullArrow();
   }
+  /**
+   * 更新箭头拉动时的位置
+   */
   pullArrow() {
     let arrow = this.arrow;
     arrow.y = line_startY - (arrow_height - arrow_pull_pos) + this.pullDistance;
     arrow.pivot.x = arrow.width / 2;
     arrow.x = this.bow_bg.width >> 1;
   }
+  /**
+   * 获取箭头在场景中的位置Y
+   */
   getArrowY() {
     return this.y + this.arrow.y * this.scale.y;
   }
@@ -70,6 +88,10 @@ class Bow extends Container {
     this.setPullDistance(0);
     this.removeArrow();
   }
+  /**
+   * 设置拉动距离
+   * @param {number} distance 拉动距离
+   */
   setPullDistance(distance) {
     if (distance >= 0 && distance <= maxDistance) {
       this.pullDistance = distance;
@@ -79,6 +101,10 @@ class Bow extends Container {
       }
     }
   }
+  /**
+   * 获取箭头飞行的终点位置
+   * @param {number} distance 飞行距离 
+   */
   getFlyY(distance) {
     return this.arrow.y - distance / this.scale.y;
   }

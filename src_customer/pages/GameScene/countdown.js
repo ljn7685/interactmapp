@@ -4,6 +4,9 @@ import TWEEN from "@tweenjs/tween.js";
 const { Tween } = TWEEN;
 
 const update_interval = 80;
+/**
+ * 倒计时
+ */
 class CountDown extends Container {
     constructor(properties) {
         super();
@@ -52,6 +55,9 @@ class CountDown extends Container {
             clearTimeout(this.timer);
         }
     }
+    /**
+     * 添加最后3秒的提示动画
+     */
     onTip() {
         let times = 6;
         let anim = () => {
@@ -79,6 +85,9 @@ class CountDown extends Container {
         };
         anim();
     }
+    /**
+     * 每一帧的回调，更新倒计时时间，显示最后几秒的提示动画
+     */
     tick() {
         this.timer = setTimeout(() => {
             this.time--;

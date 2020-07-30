@@ -44,6 +44,9 @@ class GameIndex extends Component {
     showNoEnoughTimes() {
         this.toast.info("已经参与过游戏咯", 2000);
     }
+    /**
+     * 开始游戏
+     */
     onGameStart = () => {
         const { userinfo, joinGame } = this.props;
         if (!userinfo.is_join && !userinfo.played) {
@@ -54,6 +57,9 @@ class GameIndex extends Component {
             this.redirectToGame();
         }
     };
+    /**
+     * 跳转到游戏页面
+     */
     redirectToGame = () => {
         if (this.props.gametimes <= 0) {
             this.showNoEnoughTimes();
@@ -63,10 +69,15 @@ class GameIndex extends Component {
             });
         }
     };
+    /**
+     * 关注店铺
+     */
     onFavorShop = () => {
         const { userinfo, gametimes } = this.props;
         this.props.favorShop(userinfo, () => {
-            this.toast.info("已经参与过游戏咯");
+            if (userinfo.played) {
+                this.toast.info("已经参与过游戏咯");
+            }
         });
     };
     onClickRule = () => {

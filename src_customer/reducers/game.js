@@ -101,6 +101,7 @@ export default function reducer(state = initState, action) {
                 userinfo.active_rewards = JSON.parse(userinfo.active_rewards);
             }
             userinfo.ename = userinfo.active_rewards.ename;
+            userinfo.played = "fasle" === userinfo.played ? false : true;
             return {
                 ...state,
                 is_follow: Boolean(userinfo.is_follow),

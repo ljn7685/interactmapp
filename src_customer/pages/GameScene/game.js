@@ -53,16 +53,9 @@ class Game extends EventEmitter {
         this.duration = config.game_duration;
         this.initStage();
     }
-    onResize = () => {
-        this.scale = document.documentElement.clientWidth / this.width;
-        this.stage.scale.x = this.stage.scale.y = this.scale;
-        this.height =
-            (document.documentElement.clientHeight /
-                document.documentElement.clientWidth) *
-            this.width;
-        this.stage.resize(this.width, this.height, true);
-        this.onSceneResize();
-    };
+    /**
+     * 根据屏幕大小，调整游戏场景
+     */
     onSceneResize() {
         let bgImg = this.assets.get("loading_bg");
         const scaleX = this.width / bgImg.width;
@@ -85,9 +78,6 @@ class Game extends EventEmitter {
             }
         }
     }
-    getRatio() {
-        return this.height / this.designHeight;
-    }
 
     initStage() {
         console.log(this.width, this.height);
@@ -103,7 +93,9 @@ class Game extends EventEmitter {
         this.gameReady();
         this.onSceneResize();
     }
-
+    /**
+     * 初始化背景图
+     */
     initBackground() {
         let bgImg = this.assets.get("loading_bg");
         const scaleX = this.width / bgImg.width;
@@ -113,15 +105,30 @@ class Game extends EventEmitter {
         this.bg.scale.y = scaleY;
         this.stage.addChild(this.bg);
     }
+    /**
+     * 添加下一帧执行的函数
+     * @param {*} fn 
+     */
     nextTick(fn) {
         setTimeout(fn, 0);
     }
+    /**
+     * 添加每一帧执行的函数
+     * @param {*} obj 
+     */
     addTick(obj) {
         this.ticker.add(obj);
     }
+    /**
+     * 移除每一帧执行的函数
+     * @param {*} obj 
+     */
     removeTick(obj) {
         this.ticker.remove(obj);
     }
+    /**
+     * 初始化转盘
+     */
     initTurnTable() {
         let turntable = (this.turntable = new TurnTable({
             assets: this.assets,
@@ -132,10 +139,17 @@ class Game extends EventEmitter {
         this.stage.addChild(turntable);
         this.setHorizontalCenter(turntable);
     }
+    /**
+     * 设置在屏幕中水平居中
+     * @param {*} obj 
+     */
     setHorizontalCenter(obj) {
         obj.pivot.x = obj.width / 2;
         obj.x = this.width / 2;
     }
+    /**
+     * 初始化弓箭
+     */
     initBow() {
         let bow = (this.bow = new Bow({ assets: this.assets }));
         bow.x = 196;
@@ -143,6 +157,9 @@ class Game extends EventEmitter {
         this.stage.addChild(bow);
         this.setHorizontalCenter(bow);
     }
+    /**
+     * 初始化弓箭数量文本
+     */
     initArrowTotal() {
         //当前分数
         let style = new TextStyle({
@@ -157,6 +174,10 @@ class Game extends EventEmitter {
         this.arrowTotal.y = 1183;
         this.onSceneResize();
     }
+    /**
+     * 更新弓箭数量
+     * @param {*} count 
+     */
     setArrowCount(count) {
         if (count >= 0 && count <= this.config.arrow_count) {
             this.arrow_count = count;
@@ -164,12 +185,18 @@ class Game extends EventEmitter {
             this.initArrowTotal();
         }
     }
+    /**
+     * 移除弓箭数量文本
+     */
     removeArrowTotal() {
         if (this.arrowTotal) {
             this.stage.removeChild(this.arrowTotal);
             this.arrowTotal = null;
         }
     }
+    /**
+     * 初始化倒计时
+     */
     initCountdown() {
         let countdown = (this.countdown = new CountDown({
             game: this,
@@ -180,14 +207,22 @@ class Game extends EventEmitter {
         countdown.x = this.width / 2;
         countdown.start();
     }
-
+    /**
+     * 触摸开始
+     * @param {*} e 
+     */
     onPointStart = (e) => {
+        if (this.isFlying) return;
         this.pull_start = true;
         this.pulling = false;
         this.pull_pos = [e.touches[0].clientX, e.touches[0].clientY];
         this.emit("pointstart");
         console.log("touchstart");
     };
+    /**
+     * 触摸移动
+     * @param {*} e 
+     */
     onPointMove = (e) => {
         if (!this.pull_start) return;
         let x = e.touches[0].clientX;
@@ -204,6 +239,9 @@ class Game extends EventEmitter {
             this.pull_pos = [x, y];
         }
     };
+    /**
+     * 触摸结束
+     */
     onPointEnd = () => {
         if (!this.pull_start) return;
         this.pull_start = false;
@@ -216,7 +254,10 @@ class Game extends EventEmitter {
             }
         }
     };
-
+    /**
+     * 箭头飞行动画
+     * @param {Arrow} arrow 箭头对象
+     */
     arrowFlying(arrow) {
         this.isFlying = true;
         let distance = this.bow.getArrowY() - this.turntable.getHitBottom();
@@ -225,7 +266,7 @@ class Game extends EventEmitter {
                 {
                     y: this.bow.getFlyY(distance),
                 },
-                400
+                300
             )
             .onUpdate((object, elapsed) => {
                 arrow.scale.x = 1 + (this.turntable.arrow_scale - 1) * elapsed;
@@ -252,6 +293,9 @@ class Game extends EventEmitter {
             })
             .start();
     }
+    /**
+     * 弓箭射击失败回调
+     */
     onShootFail() {
         console.log("onShootFail");
         if (this.state === 1) return;
@@ -262,6 +306,9 @@ class Game extends EventEmitter {
         this.turntable.setFailAngel(true);
         this.gameOver();
     }
+    /**
+     * 弓箭射击成功回调
+     */
     onShootSuccess() {
         console.log("onShootSuccess");
         if (this.state === 1) return;
@@ -282,6 +329,10 @@ class Game extends EventEmitter {
             }
         });
     }
+    /**
+     * 延迟一段时间显示普通状态下的天使
+     * @param {*} callback 
+     */
     delayShowNormalAngel(callback) {
         if (this.angelTimer) {
             clearTimeout(this.angelTimer);
@@ -296,10 +347,15 @@ class Game extends EventEmitter {
             callback && callback();
         }, 1400);
     }
-
+    /**
+     * 每一帧执行的函数
+     */
     onUpdate() {
         TWEEN.update();
     }
+    /**
+     * 游戏停止回调，游戏结束事调用
+     */
     stop() {
         if (this.angelTimer) {
             clearTimeout(this.angelTimer);
@@ -317,11 +373,15 @@ class Game extends EventEmitter {
         TWEEN.removeAll();
     }
     destroy() {}
-
+    /**
+     * 游戏准备就绪回调
+     */
     gameReady() {
         this.bow.addArrow();
     }
-
+    /**
+     * 游戏结束回调
+     */
     gameOver() {
         this.state = 1;
         this.nextTick(() => {

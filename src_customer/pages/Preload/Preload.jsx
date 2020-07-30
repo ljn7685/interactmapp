@@ -61,6 +61,10 @@ class Loading extends Component {
       this.onComplete()
     }
   }
+  /**
+   * 计算进度条长度
+   * @param {*} progress 进度
+   */
   getBarWidth(progress) {
     const contentWidth = progress_width - content_padding;
     const barWidth = Math.max(
@@ -101,6 +105,9 @@ class Loading extends Component {
       },
     });
   };
+  /**
+   * 加载资源
+   */
   loadRes = () => {
     console.log("loadRes", resources);
     PIXI.loader
@@ -110,6 +117,9 @@ class Loading extends Component {
       })
       .load(this.onComplete);
   };
+  /**
+   * 加载完成回调
+   */
   onComplete = () => {
     console.log("onComplete");
     setTimeout(() => {

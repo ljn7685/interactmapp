@@ -9,7 +9,7 @@ class GamePrize extends Component {
         super(props);
     }
     render() {
-        const { onClose, prizes } = this.props;
+        const { onClose, prizes, userinfo } = this.props;
         return (
             <GameModal
                 visible={true}
@@ -20,7 +20,11 @@ class GamePrize extends Component {
                 title="我的奖品"
             >
                 {prizes.length === 0 ? (
-                    <Text className={styles["prize-msg"]}>暂无中奖</Text>
+                    <Text className={styles["prize-msg"]}>
+                        {userinfo.played
+                            ? "请到“我的-红包卡券”中查看奖品！"
+                            : "暂无中奖"}
+                    </Text>
                 ) : prizes instanceof Array ? (
                     prizes.map((item, index) => (
                         <View className={styles["prize-item"]} key={index}>
@@ -55,6 +59,7 @@ class GamePrize extends Component {
 const mapStateToProps = ({ game }) => {
     return {
         prizes: game.prizes,
+        userinfo: game.userinfo,
     };
 };
 const wrapper = connect(mapStateToProps, null)(GamePrize);
