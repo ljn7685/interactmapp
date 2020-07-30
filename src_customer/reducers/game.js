@@ -11,8 +11,8 @@ import {
     ADD_PRIZE,
     SET_JOIN_GAME,
     SET_REWARDS,
+    ADD_PRIZE_TIP,
 } from "../constants/game";
-import { storage } from "mapp_common/utils/storage";
 import default_avatar from "../assets/images/avatar.png";
 
 const initState = {
@@ -118,21 +118,19 @@ export default function reducer(state = initState, action) {
             state.userinfo.is_follow = 1;
             return { ...state, is_follow: true };
         case SET_REWARDS:
-            state.userinfo.active_rewards.datas = action.rewards
-            return {...state}
+            state.userinfo.active_rewards.datas = action.rewards;
+            return { ...state };
         case ADD_PRIZE:
             const active_rewards = state.userinfo.active_rewards.datas;
-            const prize_id = Number(action.prize_id);
-            const newPrizes =
-                active_rewards instanceof Array
-                    ? active_rewards.filter(
-                          (item) => item.prize_id === prize_id
-                      )
-                    : active_rewards.prize_id === prize_id
-                    ? [active_rewards]
-                    : [];
-            const prizes = [...state.prizes, ...newPrizes];
+            const newPrize = active_rewards[action.index];
+            const prizes = [...state.prizes, newPrize];
             return { ...state, prizes };
+        case ADD_PRIZE_TIP:
+            const prize_tip = {
+                msg: `恭喜你中奖啦！
+        请到“我的-红包卡券”中查看奖品！`,
+            };
+            return { ...state, prizes: prize_tip };
         default:
             return state;
     }

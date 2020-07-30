@@ -9,12 +9,13 @@ import {
     RESET_REVIVE_TIMES,
     SET_FAVOR_SHOP,
     ADD_PRIZE,
+    ADD_PRIZE_TIP,
     SET_JOIN_GAME,
     SET_REWARDS,
 } from "../constants/game";
 import { api } from "../../public/util/api";
 import { getCloud } from "mapp_common/utils/cloud";
-import Taro from "@tarojs/taro"
+import Taro from "@tarojs/taro";
 
 export const addGametimes = () => {
     return { type: ADD_GAMETIMES };
@@ -60,8 +61,12 @@ export const setFavorShop = () => {
     return { type: SET_FAVOR_SHOP };
 };
 
-export const AddPrize = (prize_id) => {
-    return { type: ADD_PRIZE, prize_id };
+export const AddPrize = (index) => {
+    return { type: ADD_PRIZE, index };
+};
+
+export const AddPrizeTip = () => {
+    return { type: ADD_PRIZE_TIP };
 };
 
 function tbShopFavor(userinfo) {
@@ -181,37 +186,44 @@ const queryPrizes = (userinfo, appid) => {
             return res;
         });
 };
-const draw = (userinfo, appid, cb) => {
-    my.authorize({
-        scopes: "scope.benefitSend",
-        success: (res) => {
-            console.log(JSON.stringify(res));
-            getCloud()
-                .topApi.invoke({
-                    api: "alibaba.benefit.draw",
-                    data: {
-                        ename: userinfo.ename,
-                        app_name: `promotioncenter-${appid}`,
-                    },
-                })
-                .then((res) => {
-                    console.log(JSON.stringify(res));
-                    if (res.result.result_success) {
-                        cb && cb(res.prize_id);
-                    }
-                })
-                .catch((e) => {
-                    console.log(e.message);
-                });
-        },
-        fail(res) {
-            console.log("fail", res);
-        },
+const draw = (userinfo, appid) => {
+    return new Promise((resolve, reject) => {
+        my.authorize({
+            scopes: "scope.benefitSend",
+            success: (res) => {
+                console.log(JSON.stringify(res));
+                getCloud()
+                    .topApi.invoke({
+                        api: "alibaba.benefit.draw",
+                        data: {
+                            ename: userinfo.ename,
+                            app_name: `promotioncenter-${appid}`,
+                        },
+                    })
+                    .then((res) => {
+                        console.log(JSON.stringify(res));
+                        if (res.result.result_success) {
+                            resolve(res.prize_id);
+                        }
+                    })
+                    .catch((e) => {
+                        console.log(e.message);
+                        reject(e);
+                    });
+            },
+            fail(res) {
+                console.log("fail", res);
+                reject(res);
+            },
+        });
     });
 };
 export const drawPrize = (userinfo, appid, cb) => {
-    return (dispatch) => {
-        draw(userinfo, appid, (prize_id) => {
+    return async (dispatch) => {
+        const queryInfo = await queryPrizes(userinfo, appid);
+        dispatch(setRewards(queryInfo.result.datas));
+        try {
+            const prize_id = await draw(userinfo, appid);
             api({
                 apiName: "aiyong.interactc.user.data.update",
                 method: "/interactive/updateInterActCData",
@@ -220,18 +232,25 @@ export const drawPrize = (userinfo, appid, cb) => {
                     active_id: userinfo.active_id,
                     prize_id,
                 },
-                callback: (res) => {
+                callback: async (res) => {
                     console.log("~~~~~~~~~~~~~~~~~~~~", res, prize_id);
-                    queryPrizes(userinfo, appid).then((res) => {
-                        dispatch(setRewards(res.result.datas));
-                        dispatch(AddPrize(prize_id));
-                        cb && cb();
-                    });
+                    if (queryInfo.result.datas.length === 1) {
+                        dispatch(AddPrize(0));
+                    } else {
+                        dispatch(AddPrizeTip());
+                    }
+                    cb && cb();
                 },
                 errCallback: (err) => {
                     console.log(err);
                 },
             });
-        });
+        } catch (e) {
+            Taro.showToast({
+                title: "抽奖失败",
+                icon: "fail",
+                duration: 2000,
+            });
+        }
     };
 };

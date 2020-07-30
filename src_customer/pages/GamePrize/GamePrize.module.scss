@@ -11,12 +11,15 @@
     width: 511px;
     height: 303px;
     display: flex;
-    justify-content: space-between;
-    .noprize {
+    justify-content: space-around;
+    position: relative;
+    .prize-msg {
         width: 511px;
-        height: 303px;
-        line-height: 303px;
+        position: absolute;
+        top:50%;
+        transform: translateY(-50%);
         text-align: center;
+        line-height: 1.5;
         font-size: 26px;
         color: #9c9ce6;
     }

@@ -20,12 +20,12 @@ class GamePrize extends Component {
                 title="我的奖品"
             >
                 {prizes.length === 0 ? (
-                    <Text className={styles.noprize}>暂无中奖</Text>
-                ) : (
+                    <Text className={styles["prize-msg"]}>暂无中奖</Text>
+                ) : prizes instanceof Array ? (
                     prizes.map((item) => (
                         <View className={styles["prize-item"]}>
                             <Text className={styles["prize-desc"]}>
-                                {item.benefit_name}
+                                {`${item.amount / 100}元优惠券`}
                             </Text>
                             <View className={styles["prize-content"]}>
                                 <Text
@@ -35,7 +35,7 @@ class GamePrize extends Component {
                                             : styles["three"]
                                     }`}
                                 >
-                                    {item.amount}
+                                    {item.amount / 100}
                                 </Text>
                                 <Image
                                     className={styles["prize-img"]}
@@ -45,6 +45,8 @@ class GamePrize extends Component {
                             </View>
                         </View>
                     ))
+                ) : (
+                    <Text className={styles["prize-msg"]}>{prizes.msg}</Text>
                 )}
             </GameModal>
         );
