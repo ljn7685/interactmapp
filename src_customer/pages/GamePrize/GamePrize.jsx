@@ -22,8 +22,8 @@ class GamePrize extends Component {
                 {prizes.length === 0 ? (
                     <Text className={styles["prize-msg"]}>暂无中奖</Text>
                 ) : prizes instanceof Array ? (
-                    prizes.map((item) => (
-                        <View className={styles["prize-item"]}>
+                    prizes.map((item, index) => (
+                        <View className={styles["prize-item"]} key={index}>
                             <Text className={styles["prize-desc"]}>
                                 {`${item.amount / 100}元优惠券`}
                             </Text>
