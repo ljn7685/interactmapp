@@ -109,7 +109,9 @@ export const favorShop = (userinfo, cb) => {
                     callback: (res) => {
                         console.log("~~~~~~~~~~~~~~~~~~~~", res);
                         dispatch(setFavorShop());
-                        dispatch(addGametimes());
+                        if (!userinfo.played) {
+                            dispatch(addGametimes());
+                        }
                         cb && cb();
                     },
                     errCallback: (err) => {
