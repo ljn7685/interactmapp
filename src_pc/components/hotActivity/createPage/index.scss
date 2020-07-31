@@ -7,7 +7,7 @@
     font-family: PingFangSC-Regular PingFang SC;
     padding-left: 64px;
     padding-bottom: 42px;
-
+    position: relative;
     .warn-xing{
         color: red;
         font-size: 36px;
@@ -126,6 +126,25 @@
             Text{
                 font-family: PingFangSC-Regular;
             }
+        }
+    }
+    .model-bg{
+        position: absolute;
+        right: 216px;
+        top: 90px;
+        .img-bg{
+            width: 600px;
+            height: 1080px;
+        }
+        .second-title{
+            position: absolute;
+            top: 250px;
+            right: 146px;
+            font-size: 24px;
+            color: #fff;
+            transform: scale(0.9);
+            width: 384px;
+            text-align: center;
         }
     }
     .create-bottom{

@@ -44,7 +44,7 @@ class Layout extends Component {
         return (
             <View className='layout-box'>
                 <View className='layout-top'>
-                    <Image className='logo' src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1594993792793&di=b6603d7e773657969831b7c412616b28&imgtype=0&src=http%3A%2F%2Fa1.att.hudong.com%2F05%2F00%2F01300000194285122188000535877.jpg' alt='logo' />
+                    <Image className='logo' src='http://q.aiyongbao.com/interact/LOGO.png' alt='logo' />
                     <View className='layout-title' onClick={this.demo}>爱用互动</View>
                     <View className='layout-desc'>由 爱用科技 提供</View>
                 </View>

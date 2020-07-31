@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Input } from '@tarojs/components';
+import { Text, View, Input, Image } from '@tarojs/components';
 import './index.scss';
 import moment from 'moment';
 import { changeTitleAction, setActivityUrlAction } from '../actions';
@@ -8,7 +8,7 @@ import Taro from '@tarojs/taro';
 import { api } from '../../../public/util/api';
 import { connect } from 'react-redux';
 //c端版本号
-export const version = '0.0.5';
+export const version = '0.0.9';
 
 var plugin = requirePlugin("myPlugin");
 let eName;
@@ -106,7 +106,7 @@ class CreatePage extends Component {
             operationType = 1;
         }
         let newArgs = Object.assign({}, this.state.args);
-        if (isEmpty(newArgs.activeName) || isEmpty(newArgs.subTitle) || isEmpty(newArgs.startDate) || isEmpty(newArgs.endDate) || isEmpty(this.cupon)) {
+        if (isEmpty(newArgs.activeName) || isEmpty(newArgs.subTitle) || isEmpty(newArgs.startDate) || isEmpty(newArgs.endDate) || isEmpty(this.state.couponData)) {
             Taro.showToast({
                 title: '必填项不能为空',
                 duration: 2000
@@ -281,6 +281,10 @@ class CreatePage extends Component {
                         <Text>2.规定时间内弓箭未使用完毕，则挑战失败；</Text>
                         <Text>3.游戏成功，即可获得奖励；</Text>
                     </View>
+                </View>
+                <View className='model-bg'>
+                    <Image className='img-bg' src='http://q.aiyongbao.com/interact/bg.png' />
+                    <View className='second-title'>{args.subTitle}</View>
                 </View>
                 <View className='create-bottom'>
                     {
