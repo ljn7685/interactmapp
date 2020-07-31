@@ -207,7 +207,7 @@ class AllActivity extends Component {
                         <View className='content-status'>{item.status}</View>
                                 <View className='content-time-box'>
                         <View className='time-start'>起：{item.start_date}</View>
-                        <View className='time-end'>止：{item.end_date}</View>
+                        <View className='time-end'>止：{item.end_date.substring(0,10)+' 23:59:59'}</View>
                                 </View>
                                 <View className='content-url' onClick={this.copyUrl.bind(this,item.active_url, item.id)}>复制链接</View>
                                 <View className='oper-box'>

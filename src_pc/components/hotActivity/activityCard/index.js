@@ -5,7 +5,6 @@ import { changeTitleAction } from '../actions';
 
 import { connect } from 'react-redux';
 class ActivityCard extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -16,7 +15,6 @@ class ActivityCard extends Component {
  * @param {*} value 
  */
     goToCreatePage = (value)=>{
-        console.log('dddd');
         this.props.changeTitleAction(value, 'create')
     }
 /**
@@ -24,7 +22,7 @@ class ActivityCard extends Component {
  */
 goToYuque = ()=>{
     my.qn.navigateToWebPage({
-        url: "https://www.yuque.com/books/share/32a46a84-dd07-468e-b1c3-bc648face3de/gwdtvg"
+        url: "https://www.yuque.com/xujingyi/kb/ufwevl"
     });
 }
 
