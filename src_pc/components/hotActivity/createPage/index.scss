@@ -1,0 +1,192 @@
+.create-page{
+    background: #fff;
+    border-radius: 16px;
+    margin: 32px 48px 0 48px;
+    display: flex;
+    flex-direction: column;
+    font-family: PingFangSC-Regular PingFang SC;
+    padding-left: 64px;
+    padding-bottom: 42px;
+    position: relative;
+    .warn-xing{
+        color: red;
+        font-size: 36px;
+        margin-right: 4px;
+    }
+    .name-box{
+        display: flex;
+        margin-top: 32px;
+        align-items: center;
+        font-size: 24px;
+        color: #767676;
+        position: relative;
+        .name-input{
+            width: 510px;
+            height: 56px;
+            margin: 0 32px;
+            font-size: 28px;
+            color: #333333;
+        }
+        .name-num{
+            position: absolute;
+            font-size: 24px;
+            color: #CCCCCC;
+            left: 568px;
+        }
+    }
+    .time-txt{
+        margin-right: 30px;
+    }
+    .time-input{
+        width: 200px;
+        height: 56px;
+        font-size: 28px;
+        color: #333333;
+    }
+    .time-to{
+        margin: 0 16px;
+    }
+    .res-input{
+        width: 128px;
+        height: 56px;
+        margin-left: 32px;
+        font-size: 28px;
+        color: #333333;
+    }
+    .unit{
+        font-size: 24px;
+        color: #333333;
+        margin-right: 32px;
+        margin-left: 8px;
+    }
+
+    .coupon-box{
+        margin-top: 32px;
+        .coupon-top{
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            color: #767676;
+            .coupon{
+                height: 40px;
+                line-height: 40px;
+                font-size: 28px;
+                color: #333333;
+                margin: 0 32px;
+                border: 2px solid #0863FF;
+                color: #0863FF;
+                padding: 8px 8px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            .refresh{
+                font-size: 24px;
+                color: #0863FF;
+                cursor: pointer;
+            }
+            .prize-num{
+                font-size: 24px;
+                margin-left: 32px;
+            }
+        }
+        .warn-bar{
+            display: flex;
+            width: 768px;
+            height: 44px;
+            background: rgba(245,166,35,0.20);
+            margin-left: 128px;
+            margin-top: 16px;
+            align-items: center;
+            .warn-icno{
+                color: red;
+                margin-left: 18px;
+                margin-top: 10px;
+                margin-right: 8px;
+                font-size: 36px;
+            }
+            .warn-txt{
+                font-size: 24px;
+                color: #FF6100;
+            }
+        }
+    }
+    .rules-box{
+        margin-top: 32px;
+        font-size: 24px;
+        color: #767676;
+        display: flex;
+        .rules-content{
+            color: #333333;
+            margin-left: 32px;
+            width: 876px;
+            display: flex;
+            flex-direction: column;
+            line-height: 50px;
+            letter-spacing: 2px;
+            Text{
+                font-family: PingFangSC-Regular;
+            }
+        }
+    }
+    .model-bg{
+        position: absolute;
+        right: 216px;
+        top: 90px;
+        .img-bg{
+            width: 600px;
+            height: 1080px;
+        }
+        .second-title{
+            position: absolute;
+            top: 250px;
+            right: 146px;
+            font-size: 24px;
+            color: #fff;
+            transform: scale(0.9);
+            width: 384px;
+            text-align: center;
+        }
+    }
+    .create-bottom{
+        margin-top: 48px;
+        padding-left: 128px;
+        display: flex;
+        .edit-box{
+            display: flex;
+        }
+        .sure-btu{
+            width: 252px;
+            height: 84px;
+            background: #0863FF;
+            border-radius: 22px;
+            color: #fff;
+            line-height: 84px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .give-up{
+            width: 248px;
+            height: 80px;
+            border: 2px solid #0863FF;
+            border-radius: 22px;
+            font-size: 32px;
+            color: #0863FF;
+            line-height: 84px;
+            text-align: center;
+            background: #fff;
+            margin-left: 80px;
+            cursor: pointer;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

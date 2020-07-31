@@ -51,13 +51,15 @@
     "eventemitter3": "^4.0.4",
     "miniapp-router": "^0.1.8",
     "moment": "^2.27.0",
-    "nervjs": "^1.5.7",
+    "nervjs": "^1.5.7",c
     "react": "^16.13.1",
     "react-dom": "^16.10.0",
     "react-redux": "^7.2.0",
+    "react-router-config": "^5.1.1",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "taro-ui": "^2.3.4"
   },
   "devDependencies": {
     "@babel/core": "^7.8.0",
@@ -74,6 +76,7 @@
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-react-hooks": "^1.6.1",
+    "react-router-dom": "^5.2.0",
     "stylelint": "9.3.0"
   }
 }

@@ -1,0 +1,132 @@
+
+.success-box{
+    background: #fff;
+    border-radius: 16px;
+    margin: 32px 48px 0 48px;
+    padding-left: 64px;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 80px;
+    height: 89%;
+    .success-top{
+        display: flex;
+        align-items: center;
+        .success-icno{
+            margin-right: 24px;
+            font-size: 40px;
+            color: #3D7FFF;
+        }
+        .success-txt{
+            font-size: 32px;
+            color: #333333;
+            font-weight: bold;
+            // font-family: PingFangSC-Semibold, Microsoft JhengHei;
+        }
+    }
+    .success-content{
+        background: #F7F7F7;
+        border-radius: 8px;
+        width: 1400px;
+        height: 760px;
+        padding-left: 48px;
+        padding-top: 48px;
+        margin-top: 48px;
+        .step{
+            font-size: 32px;
+            color: #333333;
+            text-align: left;
+        }
+    }
+    .url-box{
+        display: flex;
+        margin-top: 42px;
+        align-items: center;
+        .url-txt{
+            font-size: 28px;
+            color: #767676;
+            text-align: left;
+        }
+        .url{
+            background: #FFFFFF;
+            border: 2px solid #CCCCCC;
+            width: 896px;
+            height: 72px;
+            line-height: 72px;
+            font-size: 28px;
+            color: #333333;
+            margin-left: 32px;
+            padding-left: 20px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+
+        }
+        .url-copy{
+            background: #FFFFFF;
+            border: 2px solid #0863FF;
+            width: 160px;
+            height: 72px;
+            line-height: 72px;
+            font-size: 28px;
+            color: #0863FF;
+            margin-left: 18px;
+            text-align: center;
+            cursor: pointer;
+        }
+    }
+    .poster-box{
+        margin-top: 40px;
+        .poster-title{
+            font-size: 28px;
+            color: #767676;
+            text-align: left;
+        }
+        .poster-img-box{
+            display: flex;
+            margin-top: 16px;
+            margin-left: 80px;
+            .poster{
+                display: flex;
+                flex-direction: column;
+                justify-content: right;
+                margin-right: 64px;
+                .poster-img{
+                    width: 600px;
+                    height: 240px;
+                }
+                .copy-img{
+                    font-size: 24px;
+                    color: #196EFF;
+                    margin-top: 16px;
+                    text-align: right;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    .fitment{
+        margin-top: 40px;
+        display: flex;
+        align-items: center;
+        .fitment-txt{
+            font-size: 28px;
+            color: #767676;
+        }
+        .fitment-btu{
+            background: #FFFFFF;
+            border: 2px solid #0863FF;
+            margin-left: 54px;
+            width: 160px;
+            height: 72px;
+            line-height: 72px;
+            text-align: center;
+            font-family: PingFangSC-Semibold;
+            cursor: pointer;
+            color: #0863FF;
+            font-size: 28px;
+        }
+    }
+}
