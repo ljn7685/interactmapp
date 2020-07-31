@@ -1,0 +1,110 @@
+.bg {
+    background: url("../../assets/images/loading_bg.png") repeat-y;
+    background-size: 100% 100%;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    .title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .title-img {
+            width: 470px;
+            display: block;
+        }
+        .title-desc {
+            margin-top: 20px;
+            font-size: 32px;
+            color: #ffffff;
+        }
+    }
+    .game-info {
+        height: 25px;
+        margin-bottom: 41px;
+        font-size: 24px;
+        color: #ffffff;
+    }
+    .game-preview {
+        text-align: center;
+        position: relative;
+        margin: 40px 0;
+        .preview-turntable {
+            margin-left: 37px;
+            transform-origin: 335px 327px;
+            width: 708px;
+        }
+        .preview-rotate {
+            animation: rotate360 2s linear infinite;
+        }
+        .preview-content {
+            position: absolute;
+            margin: 0;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .preview-content.player {
+            width: 310px;
+        }
+        .preview-content.heart {
+            width: 750px;
+        }
+    }
+    .button {
+        width: 497px;
+        height: 85px;
+        box-shadow: 0px 19px 65px 0px rgba(161, 159, 237, 0.21);
+        border-radius: 42px;
+        font-size: 36px;
+        line-height: 85px;
+        color: #ffffff;
+        text-align: center;
+    }
+    .start-game {
+        background-color: #ffb9da;
+    }
+    .game-times {
+        background-color: #aedfff;
+        margin-bottom: 43px;
+    }
+    .game-desc {
+        font-size: 24px;
+        line-height: 24px;
+        color: #ffffff;
+    }
+}
+
+@keyframes rotate360 {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes jump {
+    0% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(10px);
+    }
+    50% {
+        transform: translateY(20px) scale(1.1, 0.9);
+    }
+    75% {
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+.jump-container {
+    position: relative;
+    .jump-icon {
+        position: absolute;
+        animation: jump 0.5s linear infinite;
+    }
+}
