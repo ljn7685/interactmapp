@@ -10,8 +10,9 @@ import {
     SET_FAVOR_SHOP,
     ADD_PRIZE,
     SET_JOIN_GAME,
+    SET_REWARDS,
+    ADD_PRIZE_TIP,
 } from "../constants/game";
-import { storage } from "mapp_common/utils/storage";
 import default_avatar from "../assets/images/avatar.png";
 
 const initState = {
@@ -36,18 +37,13 @@ const initState = {
             {
                 title: "一.活动介绍：",
                 desc: `1.从店铺首页或商品详情页进入丘比特之箭页面即可开始游戏；
-                2.活动期间，可通过关注店铺获取游戏次数；
-                3.游戏成功，即可获得奖励；`,
+                2.活动期间，可通过关注店铺获取游戏次数；`,
             },
             {
                 title: "二.玩法介绍：",
                 desc: `1.向后拉动弓箭，手指离开屏幕弓箭射出，若弓箭触碰到转盘中的其他弓箭则挑战失败；
-                2.规定时间内弓箭未使用完毕，则挑战失败；`,
-            },
-            {
-                title: "三.奖励规则：",
-                desc: `1.优惠券可在卡券包中查看，店铺内购买商品时可使用；
-                2.每人每日只可领取一个奖励；`,
+                2.规定时间内弓箭未使用完毕，则挑战失败；
+                3.游戏成功，即可获得奖励；`,
             },
         ],
     },
@@ -100,9 +96,10 @@ export default function reducer(state = initState, action) {
                 userinfo.active_rewards = JSON.parse(userinfo.active_rewards);
             }
             userinfo.ename = userinfo.active_rewards.ename;
+            userinfo.played = "fasle" === userinfo.played ? false : true;
             return {
                 ...state,
-                is_follow: Boolean(action.userinfo.is_follow),
+                is_follow: Boolean(userinfo.is_follow),
                 max_fail_times: userinfo.game_number,
                 revive_times: userinfo.game_number,
                 gametimes:
@@ -116,19 +113,20 @@ export default function reducer(state = initState, action) {
         case SET_FAVOR_SHOP:
             state.userinfo.is_follow = 1;
             return { ...state, is_follow: true };
+        case SET_REWARDS:
+            state.userinfo.active_rewards.datas = action.rewards;
+            return { ...state };
         case ADD_PRIZE:
             const active_rewards = state.userinfo.active_rewards.datas;
-            const prize_id = action.prize_id;
-            const newPrizes =
-                active_rewards instanceof Array
-                    ? avtive_rewards.filter(
-                          (item) => item.prize_id === prize_id
-                      )
-                    : active_rewards.prize_id === prize_id
-                    ? [active_rewards]
-                    : [];
-            const prizes = [...state.prizes, ...newPrizes];
+            const newPrize = active_rewards[action.index];
+            const prizes = [...state.prizes, newPrize];
             return { ...state, prizes };
+        case ADD_PRIZE_TIP:
+            const prize_tip = {
+                msg: `恭喜你中奖啦！
+        请到“我的-红包卡券”中查看奖品！`,
+            };
+            return { ...state, prizes: prize_tip };
         default:
             return state;
     }

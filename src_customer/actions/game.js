@@ -9,10 +9,13 @@ import {
     RESET_REVIVE_TIMES,
     SET_FAVOR_SHOP,
     ADD_PRIZE,
+    ADD_PRIZE_TIP,
     SET_JOIN_GAME,
+    SET_REWARDS,
 } from "../constants/game";
 import { api } from "../../public/util/api";
 import { getCloud } from "mapp_common/utils/cloud";
+import Taro from "@tarojs/taro";
 
 export const addGametimes = () => {
     return { type: ADD_GAMETIMES };
@@ -46,6 +49,10 @@ export const setUserInfo = (userinfo) => {
     return { type: SET_USER_INFO, userinfo };
 };
 
+export const setRewards = (rewards) => {
+    return { type: SET_REWARDS, rewards };
+};
+
 export const setJoinGame = () => {
     return { type: SET_JOIN_GAME };
 };
@@ -54,10 +61,17 @@ export const setFavorShop = () => {
     return { type: SET_FAVOR_SHOP };
 };
 
-export const AddPrize = (prize_id) => {
-    return { type: ADD_PRIZE, prize_id };
+export const AddPrize = (index) => {
+    return { type: ADD_PRIZE, index };
 };
 
+export const AddPrizeTip = () => {
+    return { type: ADD_PRIZE_TIP };
+};
+/**
+ * 淘宝关注店牌API
+ * @param {*} userinfo 
+ */
 function tbShopFavor(userinfo) {
     return new Promise((resolve, reject) => {
         my.tb.checkShopFavoredStatus({
@@ -70,44 +84,69 @@ function tbShopFavor(userinfo) {
                     my.tb.favorShop({
                         id: userinfo.seller_id,
                         success: resolve,
-                        fail: reject,
+                        fail: (res) => {
+                            reject({
+                                msg:
+                                    typeof res.error === "string"
+                                        ? res.error
+                                        : "关注店铺失败",
+                            });
+                        },
                     });
                 }
             },
             fail: (res) => {
                 console.log("favor status fail", res);
-                reject(res);
+                reject({ msg: "查询店铺关注状态失败！" });
             },
         });
     });
 }
-
+/**
+ * 关注店铺action
+ * @param {*} userinfo 
+ * @param {*} cb 
+ */
 export const favorShop = (userinfo, cb) => {
     console.log("favorshop", userinfo.active_id);
     return (dispatch) => {
-        tbShopFavor(userinfo).then((res) => {
-            console.log("关注店铺");
-            api({
-                apiName: "aiyong.interactc.user.data.update",
-                method: "/interactive/updateInterActCData",
-                args: {
-                    game_stage: 1,
-                    active_id: userinfo.active_id,
-                },
-                callback: (res) => {
-                    console.log("~~~~~~~~~~~~~~~~~~~~", res);
-                    dispatch(setFavorShop());
-                    dispatch(addGametimes());
-                    cb && cb();
-                },
-                errCallback: (err) => {
-                    console.log(err);
-                },
+        tbShopFavor(userinfo)
+            .then((res) => {
+                console.log("关注店铺成功", res);
+                api({
+                    apiName: "aiyong.interactc.user.data.update",
+                    method: "/interactive/updateInterActCData",
+                    args: {
+                        game_stage: 1,
+                        active_id: userinfo.active_id,
+                    },
+                    callback: (res) => {
+                        console.log("~~~~~~~~~~~~~~~~~~~~", res);
+                        dispatch(setFavorShop());
+                        if (!userinfo.played) {
+                            dispatch(addGametimes());
+                        }
+                        cb && cb();
+                    },
+                    errCallback: (err) => {
+                        console.log(err);
+                    },
+                });
+            })
+            .catch((res) => {
+                Taro.showToast({
+                    title: res.msg,
+                    icon: "fail",
+                    duration: 2000,
+                });
             });
-        });
     };
 };
-
+/**
+ * 参与游戏action
+ * @param {*} userinfo 
+ * @param {*} cb 
+ */
 export const joinGame = (userinfo, cb) => {
     return (dispatch) => {
         api({
@@ -128,7 +167,11 @@ export const joinGame = (userinfo, cb) => {
         });
     };
 };
-
+/**
+ * 用户复活action
+ * @param {*} userinfo 
+ * @param {*} cb 
+ */
 export const userRevive = (userinfo, cb) => {
     return (dispatch) => {
         api({
@@ -149,35 +192,76 @@ export const userRevive = (userinfo, cb) => {
         });
     };
 };
-const draw = (userinfo, appid, cb) => {
-    my.authorize({
-        scopes: "scope.benefitSend",
-        success: (res) => {
-            console.log(JSON.stringify(res));
-            getCloud()
-                .topApi.invoke({
-                    api: "alibaba.benefit.draw",
-                    data: {
-                        ename: userinfo.ename,
-                        app_name: `promotioncenter-${appid}`,
-                    },
-                })
-                .then((result) => {
-                    console.log(JSON.stringify(result));
-                    cb && cb(result["alibaba_benefit_draw_response"].prize_id);
-                })
-                .catch((e) => {
-                    console.log(e.message);
-                });
-        },
-        fail(res) {
-            console.log("fail", res);
-        },
+const queryPrizes = (userinfo, appid) => {
+    return getCloud()
+        .topApi.invoke({
+            api: "alibaba.benefit.query",
+            data: {
+                ename: userinfo.ename,
+                app_name: `promotioncenter-${appid}`,
+            },
+        })
+        .then((res) => {
+            console.log("query prize", res);
+            return res;
+        })
+        .catch((res) => {
+            console.log("query prize fail", res);
+            return res;
+        });
+};
+const draw = (userinfo, appid) => {
+    return new Promise((resolve, reject) => {
+        getCloud()
+            .topApi.invoke({
+                api: "alibaba.benefit.draw",
+                data: {
+                    ename: userinfo.ename,
+                    app_name: `promotioncenter-${appid}`,
+                },
+            })
+            .then((res) => {
+                console.log(JSON.stringify(res));
+                if (res.result.result_success) {
+                    resolve(res.prize_id);
+                } else {
+                    reject(res);
+                }
+            })
+            .catch((e) => {
+                console.log(e.message);
+                reject(e);
+            });
     });
 };
+const authorizeBenefit = () => {
+    return new Promise((resolve, reject) => {
+        my.authorize({
+            scopes: "scope.benefitSend",
+            success: (res) => {
+                console.log("authorize success", JSON.stringify(res));
+                resolve(res);
+            },
+            fail(res) {
+                console.log("authorize fail", JSON.stringify(res));
+                reject(res);
+            },
+        });
+    });
+};
+/**
+ * 抽奖action
+ * @param {*} userinfo 
+ * @param {*} appid 
+ * @param {*} cb 
+ */
 export const drawPrize = (userinfo, appid, cb) => {
-    return (dispatch) => {
-        draw(userinfo, appid, (prize_id) => {
+    return async (dispatch) => {
+        try {
+            await authorizeBenefit();
+            const queryInfo = await queryPrizes(userinfo, appid);
+            dispatch(setRewards(queryInfo.result.datas));
+            const prize_id = await draw(userinfo, appid);
             api({
                 apiName: "aiyong.interactc.user.data.update",
                 method: "/interactive/updateInterActCData",
@@ -186,15 +270,30 @@ export const drawPrize = (userinfo, appid, cb) => {
                     active_id: userinfo.active_id,
                     prize_id,
                 },
-                callback: (res) => {
+                callback: async (res) => {
                     console.log("~~~~~~~~~~~~~~~~~~~~", res, prize_id);
-                    dispatch(AddPrize(prize_id));
+                    if (queryInfo.result.datas.length === 1) {
+                        dispatch(AddPrize(0));
+                    } else {
+                        dispatch(AddPrizeTip());
+                    }
                     cb && cb();
                 },
                 errCallback: (err) => {
                     console.log(err);
+                    Taro.showToast({
+                        title: "抽奖失败",
+                        icon: "fail",
+                        duration: 2000,
+                    });
                 },
             });
-        });
+        } catch (e) {
+            Taro.showToast({
+                title: "抽奖失败",
+                icon: "fail",
+                duration: 2000,
+            });
+        }
     };
 };
