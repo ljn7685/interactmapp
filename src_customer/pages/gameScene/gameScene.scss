@@ -1,0 +1,36 @@
+#gameroot {
+  height: 100vh;
+  position: relative;
+}
+.guide {
+  z-index: 1;
+  position: absolute;
+  width: 18.4%;
+  top: 64.347%;
+  left: 50%;
+  transform: translateX(-23.913%);
+  transform-origin:50% 0;
+  pointer-events: none;
+}
+.heart {
+  z-index: 2;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 19.7%;
+  transform-origin:50% 0;
+  height: 45.67%;
+}
+.success-angel {
+  z-index: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 31.95%;
+  transform-origin:50% 0;
+  width: 46.666%;
+}
+.canvas {
+  width: 100vw;
+  height: 100vh;
+}
