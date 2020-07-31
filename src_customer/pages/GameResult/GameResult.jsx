@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import classNames from "classnames";
 
 import Modal from "../../components/modal/modal";
 import styles from "./gameResult.module.scss";
@@ -8,14 +9,26 @@ import Taro from "@tarojs/taro";
 import close_btn_img from "../../assets/images/close_btn.png";
 import { drawPrize } from "../../actions/game";
 
-@connect(({ game }) => {
-    return {
-        appid: game.appid,
-        userinfo: game.userinfo,
-    };
-},{
-    drawPrize
-})
+const successTip = "恭喜你!";
+const failTip = `天呐！运气爆棚！
+
+获得一次复活机会
+
+关闭视为放弃复活机会哦～`;
+const reviveTip = `啊哦～差一点点就过关咯! 
+
+多加练习，再来挑战～～`;
+@connect(
+    ({ game }) => {
+        return {
+            appid: game.appid,
+            userinfo: game.userinfo,
+        };
+    },
+    {
+        drawPrize,
+    }
+)
 class GameResult extends Component {
     constructor(props) {
         super(props);
@@ -27,21 +40,21 @@ class GameResult extends Component {
         });
     };
     exchangePrize = () => {
-        console.log('exchangePrize')
+        console.log("exchangePrize");
         const { appid, userinfo } = this.props;
-        this.props.drawPrize(userinfo, appid,()=>{
+        this.props.drawPrize(userinfo, appid, () => {
             Taro.redirectTo({
                 url: "/pages/gameIndex/gameIndex?successfully_received=true",
             });
-        })
+        });
     };
     render() {
         const { isSuccess, onRestart, revive_times } = this.props;
         console.log("reveie times", revive_times);
-        let headerStyle =
-            styles["header"] +
-            " " +
-            (isSuccess ? styles["win-header"] : styles["lose-header"]);
+        let headerStyle = classNames(styles["header"], {
+            [styles["win-header"]]: isSuccess,
+            [styles["lose-header"]]: !isSuccess,
+        });
         const footer = !isSuccess && revive_times > 0 && (
             <Image
                 src={close_btn_img}
@@ -50,6 +63,24 @@ class GameResult extends Component {
                 onClick={this.onClickClose}
             ></Image>
         );
+        const tipStyle = isSuccess ? styles["success-tip"] : styles["fail-tip"];
+        const tipText = isSuccess
+            ? successTip
+            : revive_times > 0
+            ? reviveTip
+            : failTip;
+        const onClickBtn = isSuccess
+            ? this.exchangePrize
+            : revive_times > 0
+            ? onRestart
+            : () => {
+                  my.exit();
+              };
+        const btnText = isSuccess
+            ? "立即领取"
+            : revive_times > 0
+            ? "再战一次"
+            : "退出游戏";
         return (
             <Modal
                 visible={true}
@@ -58,56 +89,13 @@ class GameResult extends Component {
                 contentStyle={styles["content"]}
                 containerStyle={styles["container"]}
             >
-                {isSuccess ? (
-                    <Text className={styles["success-tip"]}>恭喜你!</Text>
-                ) : revive_times > 0 ? (
-                    <Text
-                        className={styles["fail-tip"]}
-                        style={{ marginTop: "28px" }}
-                    >
-                        {`天呐！运气爆棚！
-                        
-                        获得一次复活机会
-                        
-                        关闭视为放弃复活机会哦～`}
-                    </Text>
-                ) : (
-                    <Text className={styles["fail-tip"]}>
-                        {`啊哦～差一点点就过关咯! 
-
-                        多加练习，再来挑战～～`}
-                    </Text>
-                )}
+                <Text className={tipStyle}>{tipText}</Text>
                 {isSuccess && (
-                    <Text className={styles["prize-desc"]}>
-                        获得店铺优惠券
-                    </Text>
+                    <Text className={styles["prize-desc"]}>获得店铺优惠券</Text>
                 )}
-                {isSuccess ? (
-                    <View className={styles["use-button"]}>
-                        <Text
-                            className={styles["text"]}
-                            onClick={this.exchangePrize}
-                        >
-                            立即领取
-                        </Text>
-                    </View>
-                ) : revive_times > 0 ? (
-                    <View className={styles["use-button"]} onClick={onRestart}>
-                        <Text className={styles["text"]}>再战一次</Text>
-                    </View>
-                ) : (
-                    <View className={styles["use-button"]}>
-                        <Text
-                            className={styles["text"]}
-                            onClick={() => {
-                                my.exit();
-                            }}
-                        >
-                            退出游戏
-                        </Text>
-                    </View>
-                )}
+                <View className={styles["use-button"]} onClick={onClickBtn}>
+                    <Text className={styles["text"]}>{btnText}</Text>
+                </View>
             </Modal>
         );
     }

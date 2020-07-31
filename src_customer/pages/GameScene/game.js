@@ -79,6 +79,10 @@ class Game extends EventEmitter {
         }
     }
 
+    getRatio(){
+        return this.height / this.designHeight;
+    }
+
     initStage() {
         console.log(this.width, this.height);
         this.ticker.add(this.onUpdate.bind(this));
