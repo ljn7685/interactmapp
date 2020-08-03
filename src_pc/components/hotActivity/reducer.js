@@ -10,20 +10,12 @@ const defaultState = {
 }
 
 export default (state = defaultState, action) => {
+    console.log('action', action)
     switch (action.type) {
         case TITLE: {
-            let newdata = Object.assign({}, state, { title: action.title, titleType: action.titleType, activityID: action.activityID, operType: action.operType });
-            return newdata;
-        }
-        case SET_DATA: {
-            let newdata = Object.assign({}, state, { activityData: action.data });
-            return newdata;
-        }
-        case SET_URL: {
-            let newdata = Object.assign({}, state, { activityUrl: action.data });
-            return newdata;
+            return { ...state, ...action};
         }
         default:
-            return state
+            return state;
     }
 }

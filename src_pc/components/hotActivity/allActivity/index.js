@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import { Text, View, Button } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import './index.scss';
 import { changeTitleAction, getActivityByIdAction } from '../actions';
-import { api } from '../../../public/util/api';
 import Taro from '@tarojs/taro';
 import { isEmpty } from '../../utils/index';
 import { connect } from 'react-redux';
 import TurnPage from '../../turnPage/index';
-import SelectBox from '../../selectBox/index';
+import SelectBox, { selectItem } from '../../selectBox/index';
+import { getActivityDataApi, createActivityApi } from '../../../public/bPromiseApi/index';
 
-//显示的状态
-const statuItem = ['全部', '进行中', '已结束', '未开始'];
 class AllActivity extends Component {
 
     constructor(props) {
@@ -30,10 +28,11 @@ class AllActivity extends Component {
         this.getActivityData();
     }
     /**
-     * 调取二次封装的接口
+     * 获取用户创建的游戏
      */
-    getActivityData = async () => {
-        let data = await this.getActivityDataApi({ 'pageNo': this.pageNo, 'pageSize': this.pageSize, 'activeStatus': this.activeStatus });
+    getActivityData = async() => {
+        let data = await getActivityDataApi({ 'pageNo': this.pageNo, 'pageSize': this.pageSize, 'activeStatus': this.activeStatus });
+        console.log('datatatdatdta', data)
         if (this.pageNo > 1 && isEmpty(data)) {
             Taro.showToast({
                 title: '已经是最后一页了',
@@ -47,7 +46,7 @@ class AllActivity extends Component {
                 dataList: data,
                 isShow: true
             })
-        }else{
+        } else {
             this.setState({
                 isShow: false
             })
@@ -71,7 +70,7 @@ class AllActivity extends Component {
         this.props.changeTitleAction('热门活动', 'hotActivity#activity');
     }
     /**
-     * 点击编辑
+     * 点击修改、复制活动
      * @param {*} id 
      */
     editActivity = (id, operType) => {
@@ -125,43 +124,16 @@ class AllActivity extends Component {
      * 结束游戏
      * @param {*} id 
      */
-    endActivity = (id, index) => {
+    endActivity = async (id, index) => {
         let newData = Object.assign([], this.state.dataList);
-        api({
-            apiName: 'aiyong.interactb.activity.create',
-            method: '/interactive/creatInteract',
-            args: { 'activeID': id, 'operationType': 3 },
-            callback: res => {
-                newData[index].active_status = 2;
-                newData[index].status = '已结束';
-                this.setState({
-                    dataList: newData
-                })
-            },
-            errCallback: err => {
-                console.log('dssdddwww', err)
-            }
-        })
-    }
-    /**
-     * 获取用户的创建游戏数据api
-     * @param {*} args 
-     */
-    getActivityDataApi = (args) => {
-        return new Promise((resolve, reject) => {
-            api({
-                apiName: 'aiyong.interactb.user.createact.get',
-                method: '/interactive/getUserCreateInterActData',
-                args: args,
-                callback: res => {
-                    console.log('~~~~~~~~~~~~~~', res)
-                    resolve(data);
-                },
-                errCallback: err => {
-                    reject(res)
-                }
+        let data = await createActivityApi({ 'activeID': id, 'operationType': 3 });
+        if (data.code == 200) {
+            newData[index].active_status = 2;
+            newData[index].status = '已结束';
+            this.setState({
+                dataList: newData
             })
-        })
+        }
     }
     /**
      * 数据具体展现组件
@@ -175,7 +147,7 @@ class AllActivity extends Component {
                         return (
                             <View className='activity-content-box' key={item.id}>
                                 <View className='content-name'>{item.active_name}</View>
-                                <View className='content-status'>{statuItem[item.active_status]}</View>
+                                <View className='content-status'>{selectItem[item.active_status]}</View>
                                 <View className='content-time-box'>
                                     <View className='time-start'>起：{item.start_date}</View>
                                     <View className='time-end'>止：{item.end_date.substring(0, 10) + ' 23:59:59'}</View>

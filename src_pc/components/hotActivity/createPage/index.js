@@ -5,10 +5,10 @@ import moment from 'moment';
 import { changeTitleAction, setActivityUrlAction } from '../actions';
 import { isEmpty } from '../../utils/index';
 import Taro from '@tarojs/taro';
-import { api } from '../../../public/util/api';
 import { connect } from 'react-redux';
+import {createActivityApi} from '../../../public/bPromiseApi/index';
 //c端版本号
-export const version = '0.0.11';
+export const version = '0.0.12';
 
 
 
@@ -26,11 +26,11 @@ class CreatePage extends Component {
             couponData: [],//优惠券信息
         }
         this.cupon = {}; //优惠卷
-        this.activeUrl = `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${version}&nbsource=debug&nbsn=TRIAL&_mp_code=tb&query=activeID%3D`; //活动创建成功后的地址
+        this.activeUrl = `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${version}&_mp_code=tb&query=activeID%3D`; //活动创建成功后的地址
         this.isEdit = false; //是否是编辑页面
     }
     componentWillMount() {
-        const { activityData, operType } = this.props
+        const { activityData, operType } = this.props;
         //如果是修改或者复制活动的。为了让input框检测到从reducer里获取到的值
         if (!isEmpty(operType)) {
             let newArgs = Object.assign({}, this.state.args);
@@ -121,7 +121,7 @@ class CreatePage extends Component {
         newArgs.activeUrl = encodeURIComponent(this.activeUrl);//活动地址
         newArgs.activeID = activityID;
         if (this.matchTime([newArgs.startDate, newArgs.endDate]) && this.matchNum(newArgs.gameNumber)) {
-            let data = await this.createActivityApi(newArgs);
+            let data = await createActivityApi(newArgs);
             if (data.code == 200) {
                 if (operationType == 2) {
                     //修改成功后，就回活动管理了
@@ -193,26 +193,6 @@ class CreatePage extends Component {
             })
             return false;
         }
-    }
-    /**
-     *创建活动，修改活动
-     * @param {*} args 
-     */
-    createActivityApi = (args) => {
-        return new Promise((resolve, reject) => {
-            api({
-                apiName: 'aiyong.interactb.activity.create',
-                method: '/interactive/creatInteract',
-                args: args,
-                callback: res => {
-                    resolve(res);
-
-                },
-                errCallback: err => {
-                    reject(err)
-                }
-            })
-        })
     }
     render() {
         const { args, couponData } = this.state;

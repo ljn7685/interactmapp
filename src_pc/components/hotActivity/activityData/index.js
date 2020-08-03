@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { View } from '@tarojs/components';
 import './index.scss';
-import { api } from '../../../public/util/api';
 import { isEmpty } from '../../utils/index';
 import Taro from '@tarojs/taro';
 import { connect } from 'react-redux';
 import TurnPage from '../../turnPage/index';
+import {getDataByIdApi} from '../../../public/bPromiseApi/index';
 
 class ActivityData extends Component {
 
@@ -23,7 +23,7 @@ class ActivityData extends Component {
         this.getDataByID()
     }
     getDataByID = async () => {
-        let data = await this.getDataByIdApi({ 'activeID': this.props.activityID, 'pageNo': this.pageNo, 'pageSize': this.pageSize });
+        let data = await getDataByIdApi({ 'activeID': this.props.activityID, 'pageNo': this.pageNo, 'pageSize': this.pageSize });
         if (this.pageNo > 1 && isEmpty(data.data)) {
             Taro.showToast({
                 title: '已经是最后一页了',
@@ -59,25 +59,6 @@ class ActivityData extends Component {
             this.pageNo += 1;
         }
         this.getDataByID()
-    }
-    /**
-     * 在封装一层api
-     * @param {*} args 
-     */
-    getDataByIdApi = (args) => {
-        return new Promise((resolve, reject) => {
-            api({
-                apiName: 'aiyong.interactb.activity.data.get',
-                method: '/interactive/getInteractData',
-                args: args,
-                callback: res => {
-                    resolve(res)
-                },
-                errCallback: err => {
-                    reject(err)
-                }
-            })
-        })
     }
 
     /**

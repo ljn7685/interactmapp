@@ -3,7 +3,7 @@ import { Text, View, Button } from '@tarojs/components';
 import './index.scss';
 
 //下拉框的选项
-const selectItem = ['全部', '进行中', '已结束', '未开始'];
+export const selectItem = ['全部', '进行中', '已结束', '未开始'];
 
 /**
  * 下拉框组件
