@@ -139,39 +139,26 @@ class GameIndex extends Component {
                     当前游戏次数: {this.props.gametimes}
                 </View>
                 <View className={styles["game-button-group"]}>
-                    {activity_ended ? (
-                        <View
-                            className={
-                                styles["start-game"] + " " + styles["button"]
-                            }
-                            onClick={() => {}}
-                        >
-                            活动已经结束
-                        </View>
-                    ) : is_follow ? (
-                        <View
-                            className={
-                                styles["start-game"] + " " + styles["button"]
-                            }
-                            onClick={this.onGameStart}
-                        >
-                            开始游戏 赢好礼
-                        </View>
-                    ) : (
-                        <View
-                            className={
-                                styles["start-game"] + " " + styles["button"]
-                            }
-                            onClick={this.onFavorShop}
-                        >
-                            关注店铺 获取游戏次数
-                        </View>
-                    )}
+                    <View
+                        className={
+                            styles["start-game"] + " " + styles["button"]
+                        }
+                        onClick={() => {
+                            !activity_ended && is_follow && this.onGameStart();
+                            !activity_ended && !is_follow && this.onFavorShop();
+                        }}
+                    >
+                        {activity_ended
+                            ? "活动已经结束"
+                            : is_follow
+                            ? "开始游戏 赢好礼"
+                            : "关注店铺 获取游戏次数"}
+                    </View>
                 </View>
                 <View className="sidebar">
                     <View
                         className="side-btn"
-                        onClick={this.onClickRule}
+                        onClick={this.onClickModal.bind(this, "showRule")}
                         key="rule"
                     >
                         <Image

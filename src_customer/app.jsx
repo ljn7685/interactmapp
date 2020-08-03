@@ -49,7 +49,7 @@ class App extends Component {
             console.log("options", options);
             showConfirmModal({
                 title: "提示",
-                content: "啊哦～活动走丢了！",
+                content: "暂无活动，联系商家创建活动吧～",
                 showCancel: false,
                 onConfirm: () => {
                     my.exit();

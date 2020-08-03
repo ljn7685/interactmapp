@@ -45,7 +45,8 @@ class GameResult extends Component {
         const { appid, userinfo } = this.props;
         this.props.drawPrize(userinfo, appid, () => {
             Taro.redirectTo({
-                url: "/pages/gameIndex/gameIndex?successfully_received=true&gameover=true",
+                url:
+                    "/pages/gameIndex/gameIndex?successfully_received=true&gameover=true",
             });
         });
     };
@@ -63,7 +64,7 @@ class GameResult extends Component {
                 className={styles["footer"]}
                 onClick={() => {
                     showConfirmModal({
-                        title:"",
+                        title: "",
                         content: `退出后不可再次挑战，确定放弃复活机会吗？`,
                         confirmText: "确定",
                         cancelText: "取消",
@@ -73,23 +74,10 @@ class GameResult extends Component {
             ></Image>
         );
         const tipStyle = isSuccess ? styles["success-tip"] : styles["fail-tip"];
-        const tipText = isSuccess
-            ? successTip
-            : revive_times > 0
-            ? reviveTip
-            : failTip;
-        const onClickBtn = isSuccess
-            ? this.exchangePrize
-            : revive_times > 0
-            ? onRestart
-            : () => {
-                  my.exit();
-              };
-        const btnText = isSuccess
-            ? "立即领取"
-            : revive_times > 0
-            ? "再战一次"
-            : "退出游戏";
+        const status = isSuccess ? 0 : revive_times > 0 ? 1 : 2;
+        const tipText = [successTip, reviveTip, failTip];
+        const onClickBtn = [this.exchangePrize, onRestart, () => my.exit()];
+        const btnText = ["立即领取", "再战一次", "退出游戏"];
         return (
             <Modal
                 visible={true}
@@ -98,12 +86,15 @@ class GameResult extends Component {
                 contentStyle={styles["content"]}
                 containerStyle={styles["container"]}
             >
-                <Text className={tipStyle}>{tipText}</Text>
+                <Text className={tipStyle}>{tipText[status]}</Text>
                 {isSuccess && (
                     <Text className={styles["prize-desc"]}>获得店铺优惠券</Text>
                 )}
-                <View className={styles["use-button"]} onClick={onClickBtn}>
-                    <Text className={styles["text"]}>{btnText}</Text>
+                <View
+                    className={styles["use-button"]}
+                    onClick={onClickBtn[status]}
+                >
+                    <Text className={styles["text"]}>{btnText[status]}</Text>
                 </View>
             </Modal>
         );
