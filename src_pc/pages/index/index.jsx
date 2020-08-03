@@ -12,7 +12,6 @@ class Index extends Component {
   componentDidMount(){
 
   }
-
   render() {
     return (
       <View className='interactmapp'>

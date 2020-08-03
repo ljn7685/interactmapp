@@ -15,7 +15,7 @@ class AllActivity extends Component {
             isShow: false,
             isShowSelect: false,
             status: '全部',
-            dataList:''
+            dataList: ''
         }
         this.pageNo = 1; //初始页数
         this.pageSize = 10; //页面条数
@@ -23,17 +23,16 @@ class AllActivity extends Component {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
         //初始化信息
         this.getActivityData();
     }
-
     /**
      * 调取二次封装的接口
      */
-    getActivityData = async()=>{
-        let data = await this.getActivityDataApi({'pageNo': this.pageNo, 'pageSize': this.pageSize, 'activeStatus': this.activeStatus});
-        if(this.pageNo > 1 && isEmpty(data)){
+    getActivityData = async () => {
+        let data = await this.getActivityDataApi({ 'pageNo': this.pageNo, 'pageSize': this.pageSize, 'activeStatus': this.activeStatus });
+        if (this.pageNo > 1 && isEmpty(data)) {
             Taro.showToast({
                 title: '已经是最后一页了',
                 duration: 2000
@@ -41,10 +40,14 @@ class AllActivity extends Component {
             this.pageNo -= 1;
             return;
         }
-        if(!isEmpty(data)){
+        if (!isEmpty(data)) {
             this.setState({
                 dataList: data,
                 isShow: true
+            })
+        }else{
+            this.setState({
+                isShow: false
             })
         }
     }
@@ -53,9 +56,9 @@ class AllActivity extends Component {
      * @param {*} id 
      * @param {*} name 
      */
-    goToDataPage = ( name, activityID) => {
+    goToDataPage = (name, activityID) => {
         let title = name + '-活动效果';
-        this.props.changeTitleAction(title, 'data', activityID);
+        this.props.changeTitleAction(title, 'management#data', activityID);
 
     }
     /**
@@ -63,7 +66,7 @@ class AllActivity extends Component {
      * @param {*} 
      */
     goToCreatePage = () => {
-        this.props.changeTitleAction('热门活动', 'hotActivity');
+        this.props.changeTitleAction('热门活动', 'hotActivity#activity');
     }
     /**
      * 点击编辑
@@ -73,10 +76,10 @@ class AllActivity extends Component {
         this.props.getActivityByIdAction(id, operType);
     }
 
-/**
- * 下拉框的样式控制
- * @param {*} value 
- */
+    /**
+     * 下拉框的样式控制
+     * @param {*} value 
+     */
     selectStatu = (value) => {
         if (value == 'pullDown') {
             this.setState({
@@ -87,7 +90,7 @@ class AllActivity extends Component {
                 isShowSelect: !this.state.isShowSelect,
                 status: value
             })
-            switch(value){
+            switch (value) {
                 case '进行中':
                     this.activeStatus = 1;
                     break;
@@ -109,9 +112,9 @@ class AllActivity extends Component {
      * 翻页
      * @param {*} type 
      */
-    turnPage =(type)=>{
-        if(type == 'up'){
-            if(this.pageNo == 1){
+    turnPage = (type) => {
+        if (type == 'up') {
+            if (this.pageNo == 1) {
                 Taro.showToast({
                     title: '已经是最前页了',
                     duration: 2000
@@ -119,7 +122,7 @@ class AllActivity extends Component {
                 return;
             }
             this.pageNo -= 1;
-        }else{
+        } else {
             this.pageNo += 1;
         }
         this.getActivityData();
@@ -128,37 +131,36 @@ class AllActivity extends Component {
      * 复制链接
      * @param {*} value 
      */
-    copyUrl = (value, id)=>{
+    copyUrl = (value, id) => {
         Taro.setClipboardData({
             data: value + id,
-            success:()=>{
+            success: () => {
                 Taro.showToast({
                     title: '复制成功',
                     duration: 2000
                 })
             }
-          })
+        })
     }
     /**
      * 结束游戏
      * @param {*} id 
      */
-    endActivity=(id, index)=>{
-        console.log('dddd',id, index)
+    endActivity = (id, index) => {
         let newData = Object.assign([], this.state.dataList);
         api({
-            apiName:'aiyong.interactb.activity.create',
-            method:'/interactive/creatInteract',
-            args: { 'activeID': id, 'operationType': 3},
-            callback:res => {
-               newData[index].active_status = 2;
-               newData[index].status = '已结束';
-               this.setState({
-                dataList: newData
-               })
+            apiName: 'aiyong.interactb.activity.create',
+            method: '/interactive/creatInteract',
+            args: { 'activeID': id, 'operationType': 3 },
+            callback: res => {
+                newData[index].active_status = 2;
+                newData[index].status = '已结束';
+                this.setState({
+                    dataList: newData
+                })
             },
             errCallback: err => {
-              console.log('dssdddwww',err)
+                console.log('dssdddwww', err)
             }
         })
     }
@@ -166,63 +168,63 @@ class AllActivity extends Component {
      * 获取用户的创建游戏数据api
      * @param {*} args 
      */
-    getActivityDataApi = (args)=>{
-        return new Promise((resolve, reject)=>{
+    getActivityDataApi = (args) => {
+        return new Promise((resolve, reject) => {
             api({
-                apiName:'aiyong.interactb.user.createact.get',
-                method:'/interactive/getUserCreateInterActData',
+                apiName: 'aiyong.interactb.user.createact.get',
+                method: '/interactive/getUserCreateInterActData',
                 args: args,
-                callback:res => {
+                callback: res => {
                     console.log('~~~~~~~~~~~~~~', res)
-                   let data = res.map((item)=>{
-                        if(item.active_status == 2){
+                    let data = res.map((item) => {
+                        if (item.active_status == 2) {
                             item.status = '已结束';
-                        }else if(item.active_status == 1){
+                        } else if (item.active_status == 1) {
                             item.status = '进行中';
-                        }else if(item.active_status == 3){
+                        } else if (item.active_status == 3) {
                             item.status = '未开始';
                         }
                         return item;
-                   })
-                   resolve(data);
+                    })
+                    resolve(data);
                 },
                 errCallback: err => {
-                  reject(res)
+                    reject(res)
                 }
             })
         })
     }
-/**
- * 数据具体展现组件
- */
+    /**
+     * 数据具体展现组件
+     */
     contentTip = () => {
         const { dataList } = this.state;
         return (
             <View>
                 {
-                    dataList.map((item,index) => {
+                    dataList.map((item, index) => {
                         return (
                             <View className='activity-content-box' key={item.id}>
                                 <View className='content-name'>{item.active_name}</View>
-                        <View className='content-status'>{item.status}</View>
+                                <View className='content-status'>{item.status}</View>
                                 <View className='content-time-box'>
-                        <View className='time-start'>起：{item.start_date}</View>
-                        <View className='time-end'>止：{item.end_date.substring(0,10)+' 23:59:59'}</View>
+                                    <View className='time-start'>起：{item.start_date}</View>
+                                    <View className='time-end'>止：{item.end_date.substring(0, 10) + ' 23:59:59'}</View>
                                 </View>
-                                <View className='content-url' onClick={this.copyUrl.bind(this,item.active_url, item.id)}>复制链接</View>
+                                <View className='content-url' onClick={this.copyUrl.bind(this, item.active_url, item.id)}>复制链接</View>
                                 <View className='oper-box'>
-                                    <View className='edit-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '修改')} style={{display:`${item.active_status == 2 ? 'none':''}`}}>修改活动</View>
-                                    <View className='copy-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '创建')} style={{display:`${item.active_status == 2 ? '':'none'}`}}>复制活动</View>
-                                    <View className='data-activity oper-tip' onClick={this.goToDataPage.bind(this, item.active_name, item.id)} style={{display:`${item.active_status == 3 ? 'none':''}`}}>活动数据</View>
-                                    <View className='end-activity oper-tip' onClick={this.endActivity.bind(this, item.id, index)} style={{display:`${item.active_status == 2 ? 'none':''}`}}>结束活动</View>
+                                    <View className='edit-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '修改')} style={{ display: `${item.active_status == 2 ? 'none' : ''}` }}>修改活动</View>
+                                    <View className='copy-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '创建')} style={{ display: `${item.active_status == 2 ? '' : 'none'}` }}>复制活动</View>
+                                    <View className='data-activity oper-tip' onClick={this.goToDataPage.bind(this, item.active_name, item.id)} style={{ display: `${item.active_status == 3 ? 'none' : ''}` }}>活动数据</View>
+                                    <View className='end-activity oper-tip' onClick={this.endActivity.bind(this, item.id, index)} style={{ display: `${item.active_status == 2 ? 'none' : ''}` }}>结束活动</View>
                                 </View>
                             </View>
                         )
                     })
                 }
                 <View className='all-activity-bottom'>
-                    <View className='pre-page' onClick={this.turnPage.bind(this,'up')}>上一页</View>
-                    <View className='next-page' onClick={this.turnPage.bind(this,'down')}>下一页</View>
+                    <View className='pre-page' onClick={this.turnPage.bind(this, 'up')}>上一页</View>
+                    <View className='next-page' onClick={this.turnPage.bind(this, 'down')}>下一页</View>
                 </View>
             </View>
         )
@@ -252,7 +254,7 @@ class AllActivity extends Component {
                     <View className='select-icno iconfont'>&#xe642;</View>
                 </View>
 
-                <View className='select-down-box' className={`select-down-box ${isShowSelect ? 'show-select':'no-border'} `}>
+                <View className='select-down-box' className={`select-down-box ${isShowSelect ? 'show-select' : 'no-border'} `}>
                     <View className='select-item' onClick={this.selectStatu.bind(this, '进行中')}>
                         <View className='sure-icno iconfont' style={{ opacity: `${status == '进行中' ? '1' : '0'}` }}>&#xe613;</View>
                         <View className='item-txt'>进行中</View>

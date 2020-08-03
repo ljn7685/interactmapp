@@ -8,23 +8,9 @@ import Taro from '@tarojs/taro';
 import { api } from '../../../public/util/api';
 import { connect } from 'react-redux';
 //c端版本号
-export const version = '0.0.9';
+export const version = '0.0.11';
 
-var plugin = requirePlugin("myPlugin");
-let eName;
-let poolid;
-//这个bridge用于和插件进行数据通信 
-const bridge = {
-    bizCode: "3000000012505562",//c
-    // bizCode: "3000000025552964",//b
-    //此处输入想配置的业务身份（消费者端appid）  
-    //这个方法用于获取插件中用户选择的奖池ID  
-    getCheckBenefitID({ ename, poolID }) {
-        eName = ename;
-        poolid = poolID;
-        console.log(ename, poolID)
-    }
-}
+
 
 class CreatePage extends Component {
     constructor(props) {
@@ -70,6 +56,22 @@ class CreatePage extends Component {
         }
     }
     componentDidMount() {
+        var plugin = requirePlugin("myPlugin");
+        //这个bridge用于和插件进行数据通信 
+        let self = this;
+        const bridge = {
+            bizCode: "3000000012505562",//c
+            // bizCode: "3000000025552964",//b
+            //此处输入想配置的业务身份（消费者端appid）  
+            //这个方法用于获取插件中用户选择的奖池ID  
+            getCheckBenefitID({ ename, poolID }) {
+                console.log(ename, poolID)
+                self.cupon = { 'ename': ename, 'poolID': poolID }
+                self.setState({
+                    couponData: poolID
+                })
+            }
+        }
         //获取优惠券信息的重要一步
         plugin.setBridge(bridge);
     }
@@ -123,10 +125,10 @@ class CreatePage extends Component {
             if (data.code == 200) {
                 if (operationType == 2) {
                     //修改成功后，就回活动管理了
-                    changeTitleAction('活动管理', 'management');
+                    changeTitleAction('活动管理', 'management#allActivity');
                 } else {
                     let activeUrl = this.activeUrl + data.activityId;
-                    changeTitleAction('活动创建成功', 'success');
+                    changeTitleAction('活动创建成功', 'hotActivity#success');
                     //存一个链接，成功页面要拿到的
                     setActivityUrlAction(activeUrl);
                 }
@@ -138,17 +140,7 @@ class CreatePage extends Component {
      *  
      */
     giveUpEdit = () => {
-        this.props.changeTitleAction('活动管理', 'management');
-    }
-    /**
-     * 获取优惠券的详细信息
-     * @param {*} type 
-     */
-    getCouponData = () => {
-        this.cupon = { 'ename': eName, 'poolID': poolid }
-        this.setState({
-            couponData: poolid
-        })
+        this.props.changeTitleAction('活动管理', 'management#allActivity');
     }
     /**
      * 校验时间是否正确
@@ -181,7 +173,7 @@ class CreatePage extends Component {
                 title: '开始时间不能大于结束时间',
                 duration: 2000
             })
-            return
+            return false;
         }
         return true;
     }
@@ -258,8 +250,7 @@ class CreatePage extends Component {
                         <Text className='warn-xing'>*</Text>
                         <View className='coupon-title'>活动奖励</View>
                         {isEmpty(couponData) && <View className='coupon' onClick={this.navigateToPlugin}>创建奖池</View>}
-                        { !isEmpty(couponData) && <View className='coupon' onClick={this.navigateToPlugin}>查看奖池</View>}
-                        <View className='refresh' onClick={this.getCouponData}>刷新</View>
+                        {!isEmpty(couponData) && <View className='coupon' onClick={this.navigateToPlugin}>查看奖池</View>}
                         {
                             !isEmpty(couponData) && <View className='prize-num'>已选奖池编号：{couponData}</View>
                         }
