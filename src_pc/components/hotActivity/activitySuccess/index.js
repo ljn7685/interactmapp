@@ -3,11 +3,11 @@ import { View, Image } from '@tarojs/components';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import { connect } from 'react-redux';
-@connect(({ hotReducer }) => ({
-    hotReducer
-}))
 
-
+const posterUrl = {
+    'posterOne': 'http://q.aiyongbao.com/interact/poster-one.png',
+    'posterTwo': 'http://q.aiyongbao.com/interact/poster-two.png'
+}
 class ActivitySuccess extends Component {
     constructor(props) {
         super(props);
@@ -17,19 +17,10 @@ class ActivitySuccess extends Component {
     /**
      * 复制活动链接
      */
-
     copyUrl = (type) => {
-        let data;
-        switch (type) {
-            case 'activity':
-                data = this.props.hotReducer.activityUrl;
-                break;
-            case 'img-one':
-                data = 'http://q.aiyongbao.com/interact/poster-one.png';
-                break;
-            case 'img-two':
-                data = 'http://q.aiyongbao.com/interact/poster-two.png';
-                break;
+        let data = posterUrl[type]
+        if(type == 'activity'){
+            data = this.props.activityUrl;
         }
         Taro.setClipboardData({
             data: data,
@@ -49,7 +40,6 @@ class ActivitySuccess extends Component {
             url: "https://wangpu.taobao.com/wirelessPageList.htm#/shop_index-index/basic?tabId=0",
         });
     }
-
     render() {
         return (
             <View className='success-box'>
@@ -61,7 +51,7 @@ class ActivitySuccess extends Component {
                     <View className='step'>投放活动到手淘端步骤如下</View>
                     <View className='url-box'>
                         <View className='url-txt'>1.复制活动链接</View>
-                        <View className='url'>{this.props.hotReducer.activityUrl}</View>
+                        <View className='url'>{this.props.activityUrl}</View>
                         <View className='url-copy' onClick={this.copyUrl.bind(this, 'activity')}>复制链接</View>
                     </View>
                     <View className='poster-box'>
@@ -69,11 +59,11 @@ class ActivitySuccess extends Component {
                         <View className='poster-img-box'>
                             <View className='poster'>
                                 <Image className='poster-img' src='http://q.aiyongbao.com/interact/poster-one.png' alt='poster' />
-                                <View className='copy-img' onClick={this.copyUrl.bind(this, 'img-one')}>复制图片链接</View>
+                                <View className='copy-img' onClick={this.copyUrl.bind(this, 'posterOne')}>复制图片链接</View>
                             </View>
                             <View className='poster'>
                                 <Image className='poster-img' src='http://q.aiyongbao.com/interact/poster-two.png' alt='poster' />
-                                <View className='copy-img' onClick={this.copyUrl.bind(this, 'img-two')}>复制图片链接</View>
+                                <View className='copy-img' onClick={this.copyUrl.bind(this, 'posterTwo')}>复制图片链接</View>
                             </View>
                         </View>
                     </View>
@@ -86,5 +76,11 @@ class ActivitySuccess extends Component {
         );
     }
 }
+//将store里面的值映射为props
+const mapStateToProps = ({ hotReducer }) => {
+    return {
+        activityUrl: hotReducer.activityUrl,
+    }
+}
 
-export default ActivitySuccess;
+export default connect(mapStateToProps)(ActivitySuccess);

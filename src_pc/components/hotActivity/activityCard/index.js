@@ -10,21 +10,14 @@ class ActivityCard extends Component {
         this.state = {
         }
     }
-/**
- * 去创建页面的页面
- * @param {*} value 
- */
-    goToCreatePage = (value)=>{
-        this.props.changeTitleAction(value, 'create')
+    /**
+     * 帮助文档
+     */
+    goToYuque = () => {
+        my.qn.navigateToWebPage({
+            url: "https://www.yuque.com/xujingyi/kb/ufwevl"
+        });
     }
-/**
- * 帮助文档
- */
-goToYuque = ()=>{
-    my.qn.navigateToWebPage({
-        url: "https://www.yuque.com/xujingyi/kb/ufwevl"
-    });
-}
 
     render() {
         const { changeTitleAction } = this.props;
@@ -44,7 +37,7 @@ goToYuque = ()=>{
                         <View className='instructions-info'>3.设置的奖品越吸引人，买家的参与度就会越高哦</View>
                     </View>
                     <View className='activity-bottom'>
-                        <View className='create-activity' onClick={changeTitleAction.bind(this,'创建丘比特之箭活动', 'create')}>立即创建</View>
+                        <View className='create-activity' onClick={changeTitleAction.bind(this, '创建丘比特之箭活动', 'hotActivity#create')}>立即创建</View>
                         <View className='help' onClick={this.goToYuque}>
                             <View className='icno-help iconfont'>&#xe6b5;</View>
                             <View className='txt-help'>帮助文档</View>
