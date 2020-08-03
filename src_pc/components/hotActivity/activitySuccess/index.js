@@ -3,10 +3,6 @@ import { View, Image } from '@tarojs/components';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import { connect } from 'react-redux';
-@connect(({ hotReducer }) => ({
-    hotReducer
-}))
-
 
 class ActivitySuccess extends Component {
     constructor(props) {
@@ -22,7 +18,7 @@ class ActivitySuccess extends Component {
         let data;
         switch (type) {
             case 'activity':
-                data = this.props.hotReducer.activityUrl;
+                data = this.props.activityUrl;
                 break;
             case 'img-one':
                 data = 'http://q.aiyongbao.com/interact/poster-one.png';
@@ -87,4 +83,11 @@ class ActivitySuccess extends Component {
     }
 }
 
-export default ActivitySuccess;
+//将store里面的值映射为props
+const mapStateToProps = ({ hotReducer }) => {
+    return {
+        activityUrl: hotReducer.activityID,
+    }
+}
+
+export default connect(mapStateToProps)(ActivitySuccess);

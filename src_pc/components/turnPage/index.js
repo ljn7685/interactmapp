@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Text, View, Button } from '@tarojs/components';
 import './index.scss';
 
-
+/**
+ * 翻页组件
+ */
 class TurnPage extends Component {
 
     constructor(props) {

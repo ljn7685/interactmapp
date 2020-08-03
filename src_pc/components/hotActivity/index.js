@@ -45,7 +45,7 @@ class HotActivity extends Component {
                     }
                     {
                         titleType == 'management#data' && <ActivityData />
-                    }            
+                    }   
                 </View>
             </View>
         );

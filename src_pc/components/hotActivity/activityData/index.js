@@ -5,6 +5,7 @@ import { api } from '../../../public/util/api';
 import { isEmpty } from '../../utils/index';
 import Taro from '@tarojs/taro';
 import { connect } from 'react-redux';
+import TurnPage from '../../turnPage/index';
 
 class ActivityData extends Component {
 
@@ -99,10 +100,9 @@ class ActivityData extends Component {
                         )
                     })
                 }
-                <View className='data-content-bottom'>
-                    <View className='pre-page' onClick={this.turnPage.bind(this, 'up')}>上一页</View>
-                    <View className='next-page' onClick={this.turnPage.bind(this, 'down')}>下一页</View>
-                </View>
+                {
+                    <TurnPage onPageNoChange={this.turnPage} />
+                }
 
             </View>
 

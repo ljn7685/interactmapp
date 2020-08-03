@@ -6,15 +6,17 @@ import { api } from '../../../public/util/api';
 import Taro from '@tarojs/taro';
 import { isEmpty } from '../../utils/index';
 import { connect } from 'react-redux';
+import TurnPage from '../../turnPage/index';
+import SelectBox from '../../selectBox/index';
 
+//显示的状态
+const statuItem = ['全部', '进行中', '已结束', '未开始'];
 class AllActivity extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             isShow: false,
-            isShowSelect: false,
-            status: '全部',
             dataList: ''
         }
         this.pageNo = 1; //初始页数
@@ -81,32 +83,9 @@ class AllActivity extends Component {
      * @param {*} value 
      */
     selectStatu = (value) => {
-        if (value == 'pullDown') {
-            this.setState({
-                isShowSelect: !this.state.isShowSelect
-            })
-        } else {
-            this.setState({
-                isShowSelect: !this.state.isShowSelect,
-                status: value
-            })
-            switch (value) {
-                case '进行中':
-                    this.activeStatus = 1;
-                    break;
-                case '已结束':
-                    this.activeStatus = 2;
-                    break;
-                case '未开始':
-                    this.activeStatus = 3;
-                    break;
-                case '全部':
-                    this.activeStatus = '';
-                    break;
-            }
-            this.pageNo = 1;
-            this.getActivityData();
-        }
+        this.activeStatus = value;
+        this.pageNo = 1;
+        this.getActivityData();
     }
     /**
      * 翻页
@@ -176,16 +155,6 @@ class AllActivity extends Component {
                 args: args,
                 callback: res => {
                     console.log('~~~~~~~~~~~~~~', res)
-                    let data = res.map((item) => {
-                        if (item.active_status == 2) {
-                            item.status = '已结束';
-                        } else if (item.active_status == 1) {
-                            item.status = '进行中';
-                        } else if (item.active_status == 3) {
-                            item.status = '未开始';
-                        }
-                        return item;
-                    })
                     resolve(data);
                 },
                 errCallback: err => {
@@ -206,7 +175,7 @@ class AllActivity extends Component {
                         return (
                             <View className='activity-content-box' key={item.id}>
                                 <View className='content-name'>{item.active_name}</View>
-                                <View className='content-status'>{item.status}</View>
+                                <View className='content-status'>{statuItem[item.active_status]}</View>
                                 <View className='content-time-box'>
                                     <View className='time-start'>起：{item.start_date}</View>
                                     <View className='time-end'>止：{item.end_date.substring(0, 10) + ' 23:59:59'}</View>
@@ -222,10 +191,9 @@ class AllActivity extends Component {
                         )
                     })
                 }
-                <View className='all-activity-bottom'>
-                    <View className='pre-page' onClick={this.turnPage.bind(this, 'up')}>上一页</View>
-                    <View className='next-page' onClick={this.turnPage.bind(this, 'down')}>下一页</View>
-                </View>
+                {
+                    <TurnPage onPageNoChange={this.turnPage} />
+                }
             </View>
         )
     }
@@ -242,48 +210,12 @@ class AllActivity extends Component {
         )
     }
 
-    /**
-     * 下拉框选择
-     */
-    selectBox = () => {
-        const { isShowSelect, status } = this.state;
-        return (
-            <View className='select-box'>
-                <View className='selected' onClick={this.selectStatu.bind(this, 'pullDown')}>
-                    <View className='select-txt'>{status}</View>
-                    <View className='select-icno iconfont'>&#xe642;</View>
-                </View>
-
-                <View className='select-down-box' className={`select-down-box ${isShowSelect ? 'show-select' : 'no-border'} `}>
-                    <View className='select-item' onClick={this.selectStatu.bind(this, '进行中')}>
-                        <View className='sure-icno iconfont' style={{ opacity: `${status == '进行中' ? '1' : '0'}` }}>&#xe613;</View>
-                        <View className='item-txt'>进行中</View>
-                    </View>
-                    <View className='select-item' onClick={this.selectStatu.bind(this, '已结束')}>
-                        <View className='sure-icno iconfont' style={{ opacity: `${status == '已结束' ? '1' : '0'}` }}>&#xe613;</View>
-                        <View className='item-txt'>已结束</View>
-                    </View>
-                    <View className='select-item' onClick={this.selectStatu.bind(this, '未开始')}>
-                        <View className='sure-icno iconfont' style={{ opacity: `${status == '未开始' ? '1' : '0'}` }}>&#xe613;</View>
-                        <View className='item-txt'>未开始</View>
-                    </View>
-                    <View className='select-item' onClick={this.selectStatu.bind(this, '全部')}>
-                        <View className='sure-icno iconfont' style={{ opacity: `${status == '全部' ? '1' : '0'}` }}>&#xe613;</View>
-                        <View className='item-txt'>全部</View>
-                    </View>
-                </View>
-
-
-            </View>
-        )
-    }
-
     render() {
         const { isShow } = this.state;
         return (
             <View className='all-box'>
                 <View className='all-top'>
-                    {this.selectBox()}
+                    <SelectBox changeStatu={this.selectStatu} />
                 </View>
                 {
                     !isShow && this.emptyPage()
