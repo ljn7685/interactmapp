@@ -31,7 +31,6 @@ class SelectBox extends Component {
                 isShowSelect: !this.state.isShowSelect,
                 status: value
             })
-            console.log(value, index)
             this.props.changeStatu(index)
         }
     }

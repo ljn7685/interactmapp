@@ -32,7 +32,7 @@ export const createActivityApi = (args) => {
                 resolve(res);
             },
             errCallback: err => {
-                reject(res)
+                reject(err)
             }
         })
     })

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { View } from '@tarojs/components';
 import './index.scss';
-import { changeTitleAction } from '../actions';
+import { changeTitleAction, changeActivityDataAction } from '../actions';
+import { version } from '../reducer';
+import moment from 'moment';
 
 import { connect } from 'react-redux';
 class ActivityCard extends Component {
@@ -18,9 +20,23 @@ class ActivityCard extends Component {
             url: "https://www.yuque.com/xujingyi/kb/ufwevl"
         });
     }
+    goToCreatePage = (title, titleType) => {
+        const { changeTitleAction, changeActivityDataAction } = this.props;
+        changeTitleAction(title, titleType);
+        changeActivityDataAction({
+            'activeName': '',
+            'subTitle': '',
+            'startDate': moment().format("YYYY-MM-DD"),
+            'endDate': moment().add(7, 'days').format("YYYY-MM-DD"),
+            'gameNumber': 0,
+            'couponData': '',
+            'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${version}&_mp_code=tb&query=activeID%3D`,
+            'activeRewards': ''
+        })
+    }
 
     render() {
-        const { changeTitleAction } = this.props;
+
         return (
             <View className='activity-box'>
                 {/* 小模块 */}
@@ -37,7 +53,7 @@ class ActivityCard extends Component {
                         <View className='instructions-info'>3.设置的奖品越吸引人，买家的参与度就会越高哦</View>
                     </View>
                     <View className='activity-bottom'>
-                        <View className='create-activity' onClick={changeTitleAction.bind(this, '创建丘比特之箭活动', 'hotActivity#create')}>立即创建</View>
+                        <View className='create-activity' onClick={this.goToCreatePage.bind(this, '创建丘比特之箭活动', 'hotActivity#create')}>立即创建</View>
                         <View className='help' onClick={this.goToYuque}>
                             <View className='icno-help iconfont'>&#xe6b5;</View>
                             <View className='txt-help'>帮助文档</View>
@@ -52,6 +68,7 @@ class ActivityCard extends Component {
 //将store里面的值映射为props
 
 const mapDispatchToProps = {
-    changeTitleAction
+    changeTitleAction,
+    changeActivityDataAction
 }
 export default connect(state => state.hotReducer, mapDispatchToProps)(ActivityCard);

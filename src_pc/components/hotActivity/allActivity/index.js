@@ -32,7 +32,6 @@ class AllActivity extends Component {
      */
     getActivityData = async() => {
         let data = await getActivityDataApi({ 'pageNo': this.pageNo, 'pageSize': this.pageSize, 'activeStatus': this.activeStatus });
-        console.log('datatatdatdta', data)
         if (this.pageNo > 1 && isEmpty(data)) {
             Taro.showToast({
                 title: '已经是最后一页了',
@@ -90,19 +89,8 @@ class AllActivity extends Component {
      * 翻页
      * @param {*} type 
      */
-    turnPage = (type) => {
-        if (type == 'up') {
-            if (this.pageNo == 1) {
-                Taro.showToast({
-                    title: '已经是最前页了',
-                    duration: 2000
-                })
-                return;
-            }
-            this.pageNo -= 1;
-        } else {
-            this.pageNo += 1;
-        }
+    turnPage = (current) => {
+        this.pageNo = current;
         this.getActivityData();
     }
     /**
@@ -164,7 +152,7 @@ class AllActivity extends Component {
                     })
                 }
                 {
-                    <TurnPage onPageNoChange={this.turnPage} />
+                    <TurnPage onPageNoChange={this.turnPage} pageNo={this.pageNo} />
                 }
             </View>
         )
