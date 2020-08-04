@@ -53,7 +53,6 @@ class GameResult extends Component {
     };
     render() {
         const { isSuccess, onRestart, revive_times } = this.props;
-        console.log("reveie times", revive_times);
         let headerStyle = classNames(styles["header"], {
             [styles["win-header"]]: isSuccess,
             [styles["lose-header"]]: !isSuccess,

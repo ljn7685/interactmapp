@@ -44,7 +44,6 @@ class GameScene extends Component {
     }
 
     componentDidMount() {
-        console.log("didmount");
         const { revive } = getCurrentInstance().router.params;
         const { userinfo } = this.props;
         if (this.props.gametimes <= 0 && !revive) {

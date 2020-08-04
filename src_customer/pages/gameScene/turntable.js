@@ -163,7 +163,6 @@ class TurnTable extends Container {
         if (this.tween) {
             TWEEN.remove(this.tween);
         }
-        console.log(this.speed);
         this.game.nextTick(() => {
             this.startRotate();
         });
@@ -177,7 +176,6 @@ class TurnTable extends Container {
         const line = new Sprite(line_img);
         this.width = line.width;
         this.height = line.height;
-        console.log("turntable height", line.height);
         container.addChild(line);
         const table_img = this.assets.get("turntable");
         let table = (this.table = new Sprite(table_img));

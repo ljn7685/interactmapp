@@ -27,7 +27,9 @@
     "dev:h5": "npm run build:h5 -- --watch",
     "dev:rn": "npm run build:rn -- --watch",
     "dev:qq": "npm run build:qq -- --watch",
-    "dev:quickapp": "npm run build:quickapp -- --watch"
+    "dev:quickapp": "npm run build:quickapp -- --watch",
+    "prod:c":"NODE_ENV=production npm run build:alipay --project=customer -- --watch",
+    "prod:pc":"NODE_ENV=production npm run build:alipay --project=pc -- --watch"
   },
   "browserslist": [
     "last 3 versions",
