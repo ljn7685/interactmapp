@@ -9,6 +9,7 @@ import Taro from "@tarojs/taro";
 import close_btn_img from "../../assets/images/close_btn.png";
 import { drawPrize } from "../../actions/game";
 import { showConfirmModal } from "../../../public/util";
+import { throttle } from "underscore";
 
 const successTip = "恭喜你!";
 const failTip = `天呐！运气爆棚！
@@ -76,7 +77,11 @@ class GameResult extends Component {
         const tipStyle = isSuccess ? styles["success-tip"] : styles["fail-tip"];
         const status = isSuccess ? 0 : revive_times > 0 ? 1 : 2;
         const tipText = [successTip, reviveTip, failTip];
-        const onClickBtn = [this.exchangePrize, onRestart, () => my.exit()];
+        const onClickBtn = [
+            throttle(this.exchangePrize, 1000),
+            onRestart,
+            () => my.exit(),
+        ];
         const btnText = ["立即领取", "再战一次", "退出游戏"];
         return (
             <Modal

@@ -7,6 +7,7 @@ import "./app.scss";
 import {
     setActivityEnded,
     setUserInfo as setUserInfoAction,
+    addGametimes,
 } from "./actions/game";
 import { userInfoInit } from "../public/util/userinfo";
 import { getUserInfo, setUserInfo } from "../public/util/userInfoChanger";
@@ -17,7 +18,10 @@ const store = configStore();
 
 class App extends Component {
     componentDidMount() {
-        if (!this.getLaunchParams()) return;
+        this.init();
+    }
+    async init() {
+        await this.getLaunchParams();
         userInfoInit(() => {
             const userinfo = getUserInfo();
             if (
@@ -40,26 +44,30 @@ class App extends Component {
                 store.dispatch(setActivityEnded(false));
             }
             store.dispatch(setUserInfoAction(userinfo));
+            if (userinfo.is_follow && !userinfo.is_join) {
+                dispatch(addGametimes());
+            }
             console.log(store.getState().game.activity_ended);
         });
     }
     getLaunchParams() {
-        const options = Taro.getLaunchOptionsSync();
-        if (!(options && options.query && options.query.activeID)) {
-            console.log("options", options);
-            showConfirmModal({
-                title: "提示",
-                content: "暂无活动，联系商家创建活动吧～",
-                showCancel: false,
-                onConfirm: () => {
-                    my.exit();
-                },
-            });
-            return false;
-        } else {
-            setUserInfo({ active_id: options.query.activeID });
-            return true;
-        }
+        return new Promise((resolve, reject) => {
+            let options = Taro.getLaunchOptionsSync();
+            if (!(options && options.query && options.query.activeID)) {
+                console.log("options", options);
+                setUserInfo({ active_id: 182 });
+                showConfirmModal({
+                    title: "提示",
+                    content: "商家活动暂未开启，进入试玩模式吧~",
+                    showCancel: false,
+                    onConfirm: () => {},
+                });
+                resolve();
+            } else {
+                setUserInfo({ active_id: options.query.activeID });
+                resolve();
+            }
+        });
     }
 
     componentDidShow() {}

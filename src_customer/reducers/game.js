@@ -20,15 +20,13 @@ const initState = {
     max_rank_count: 50,
     max_fail_times: 0,
     revive_times: 0,
-    subtitle: "> 赢百元现金券/华为P40 <",
     preloaded: false,
     arrow_count: 10,
     arrow_score: 10,
     best_score: 0,
     game_duration: 60000,
     activity_ended: false,
-    is_follow: false,
-    userinfo: null,
+    userinfo: { is_follow: 0, sub_title: "" },
     appid: "3000000012505562",
     game_rule: {
         start_date: "2020-01-01 00:00:00",
@@ -85,13 +83,10 @@ export default function reducer(state = initState, action) {
         case SET_ACTIVITY_ENDED:
             return { ...state, activity_ended: action.isEnded };
         case SET_JOIN_GAME:
-            state.userinfo.is_join = 1;
-            return { ...state };
+            return { ...state, userinfo: { ...state.userinfo, is_join: 1 } };
         case SET_USER_INFO:
             const { userinfo } = action;
-            const { game_rule, gametimes } = state;
-            game_rule.start_date = userinfo.start_date;
-            game_rule.end_date = userinfo.end_date;
+            const { game_rule } = state;
             if (typeof userinfo.active_rewards === "string") {
                 userinfo.active_rewards = JSON.parse(userinfo.active_rewards);
             }
@@ -99,23 +94,31 @@ export default function reducer(state = initState, action) {
             userinfo.played = "fasle" === userinfo.played ? false : true;
             return {
                 ...state,
-                is_follow: Boolean(userinfo.is_follow),
                 max_fail_times: userinfo.game_number,
                 revive_times: userinfo.game_number,
-                gametimes:
-                    userinfo.is_follow && !userinfo.is_join
-                        ? gametimes + 1
-                        : gametimes,
-                subtitle: userinfo.sub_title,
-                game_rule,
+                game_rule: {
+                    ...game_rule,
+                    start_date: userinfo.start_date,
+                    end_date: userinfo.end_date,
+                },
                 userinfo,
             };
         case SET_FAVOR_SHOP:
-            state.userinfo.is_follow = 1;
-            return { ...state, is_follow: true };
+            return {
+                ...state,
+                userinfo: { ...state.userinfo, is_follow: 1 },
+            };
         case SET_REWARDS:
-            state.userinfo.active_rewards.datas = action.rewards;
-            return { ...state };
+            return {
+                ...state,
+                userinfo: {
+                    ...state.userinfo,
+                    active_rewards: {
+                        ...state.userinfo.active_rewards,
+                        datas: action.rewards,
+                    },
+                },
+            };
         case ADD_PRIZE:
             const active_rewards = state.userinfo.active_rewards.datas;
             const newPrize = active_rewards[action.index];

@@ -101,7 +101,11 @@ class GameIndex extends Component {
     };
     render() {
         const { showRule, showPrize, jumpIcon } = this.state;
-        const { activity_ended, is_follow } = this.props;
+        const {
+            activity_ended,
+            userinfo: { is_follow, sub_title },
+            gametimes,
+        } = this.props;
         return (
             <View className={styles["bg"]} ref={(ref) => (this.root = ref)}>
                 <View className={styles["title"]}>
@@ -111,9 +115,7 @@ class GameIndex extends Component {
                         className={styles["title-img"]}
                         mode="widthFix"
                     />
-                    <Text className={styles["title-desc"]}>
-                        {this.props.subtitle}
-                    </Text>
+                    <Text className={styles["title-desc"]}>{sub_title}</Text>
                 </View>
                 <View className={styles["game-preview"]}>
                     <Image
@@ -136,7 +138,7 @@ class GameIndex extends Component {
                     />
                 </View>
                 <View className={styles["game-info"]}>
-                    当前游戏次数: {this.props.gametimes}
+                    当前游戏次数: {gametimes}
                 </View>
                 <View className={styles["game-button-group"]}>
                     <View
@@ -211,9 +213,7 @@ class GameIndex extends Component {
 const mapStateToProps = ({ game }) => {
     return {
         gametimes: game.gametimes,
-        subtitle: game.subtitle,
         activity_ended: game.activity_ended,
-        is_follow: game.is_follow,
         userinfo: game.userinfo,
     };
 };
