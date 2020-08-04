@@ -12,12 +12,12 @@ import { showConfirmModal } from "../../../public/util";
 import { throttle } from "underscore";
 
 const successTip = "恭喜你!";
-const failTip = `天呐！运气爆棚！
+const reviveTip = `天呐！运气爆棚！
 
 获得一次复活机会
 
 关闭视为放弃复活机会哦～`;
-const reviveTip = `啊哦～差一点点就过关咯! 
+const failTip = `啊哦～差一点点就过关咯! 
 
 多加练习，再来挑战～～`;
 @connect(
