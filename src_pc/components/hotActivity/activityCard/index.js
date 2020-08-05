@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { View } from '@tarojs/components';
 import './index.scss';
 import { changeTitleAction, changeActivityDataAction } from '../actions';
-import { version } from '../reducer';
 import moment from 'moment';
+import { isEmpty } from '../../utils/index';
+import {getUserInfo} from '../../../public/util/userInfoChanger';
 
 import { connect } from 'react-redux';
 class ActivityCard extends Component {
@@ -30,7 +31,7 @@ class ActivityCard extends Component {
             'endDate': moment().add(7, 'days').format("YYYY-MM-DD"),
             'gameNumber': 0,
             'couponData': '',
-            'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${version}&_mp_code=tb&query=activeID%3D`,
+            'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${isEmpty(getUserInfo().cVersion) ? '0.0.14' : getUserInfo().cVersion}&_mp_code=tb&query=activeID%3D`,
             'activeRewards': ''
         })
     }

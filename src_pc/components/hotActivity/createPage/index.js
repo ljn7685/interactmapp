@@ -4,10 +4,6 @@ import './index.scss';
 import * as action from '../actions';
 import { isEmpty } from '../../utils/index';
 import { connect } from 'react-redux';
-//c端版本号
-export const version = '0.0.12';
-
-
 
 class CreatePage extends Component {
     constructor(props) {
@@ -21,14 +17,14 @@ class CreatePage extends Component {
         //这个bridge用于和插件进行数据通信 
         let self = this;
         const bridge = {
-            bizCode: "3000000012505562",//c
-            // bizCode: "3000000025552964",//b
+            // bizCode: "3000000012505562",//c
+            bizCode: "3000000025552964",//b
             //此处输入想配置的业务身份（消费者端appid）  
             //这个方法用于获取插件中用户选择的奖池ID  
             getCheckBenefitID({ ename, poolID }) {
                 console.log(ename, poolID)
-                // self.cupon = { 'ename': ename, 'poolID': poolID };
-                self.props.inputChangeAction('activeRewards', { 'ename': ename, 'poolID': poolID })
+                // self.props.inputChangeAction('activeRewards', { 'ename': ename, 'poolID': poolID })
+                self.props.getBenefitQueryAction(ename,poolID)
                 self.props.inputChangeAction('couponData', poolID)
             }
         }

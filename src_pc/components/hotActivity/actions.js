@@ -1,4 +1,4 @@
-import { getActivityInfoIdApi, createActivityApi } from '../../public/bPromiseApi/index';
+import { getActivityInfoIdApi, createActivityApi, benefitQueryApi } from '../../public/bPromiseApi/index';
 import Taro from '@tarojs/taro';
 import moment from 'moment';
 import { isEmpty, matchNum, matchTime } from '../utils/index';
@@ -51,6 +51,20 @@ export const setActivityUrlAction = (activityUrl) => {
     return {
         type: TITLE,
         activityUrl: activityUrl
+    }
+}
+export const getBenefitQueryAction = (ename,poolID)=>{
+    return async(dispatch)=>{
+        console.log('qwqwq',ename,poolID)
+        let data = await benefitQueryApi({'ename': ename, 'app_name': 'promotioncenter-3000000025552964', 'award_type':1});
+        if(data.result.code == 'SUCCESS'){
+            dispatch(inputChangeAction('activeRewards', { 'ename': ename, 'poolID': poolID, 'datas': data.result.datas}));
+        }else{
+            Taro.showToast({
+                title: '优惠券创建失败',
+                duration: 2000
+            })
+        }
     }
 }
 /**

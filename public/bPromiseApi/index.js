@@ -1,4 +1,4 @@
-import { api } from '../util/api';
+import { api, invokeTop } from '../util/api';
 /**
  * 获取用户创建的全部信息
  * @param {*} args 
@@ -56,7 +56,10 @@ export const getDataByIdApi = (args) => {
         })
     })
 }
-
+/**
+ * 通过id拿到的游戏数据
+ * @param {*} args 
+ */
 export const getActivityInfoIdApi = (args) => {
     return new Promise((resolve, reject) => {
         api({
@@ -67,6 +70,25 @@ export const getActivityInfoIdApi = (args) => {
                 resolve(res)
             },
             errCallback: err=>{
+                reject(err)
+            }
+        })
+    })
+}
+
+/**
+ * 查询发奖奖池的信息
+ * @param {*} args 
+ */
+export const benefitQueryApi =(args)=>{
+    return new Promise((resolve, reject)=>{
+        invokeTop({
+            api:'alibaba.benefit.query',
+            params:args,
+            callback:res=>{
+                resolve(res)
+            },
+            errCallback:err=>{
                 reject(err)
             }
         })
