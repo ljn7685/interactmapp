@@ -6,12 +6,6 @@ import classNames from "classnames";
 
 import styles from "./gameIndex.module.scss";
 import "../../styles/common.scss";
-import titleIcon from "../../assets/images/game_title_icon.png";
-import start_turntable from "../../assets/images/start_turntable.png";
-import start_player from "../../assets/images/start_player.png";
-import icon_gift from "../../assets/images/icon_gift.png";
-import icon_rule from "../../assets/images/icon_rule.png";
-
 import GameRule from "../gameRule/gameRule";
 import GamePrize from "../gamePrize/gamePrize";
 import ToastBox from "../../components/toast/toast";
@@ -21,6 +15,12 @@ import {
     favorShop,
     joinGame,
 } from "../../actions/game";
+
+const titleIcon = "http://q.aiyongbao.com/interact/game_title_icon.png"
+const start_turntable = "http://q.aiyongbao.com/interact/start_turntable.png"
+const start_player = "http://q.aiyongbao.com/interact/start_player.png"
+const icon_gift = "http://q.aiyongbao.com/interact/icon_gift.png"
+const icon_rule = "http://q.aiyongbao.com/interact/icon_rule.png"
 class GameIndex extends Component {
     constructor(props) {
         super(props);

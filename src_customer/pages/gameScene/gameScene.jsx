@@ -14,15 +14,14 @@ import {
 
 import styles from "./gameScene.module.scss";
 import "../../styles/common.scss";
-import guide_gif from "../../assets/images/guide.gif";
-import start_heart_gif from "../../assets/images/start_heart.gif";
-import success_angel_gif from "../../assets/images/success_angel.gif";
 import GameResult from "../gameResult/gameResult";
-import useImgLoader from "../../components/imgLoader/useImgLoader";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import Bump from "bump.js";
 import GameTip from "./components/gameTip";
 import ToastBox from "../../components/toast/toast";
+const guide_gif = "http://q.aiyongbao.com/interact/guide.gif";
+const start_heart_gif = "http://q.aiyongbao.com/interact/start_heart.gif";
+const success_angel_gif = "http://q.aiyongbao.com/interact/success_angel.gif";
 
 const { registerCanvas } = PIXI.miniprogram;
 
@@ -198,37 +197,41 @@ class GameScene extends Component {
                 onTouchMove={game.onPointMove}
                 onTouchEnd={game.onPointEnd}
                 onTouchCancel={game.onPointEnd}
-                className={styles['canvas']}
+                className={styles["canvas"]}
                 style={showGameResult ? { pointerEvents: "none" } : {}}
             >
-                <Canvas id="canvas" type="webgl" className={styles['canvas']}></Canvas>
-                {showGuide && imgList[0].loaded ? (
+                <Canvas
+                    id="canvas"
+                    type="webgl"
+                    className={styles["canvas"]}
+                ></Canvas>
+                {showGuide ? (
                     <Image
                         src={guide_gif}
                         alt=""
-                        className={styles['guide']}
+                        className={styles["guide"]}
                         mode="widthFix"
                         style={{
                             transform: `translateX(-23.913%) scale(${ratio})`,
                         }}
                     />
                 ) : null}
-                {showHeart && imgList[1].loaded ? (
+                {showHeart ? (
                     <Image
                         src={start_heart_gif}
                         alt=""
-                        className={styles['heart']}
+                        className={styles["heart"]}
                         mode="widthFix"
                         style={{
                             transform: `translateX(-50%) scale(${ratio})`,
                         }}
                     />
                 ) : null}
-                {showSuccessAngel && imgList[2].loaded ? (
+                {showSuccessAngel ? (
                     <Image
                         src={success_angel_gif}
                         alt=""
-                        className={styles['success-angel']}
+                        className={styles["success-angel"]}
                         mode="widthFix"
                         style={{
                             transform: `translateX(-50%) scale(${ratio})`,
@@ -275,12 +278,5 @@ const mapDispatchToProps = {
     setBestScore,
 };
 
-const wrapper = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(
-    useImgLoader(GameScene, [guide_gif, start_heart_gif, success_angel_gif], {
-        height: "100vh",
-    })
-);
+const wrapper = connect(mapStateToProps, mapDispatchToProps)(GameScene);
 export default wrapper;

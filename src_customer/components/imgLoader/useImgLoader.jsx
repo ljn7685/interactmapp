@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Image } from "@tarojs/components";
 //引入图片预加载组件
 import ImgLoader from "./imgLoader";
-function useImgLoader(WrappedComponent, images, style) {
+function useImgLoader(WrappedComponent, images, style = { height: "100vh" }) {
     return class extends Component {
         constructor(props) {
             super(props);
@@ -30,6 +30,19 @@ function useImgLoader(WrappedComponent, images, style) {
                 if (item.url == data.src) item.loaded = true;
                 return item;
             });
+            if (typeof this.wrapped.onProgress === "function") {
+                const loadedNum = imgList.filter((item) => item.loaded).length;
+                const progress = loadedNum / imgList.length;
+                this.wrapped.onProgress({
+                    progress,
+                });
+                if (
+                    progress >= 1 &&
+                    typeof this.wrapped.onComplete === "function"
+                ) {
+                    this.wrapped.onComplete();
+                }
+            }
             this.setState({
                 imgList,
             });
@@ -39,11 +52,12 @@ function useImgLoader(WrappedComponent, images, style) {
         }
         render() {
             const { imgLoadList, imgList } = this.state;
-            return(
+            return (
                 <View style={style ? style : {}}>
                     <WrappedComponent
                         {...this.props}
                         imgList={imgList}
+                        ref={(ref) => (this.wrapped = ref)}
                     ></WrappedComponent>
                     {imgLoadList.map((item, index) => {
                         return (

@@ -6,11 +6,11 @@ import Modal from "../../components/modal/modal";
 import styles from "./gameResult.module.scss";
 import { Text, View, Image } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import close_btn_img from "../../assets/images/close_btn.png";
 import { drawPrize } from "../../actions/game";
 import { showConfirmModal } from "../../../public/util";
 import { throttle } from "underscore";
 
+const close_btn_img = "http://q.aiyongbao.com/interact/close_btn.png"
 const successTip = "恭喜你!";
 const reviveTip = `天呐！运气爆棚！
 

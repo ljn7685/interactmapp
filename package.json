@@ -28,8 +28,8 @@
     "dev:rn": "npm run build:rn -- --watch",
     "dev:qq": "npm run build:qq -- --watch",
     "dev:quickapp": "npm run build:quickapp -- --watch",
-    "prod:c":"NODE_ENV=production npm run build:alipay --project=customer -- --watch",
-    "prod:pc":"NODE_ENV=production npm run build:alipay --project=pc -- --watch"
+    "prod:c": "NODE_ENV=production npm run build:alipay --project=customer -- --watch",
+    "prod:pc": "NODE_ENV=production npm run build:alipay --project=pc -- --watch"
   },
   "browserslist": [
     "last 3 versions",
@@ -47,7 +47,7 @@
     "@tbminiapp/pixi-miniprogram-engine": "^1.0.12",
     "@tbmp/mp-cloud-sdk": "^1.4.1",
     "@tweenjs/tween.js": "^18.6.0",
-    "@types/pixi.js": "^5.0.0",
+    "@types/pixi.js": "^4.7.5",
     "bump.js": "^1.0.3",
     "classnames": "^2.2.6",
     "eventemitter3": "^4.0.4",

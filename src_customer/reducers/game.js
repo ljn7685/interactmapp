@@ -13,7 +13,7 @@ import {
     SET_REWARDS,
     ADD_PRIZE_TIP,
 } from "../constants/game";
-import default_avatar from "../assets/images/avatar.png";
+const default_avatar = "../../assets/images/avatar.png"
 
 const initState = {
     gametimes: 0,
