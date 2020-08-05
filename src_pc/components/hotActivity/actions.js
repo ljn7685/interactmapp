@@ -55,10 +55,13 @@ export const setActivityUrlAction = (activityUrl) => {
 }
 export const getBenefitQueryAction = (ename,poolID)=>{
     return async(dispatch)=>{
-        console.log('qwqwq',ename,poolID)
         let data = await benefitQueryApi({'ename': ename, 'app_name': 'promotioncenter-3000000025552964', 'award_type':1});
         if(data.result.code == 'SUCCESS'){
-            dispatch(inputChangeAction('activeRewards', { 'ename': ename, 'poolID': poolID, 'datas': data.result.datas}));
+            dispatch({
+                type: SET_VALUE,
+                typeItem: 'activeRewards',
+                value: { 'ename': ename, 'poolID': poolID, 'datas': data.result.datas}
+            })
         }else{
             Taro.showToast({
                 title: '优惠券创建失败',
@@ -92,8 +95,14 @@ export const getActivityByIdAction = (id, operType) => {
             newData.couponData = JSON.parse(data.data[0].active_rewards).poolID;
         }
         if (data.code == 200) {
-            dispatch(changeTitleAction(operType + '丘比特之箭活动', 'hotActivity#create', id, operType));
-            dispatch(changeActivityDataAction(newData))
+            dispatch({
+                type: TITLE,
+                title: operType + '丘比特之箭活动',
+                titleType: 'hotActivity#create',
+                activityID: id,
+                operType: operType,
+                activityData: newData
+            })
         } else {
             Taro.showToast({
                 title: '参数不对，失败了',
@@ -126,12 +135,19 @@ export const creacteActivityAction = (operationType) => {
             if (data.code == 200) {
                 if (operationType == 2) {
                     //修改成功后，就回活动管理了
-                    dispatch(changeTitleAction('活动管理', 'management#allActivity'));
+                    dispatch({
+                        type: TITLE,
+                        title: '活动管理',
+                        titleType: 'management#allActivity',
+                    })
                 } else {
                     let newActiveUrl = decodeURIComponent(newArgs.activeUrl) + data.activityId;
-                    dispatch(changeTitleAction('活动创建成功', 'hotActivity#success'));
-                    //存一个链接，成功页面要拿到的
-                    dispatch(setActivityUrlAction(newActiveUrl));
+                    dispatch({
+                        type: TITLE,
+                        title: '活动创建成功',
+                        titleType: 'hotActivity#success',
+                        activityUrl: newActiveUrl
+                    })
                 }
             } else {
                 Taro.showToast({
