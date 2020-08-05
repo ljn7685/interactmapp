@@ -12,19 +12,17 @@ import {
     setBestScore,
 } from "../../actions/game";
 
-import "./gameScene.scss";
+import styles from "./gameScene.module.scss";
 import "../../styles/common.scss";
-import icon_rule from "../../assets/images/icon_rule.png";
 import guide_gif from "../../assets/images/guide.gif";
 import start_heart_gif from "../../assets/images/start_heart.gif";
 import success_angel_gif from "../../assets/images/success_angel.gif";
 import GameResult from "../gameResult/gameResult";
 import useImgLoader from "../../components/imgLoader/useImgLoader";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
-import GameRule from "../gameRule/gameRule";
-import ToastBox from "../../components/toast/toast";
 import Bump from "bump.js";
 import GameTip from "./components/gameTip";
+import ToastBox from "../../components/toast/toast";
 
 const { registerCanvas } = PIXI.miniprogram;
 
@@ -200,15 +198,15 @@ class GameScene extends Component {
                 onTouchMove={game.onPointMove}
                 onTouchEnd={game.onPointEnd}
                 onTouchCancel={game.onPointEnd}
-                className="canvas"
+                className={styles['canvas']}
                 style={showGameResult ? { pointerEvents: "none" } : {}}
             >
-                <Canvas id="canvas" type="webgl" className="canvas"></Canvas>
+                <Canvas id="canvas" type="webgl" className={styles['canvas']}></Canvas>
                 {showGuide && imgList[0].loaded ? (
                     <Image
                         src={guide_gif}
                         alt=""
-                        className="guide"
+                        className={styles['guide']}
                         mode="widthFix"
                         style={{
                             transform: `translateX(-23.913%) scale(${ratio})`,
@@ -219,7 +217,7 @@ class GameScene extends Component {
                     <Image
                         src={start_heart_gif}
                         alt=""
-                        className="heart"
+                        className={styles['heart']}
                         mode="widthFix"
                         style={{
                             transform: `translateX(-50%) scale(${ratio})`,
@@ -230,7 +228,7 @@ class GameScene extends Component {
                     <Image
                         src={success_angel_gif}
                         alt=""
-                        className="success-angel"
+                        className={styles['success-angel']}
                         mode="widthFix"
                         style={{
                             transform: `translateX(-50%) scale(${ratio})`,

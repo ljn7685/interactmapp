@@ -13,8 +13,8 @@ import icon_gift from "../../assets/images/icon_gift.png";
 import icon_rule from "../../assets/images/icon_rule.png";
 
 import GameRule from "../gameRule/gameRule";
-import ToastBox from "../../components/toast/toast";
 import GamePrize from "../gamePrize/gamePrize";
+import ToastBox from "../../components/toast/toast";
 import {
     setActivityEnded,
     setUserInfo,

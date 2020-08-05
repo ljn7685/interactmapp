@@ -27,7 +27,6 @@ const initState = {
     game_duration: 60000,
     activity_ended: false,
     userinfo: { is_follow: 0, sub_title: "" },
-    appid: "3000000012505562",
     game_rule: {
         start_date: "2020-01-01 00:00:00",
         end_date: "2020-12-31 00:00:00",
@@ -120,10 +119,14 @@ export default function reducer(state = initState, action) {
                 },
             };
         case ADD_PRIZE:
-            const active_rewards = state.userinfo.active_rewards.datas;
-            const newPrize = active_rewards[action.index];
-            const prizes = [...state.prizes, newPrize];
-            return { ...state, prizes };
+            // const active_rewards = state.userinfo.active_rewards.datas;
+            // const newPrize = active_rewards[action.index];
+            // const prizes = [...state.prizes, newPrize];
+            // return { ...state, prizes };
+            return {
+                ...state,
+                userinfo: { ...state.userinfo, is_receive_rewards: 1 },
+            };
         case ADD_PRIZE_TIP:
             const prize_tip = {
                 msg: `恭喜你中奖啦！

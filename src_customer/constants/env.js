@@ -11,6 +11,7 @@ export const ENV = {
     device:'mobile',
     app:'interact',
     appName:'爱用互动',
+    appid: "3000000012505562",
     platform:'mapp',
     entryApiName:'aiyong.interact.user.info.get',
     userApiName:'aiyong.interactc.user.data.set',

@@ -15,6 +15,7 @@ import {
 } from "../constants/game";
 import { api } from "../../public/util/api";
 import { getCloud } from "mapp_common/utils/cloud";
+import { ENV } from "../constants/env";
 import Taro from "@tarojs/taro";
 
 export const addGametimes = () => {
@@ -192,13 +193,13 @@ export const userRevive = (userinfo, cb) => {
         });
     };
 };
-const queryPrizes = (userinfo, appid) => {
+const queryPrizes = (userinfo) => {
     return getCloud()
         .topApi.invoke({
             api: "alibaba.benefit.query",
             data: {
                 ename: userinfo.ename,
-                app_name: `promotioncenter-${appid}`,
+                app_name: `promotioncenter-${ENV.appid}`,
             },
         })
         .then((res) => {
@@ -210,14 +211,14 @@ const queryPrizes = (userinfo, appid) => {
             return res;
         });
 };
-const draw = (userinfo, appid) => {
+const draw = (userinfo) => {
     return new Promise((resolve, reject) => {
         getCloud()
             .topApi.invoke({
                 api: "alibaba.benefit.draw",
                 data: {
                     ename: userinfo.ename,
-                    app_name: `promotioncenter-${appid}`,
+                    app_name: `promotioncenter-${ENV.appid}`,
                 },
             })
             .then((res) => {
@@ -252,16 +253,15 @@ const authorizeBenefit = () => {
 /**
  * 抽奖action
  * @param {*} userinfo 
- * @param {*} appid 
  * @param {*} cb 
  */
-export const drawPrize = (userinfo, appid, cb) => {
+export const drawPrize = (userinfo, cb) => {
     return async (dispatch) => {
         try {
             await authorizeBenefit();
-            const queryInfo = await queryPrizes(userinfo, appid);
+            const queryInfo = await queryPrizes(userinfo);
             dispatch(setRewards(queryInfo.result.datas));
-            const prize_id = await draw(userinfo, appid);
+            const prize_id = await draw(userinfo);
             api({
                 apiName: "aiyong.interactc.user.data.update",
                 method: "/interactive/updateInterActCData",

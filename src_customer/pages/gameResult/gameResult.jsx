@@ -23,7 +23,6 @@ const failTip = `啊哦～差一点点就过关咯!
 @connect(
     ({ game }) => {
         return {
-            appid: game.appid,
             userinfo: game.userinfo,
         };
     },
@@ -43,8 +42,8 @@ class GameResult extends Component {
     };
     exchangePrize = () => {
         console.log("exchangePrize");
-        const { appid, userinfo } = this.props;
-        this.props.drawPrize(userinfo, appid, () => {
+        const { userinfo } = this.props;
+        this.props.drawPrize(userinfo, () => {
             Taro.redirectTo({
                 url:
                     "/pages/gameIndex/gameIndex?successfully_received=true&gameover=true",

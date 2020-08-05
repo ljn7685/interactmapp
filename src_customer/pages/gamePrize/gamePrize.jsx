@@ -9,7 +9,10 @@ class GamePrize extends Component {
         super(props);
     }
     render() {
-        const { onClose, prizes, userinfo } = this.props;
+        const { onClose, userinfo } = this.props;
+        const prizes = userinfo.is_receive_rewards
+            ? [userinfo.active_rewards.datas[0]]
+            : [];
         return (
             <GameModal
                 visible={true}
@@ -20,12 +23,8 @@ class GamePrize extends Component {
                 title="我的奖品"
             >
                 {prizes.length === 0 ? (
-                    <Text className={styles["prize-msg"]}>
-                        {userinfo.played
-                            ? "请到“我的-红包卡券”中查看奖品！"
-                            : "暂无中奖"}
-                    </Text>
-                ) : prizes instanceof Array ? (
+                    <Text className={styles["prize-msg"]}>暂无中奖</Text>
+                ) : (
                     prizes.map((item, index) => (
                         <View className={styles["prize-item"]} key={index}>
                             <Text className={styles["prize-desc"]}>
@@ -49,8 +48,6 @@ class GamePrize extends Component {
                             </View>
                         </View>
                     ))
-                ) : (
-                    <Text className={styles["prize-msg"]}>{prizes.msg}</Text>
                 )}
             </GameModal>
         );
