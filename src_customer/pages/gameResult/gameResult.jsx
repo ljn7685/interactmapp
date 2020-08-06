@@ -6,24 +6,23 @@ import Modal from "../../components/modal/modal";
 import styles from "./gameResult.module.scss";
 import { Text, View, Image } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import close_btn_img from "../../assets/images/close_btn.png";
 import { drawPrize } from "../../actions/game";
 import { showConfirmModal } from "../../../public/util";
 import { throttle } from "underscore";
 
+const close_btn_img = "http://q.aiyongbao.com/interact/close_btn.png"
 const successTip = "恭喜你!";
-const failTip = `天呐！运气爆棚！
+const reviveTip = `天呐！运气爆棚！
 
 获得一次复活机会
 
 关闭视为放弃复活机会哦～`;
-const reviveTip = `啊哦～差一点点就过关咯! 
+const failTip = `啊哦～差一点点就过关咯! 
 
 多加练习，再来挑战～～`;
 @connect(
     ({ game }) => {
         return {
-            appid: game.appid,
             userinfo: game.userinfo,
         };
     },
@@ -43,8 +42,8 @@ class GameResult extends Component {
     };
     exchangePrize = () => {
         console.log("exchangePrize");
-        const { appid, userinfo } = this.props;
-        this.props.drawPrize(userinfo, appid, () => {
+        const { userinfo } = this.props;
+        this.props.drawPrize(userinfo, () => {
             Taro.redirectTo({
                 url:
                     "/pages/gameIndex/gameIndex?successfully_received=true&gameover=true",
@@ -53,7 +52,6 @@ class GameResult extends Component {
     };
     render() {
         const { isSuccess, onRestart, revive_times } = this.props;
-        console.log("reveie times", revive_times);
         let headerStyle = classNames(styles["header"], {
             [styles["win-header"]]: isSuccess,
             [styles["lose-header"]]: !isSuccess,

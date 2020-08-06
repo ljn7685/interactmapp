@@ -84,7 +84,6 @@ class Game extends EventEmitter {
     }
 
     initStage() {
-        console.log(this.width, this.height);
         this.ticker.add(this.onUpdate.bind(this));
 
         //初始化
@@ -219,7 +218,6 @@ class Game extends EventEmitter {
         this.pulling = false;
         this.pull_pos = [e.touches[0].clientX, e.touches[0].clientY];
         this.emit("pointstart");
-        console.log("touchstart");
     };
     /**
      * 触摸移动

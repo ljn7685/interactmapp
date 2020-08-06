@@ -3,8 +3,8 @@ import { View, Image, Text } from "@tarojs/components";
 import classnames from "classnames";
 import Modal from "../modal/modal";
 import styles from "./gameModal.module.scss";
-import heart_img from "../../assets/images/rule_heart.png";
-import close_btn_img from "../../assets/images/close_btn.png";
+const heart_img = "http://q.aiyongbao.com/interact/rule_heart.png"
+const close_btn_img = "http://q.aiyongbao.com/interact/close_btn.png"
 class GameModal extends Component {
     constructor(props) {
         super(props);

@@ -2,14 +2,22 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import GameModal from "../../components/gameModal/gameModal";
 import styles from "./gamePrize.module.scss";
-import coupon_img from "../../assets/images/coupon.png";
 import { View, Text, Image } from "@tarojs/components";
+const coupon_img = "http://q.aiyongbao.com/interact/coupon.png";
 class GamePrize extends Component {
     constructor(props) {
         super(props);
     }
     render() {
-        const { onClose, prizes, userinfo } = this.props;
+        const {
+            onClose,
+            userinfo: {
+                is_receive_rewards,
+                active_rewards: { datas },
+            },
+        } = this.props;
+        const prizes =
+            is_receive_rewards && datas && datas.length > 0 ? [datas[0]] : [];
         return (
             <GameModal
                 visible={true}
@@ -20,12 +28,8 @@ class GamePrize extends Component {
                 title="我的奖品"
             >
                 {prizes.length === 0 ? (
-                    <Text className={styles["prize-msg"]}>
-                        {userinfo.played
-                            ? "请到“我的-红包卡券”中查看奖品！"
-                            : "暂无中奖"}
-                    </Text>
-                ) : prizes instanceof Array ? (
+                    <Text className={styles["prize-msg"]}>暂无中奖</Text>
+                ) : (
                     prizes.map((item, index) => (
                         <View className={styles["prize-item"]} key={index}>
                             <Text className={styles["prize-desc"]}>
@@ -49,8 +53,6 @@ class GamePrize extends Component {
                             </View>
                         </View>
                     ))
-                ) : (
-                    <Text className={styles["prize-msg"]}>{prizes.msg}</Text>
                 )}
             </GameModal>
         );
@@ -58,7 +60,6 @@ class GamePrize extends Component {
 }
 const mapStateToProps = ({ game }) => {
     return {
-        prizes: game.prizes,
         userinfo: game.userinfo,
     };
 };

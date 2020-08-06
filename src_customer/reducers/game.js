@@ -8,16 +8,12 @@ import {
     RESET_REVIVE_TIMES,
     SET_USER_INFO,
     SET_FAVOR_SHOP,
-    ADD_PRIZE,
     SET_JOIN_GAME,
-    SET_REWARDS,
-    ADD_PRIZE_TIP,
+    SET_RECEIVE_REWARDS,
 } from "../constants/game";
-import default_avatar from "../assets/images/avatar.png";
 
 const initState = {
     gametimes: 0,
-    max_rank_count: 50,
     max_fail_times: 0,
     revive_times: 0,
     preloaded: false,
@@ -27,7 +23,6 @@ const initState = {
     game_duration: 60000,
     activity_ended: false,
     userinfo: { is_follow: 0, sub_title: "" },
-    appid: "3000000012505562",
     game_rule: {
         start_date: "2020-01-01 00:00:00",
         end_date: "2020-12-31 00:00:00",
@@ -45,26 +40,6 @@ const initState = {
             },
         ],
     },
-    prizes: [],
-    user_id: "007",
-    rank_list: [
-        {
-            id: "001",
-            name: "可爱的**婉莹",
-            avatar: default_avatar,
-            score: 1000,
-        },
-        { id: "002", name: "可爱的**小小", avatar: default_avatar, score: 950 },
-        { id: "003", name: "可爱的**大猫", avatar: default_avatar, score: 930 },
-        { id: "004", name: "可爱的**婉莹", avatar: default_avatar, score: 930 },
-        { id: "005", name: "可爱的**婉莹", avatar: default_avatar, score: 920 },
-        { id: "006", name: "可爱的**婉莹", avatar: default_avatar, score: 918 },
-        { id: "007", name: "可爱的**婉莹", avatar: default_avatar, score: 910 },
-        { id: "008", name: "可爱的**婉莹", avatar: default_avatar, score: 850 },
-        { id: "009", name: "可爱的**婉莹", avatar: default_avatar, score: 810 },
-        { id: "010", name: "可爱的**婉莹", avatar: default_avatar, score: 700 },
-        { id: "011", name: "可爱的**婉莹", avatar: default_avatar, score: 650 },
-    ],
 };
 export default function reducer(state = initState, action) {
     switch (action.type) {
@@ -84,6 +59,16 @@ export default function reducer(state = initState, action) {
             return { ...state, activity_ended: action.isEnded };
         case SET_JOIN_GAME:
             return { ...state, userinfo: { ...state.userinfo, is_join: 1 } };
+        case SET_FAVOR_SHOP:
+            return {
+                ...state,
+                userinfo: { ...state.userinfo, is_follow: 1 },
+            };
+        case SET_RECEIVE_REWARDS:
+            return {
+                ...state,
+                userinfo: { ...state.userinfo, is_receive_rewards: 1 },
+            };
         case SET_USER_INFO:
             const { userinfo } = action;
             const { game_rule } = state;
@@ -91,7 +76,6 @@ export default function reducer(state = initState, action) {
                 userinfo.active_rewards = JSON.parse(userinfo.active_rewards);
             }
             userinfo.ename = userinfo.active_rewards.ename;
-            userinfo.played = "fasle" === userinfo.played ? false : true;
             return {
                 ...state,
                 max_fail_times: userinfo.game_number,
@@ -103,33 +87,6 @@ export default function reducer(state = initState, action) {
                 },
                 userinfo,
             };
-        case SET_FAVOR_SHOP:
-            return {
-                ...state,
-                userinfo: { ...state.userinfo, is_follow: 1 },
-            };
-        case SET_REWARDS:
-            return {
-                ...state,
-                userinfo: {
-                    ...state.userinfo,
-                    active_rewards: {
-                        ...state.userinfo.active_rewards,
-                        datas: action.rewards,
-                    },
-                },
-            };
-        case ADD_PRIZE:
-            const active_rewards = state.userinfo.active_rewards.datas;
-            const newPrize = active_rewards[action.index];
-            const prizes = [...state.prizes, newPrize];
-            return { ...state, prizes };
-        case ADD_PRIZE_TIP:
-            const prize_tip = {
-                msg: `恭喜你中奖啦！
-        请到“我的-红包卡券”中查看奖品！`,
-            };
-            return { ...state, prizes: prize_tip };
         default:
             return state;
     }
