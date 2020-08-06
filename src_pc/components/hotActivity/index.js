@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View} from '@tarojs/components';
+import { View } from '@tarojs/components';
 import './index.scss';
 import ActivityCard from './activityCard/index';
 import CreatePage from './createPage/index';
@@ -17,45 +17,42 @@ class HotActivity extends Component {
 
         }
     }
-
-    // backToAllActivity = () => {
-    //     this.props.changeTitleAction('活动管理', 'management');
-    // }
-
+    changePage =(values)=>{
+        console.log(values)
+    }
     render() {
-
         const { titleType, title, changeTitleAction } = this.props;
         return (
             <View className='content-box'>
                 <View className='sesecond-title'>
                     {
-                        titleType == 'data' && <View className='back-icno iconfont' onClick={changeTitleAction.bind(this, '活动管理', 'management')} >&#xe669;</View>
+                        titleType == 'management#data' && <View className='back-icno iconfont' onClick={changeTitleAction.bind(this, '活动管理', 'management#allActivity')} >&#xe669;</View>
                     }
                     {title}
                 </View>
                 <View className='content'>
                     {
-                        titleType === 'hotActivity' && <ActivityCard />
+                        titleType === 'hotActivity#activity' && <ActivityCard />
                     }
                     {
-                        titleType == 'create' && <CreatePage />
+                        titleType == 'hotActivity#create' && <CreatePage />
                     }
                     {
-                        titleType === 'success' && <ActivitySuccess />
+                        titleType === 'hotActivity#success' && <ActivitySuccess />
                     }
                     {
-                        titleType === 'management' && <AllActivity />
+                        titleType === 'management#allActivity' && <AllActivity />
                     }
                     {
-                        titleType == 'data' && <ActivityData />
-                    }
+                        titleType == 'management#data' && <ActivityData />
+                    }   
                 </View>
             </View>
         );
     }
 }
 //将store里面的值映射为props
-const mapStateToProps = ({hotReducer}) => {
+const mapStateToProps = ({ hotReducer }) => {
     return {
         titleType: hotReducer.titleType,
         title: hotReducer.title

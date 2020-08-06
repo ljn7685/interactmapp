@@ -10,26 +10,7 @@ class Layout extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isShow: 'hotActivity'
         }
-    }
-    /**
-     * 侧边栏点击不同按钮
-     * @param {*} values 
-     */
-    goToHotPage = (values) => {
-        //顶部的title
-        let data = '热门活动';
-        if (values == 'management') {
-            data = '活动管理';
-        }
-        this.props.changeTitleAction(data, values);
-        this.setState({
-            isShow: values
-        })
-    }
-    demo=()=>{
-        this.props.changeTitleAction('创建成功', 'success');
     }
     /**
      * 联系客服
@@ -38,19 +19,17 @@ class Layout extends Component {
         contactCustomerService()
     }
     render() {
-        const { isShow } = this.state;
-        const { titleType } = this.props;
-        console.log(titleType)
+        const { titleType, changeTitleAction } = this.props;
         return (
             <View className='layout-box'>
                 <View className='layout-top'>
                     <Image className='logo' src='http://q.aiyongbao.com/interact/LOGO.png' alt='logo' />
-                    <View className='layout-title' onClick={this.demo}>爱用互动</View>
+                    <View className='layout-title'>爱用互动</View>
                     <View className='layout-desc'>由 爱用科技 提供</View>
                 </View>
                 {/* 当用户没有数据的时候，点击去“创建数据”，跳转hotActivity的页面，导航栏颜色要变 */}
-                <View className={`layout-item ${isShow == 'hotActivity' || titleType == 'hotActivity' ? 'action' : ''}`} onClick={this.goToHotPage.bind(this, 'hotActivity')}>热门活动</View>
-                <View className={`layout-item ${isShow == 'management' && titleType != 'hotActivity' ? 'action' : ''}`} onClick={this.goToHotPage.bind(this, 'management')}>活动管理</View>
+                <View className={`layout-item ${titleType.split('#')[0] == 'hotActivity' ? 'action' : ''}`} onClick={changeTitleAction.bind(this, '热门活动', 'hotActivity#activity')}>热门活动</View>
+                <View className={`layout-item ${titleType.split('#')[0] == 'management' ? 'action' : ''}`} onClick={changeTitleAction.bind(this, '活动管理', 'management#allActivity')}>活动管理</View>
                 <View className='layout-bottom' onClick={this.connectKeFU}>
                     <View className='icno-kefu iconfont'>&#xe65b;</View>
                     <View className='contact'>联系客服</View>
@@ -60,7 +39,7 @@ class Layout extends Component {
     }
 }
 //将store里面的值映射为props
-const mapStateToProps = ({hotReducer}) => {
+const mapStateToProps = ({ hotReducer }) => {
     return {
         titleType: hotReducer.titleType,
     }
