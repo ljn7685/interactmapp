@@ -3,16 +3,21 @@ import { connect } from "react-redux";
 import GameModal from "../../components/gameModal/gameModal";
 import styles from "./gamePrize.module.scss";
 import { View, Text, Image } from "@tarojs/components";
-const coupon_img = "http://q.aiyongbao.com/interact/coupon.png"
+const coupon_img = "http://q.aiyongbao.com/interact/coupon.png";
 class GamePrize extends Component {
     constructor(props) {
         super(props);
     }
     render() {
-        const { onClose, userinfo } = this.props;
-        const prizes = userinfo.is_receive_rewards
-            ? [userinfo.active_rewards.datas[0]]
-            : [];
+        const {
+            onClose,
+            userinfo: {
+                is_receive_rewards,
+                active_rewards: { datas },
+            },
+        } = this.props;
+        const prizes =
+            is_receive_rewards && datas && datas.length > 0 ? [datas[0]] : [];
         return (
             <GameModal
                 visible={true}
@@ -55,7 +60,6 @@ class GamePrize extends Component {
 }
 const mapStateToProps = ({ game }) => {
     return {
-        prizes: game.prizes,
         userinfo: game.userinfo,
     };
 };

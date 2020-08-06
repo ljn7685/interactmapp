@@ -65,7 +65,7 @@ class GameIndex extends Component {
      */
     onGameStart = () => {
         const { userinfo, joinGame } = this.props;
-        if (!userinfo.is_join && !userinfo.played) {
+        if (!userinfo.is_join && !userinfo.is_played) {
             joinGame(userinfo, () => {
                 this.redirectToGame();
             });
@@ -91,7 +91,7 @@ class GameIndex extends Component {
     onFavorShop = () => {
         const { userinfo, gametimes } = this.props;
         this.props.favorShop(userinfo, () => {
-            if (userinfo.played) {
+            if (userinfo.is_played) {
                 this.toast.info("已经参与过该游戏咯～");
             }
         });
