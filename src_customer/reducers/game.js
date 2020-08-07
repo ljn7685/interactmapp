@@ -13,7 +13,7 @@ import {
 } from "../constants/game";
 
 const initState = {
-    gametimes: 0,
+    gametimes: 10,
     max_fail_times: 0,
     revive_times: 0,
     preloaded: false,
@@ -76,6 +76,8 @@ export default function reducer(state = initState, action) {
                 userinfo.active_rewards = JSON.parse(userinfo.active_rewards);
             }
             userinfo.ename = userinfo.active_rewards.ename;
+            userinfo.is_played = false;
+            userinfo.is_follow = 1;
             return {
                 ...state,
                 max_fail_times: userinfo.game_number,
