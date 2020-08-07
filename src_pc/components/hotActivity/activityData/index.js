@@ -90,11 +90,11 @@ class ActivityData extends Component {
                     dataList.map((item) => {
                         return (
                             <View className='data-content-tip' key={item.create_date}>
-                                <View className='tip-date'>{item.create_date.substring(0, 10)}</View>
-                                <View className='tip-num'>{item.num ? item.num : 0}</View>
-                                <View className='tip-join'>{item.joinNum ? item.joinNum : 0}</View>
-                                <View className='tip-follw'>{item.follow ? item.follow : 0}</View>
-                                <View className='tip-reward'>{item.reward ? item.reward : 0}</View>
+                                <View className='col-date'>{item.create_date.substring(0, 10)}</View>
+                                <View className='col-num'>{item.num ? item.num : 0}</View>
+                                <View className='col-join'>{item.joinNum ? item.joinNum : 0}</View>
+                                <View className='col-follw'>{item.follow ? item.follow : 0}</View>
+                                <View className='col-reward'>{item.reward ? item.reward : 0}</View>
                             </View>
                         )
                     })
@@ -128,22 +128,22 @@ class ActivityData extends Component {
                     !isShow && this.emptyPageData()
                 }
                 {
-                    isShow && <View>
+                    isShow && <View className='scroll-box'>
                         <View className='data-top'>
-                            <View className='data-date'>日期</View>
-                            <View className='come'>进入活动页面人数</View>
-                            <View className='join'>参与人数</View>
-                            <View className='follw'>关注店铺人数</View>
-                            <View className='reward'>领取奖励人数</View>
+                            <View className='col-date'>日期</View>
+                            <View className='col-come'>进入活动页面人数</View>
+                            <View className='col-join'>参与人数</View>
+                            <View className='col-follw'>关注店铺人数</View>
+                            <View className='col-reward'>领取奖励人数</View>
                         </View>
                         <View className='data-content'>
                             {
                                 this.pageNo == 1 && <View className='total-box'>
-                                    <View className='total-data'>总计</View>
-                                    <View className='total-num'>{dataAll.total_num ? dataAll.total_num : 0}</View>
-                                    <View className='total-join'>{dataAll.total_join ? dataAll.total_join : 0}</View>
-                                    <View className='total-follw'>{dataAll.total_follow ? dataAll.total_follow : 0}</View>
-                                    <View className='total-reward'>{dataAll.total_reward ? dataAll.total_reward : 0}</View>
+                                    <View className='col-date'>总计</View>
+                                    <View className='col-num'>{dataAll.total_num ? dataAll.total_num : 0}</View>
+                                    <View className='col-join'>{dataAll.total_join ? dataAll.total_join : 0}</View>
+                                    <View className='col-follw'>{dataAll.total_follow ? dataAll.total_follow : 0}</View>
+                                    <View className='col-reward'>{dataAll.total_reward ? dataAll.total_reward : 0}</View>
                                 </View>
                             }
                             {
