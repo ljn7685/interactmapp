@@ -75,11 +75,9 @@ function tbShopFavor(userinfo) {
                         id: userinfo.seller_id,
                         success: resolve,
                         fail: (res) => {
+                            console.log(res);
                             reject({
-                                msg:
-                                    typeof res.error === "string"
-                                        ? res.error
-                                        : "关注店铺失败",
+                                msg: res.errorMessage,
                             });
                         },
                     });
@@ -113,7 +111,7 @@ export const favorShop = (userinfo, cb) => {
                     callback: (res) => {
                         console.log("~~~~~~~~~~~~~~~~~~~~", res);
                         dispatch(setFavorShop());
-                        if (!userinfo.played) {
+                        if (!userinfo.is_played) {
                             dispatch(addGametimes());
                         }
                         cb && cb();
@@ -192,7 +190,8 @@ const draw = (userinfo) => {
                 ename: userinfo.ename,
             },
             callback: async (res) => {
-                if (res.code === 200 && res.result_success) {
+                console.log(res);
+                if (res.result_code === "SUCCESS" && res.result_success) {
                     resolve(res);
                 } else {
                     reject(res);

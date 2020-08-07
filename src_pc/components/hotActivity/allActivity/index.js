@@ -134,18 +134,18 @@ class AllActivity extends Component {
                     dataList.map((item, index) => {
                         return (
                             <View className='activity-content-box' key={item.id}>
-                                <View className='content-name'>{item.active_name}</View>
-                                <View className='content-status'>{selectItem[item.active_status]}</View>
-                                <View className='content-time-box'>
+                                <View className='content-name col-name'>{item.active_name}</View>
+                                <View className='content-status col-status'>{item.status}</View>
+                                <View className='content-time-box col-time'>
                                     <View className='time-start'>起：{item.start_date}</View>
-                                    <View className='time-end'>止：{item.end_date.substring(0, 10) + ' 23:59:59'}</View>
+                                    <View className='time-end'>止：{item.end_date.substring(0,10)+' 23:59:59'}</View>
                                 </View>
-                                <View className='content-url' onClick={this.copyUrl.bind(this, item.active_url, item.id)}>复制链接</View>
-                                <View className='oper-box'>
-                                    <View className='edit-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '修改')} style={{ display: `${item.active_status == 2 ? 'none' : ''}` }}>修改活动</View>
-                                    <View className='copy-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '创建')} style={{ display: `${item.active_status == 2 ? '' : 'none'}` }}>复制活动</View>
-                                    <View className='data-activity oper-tip' onClick={this.goToDataPage.bind(this, item.active_name, item.id)} style={{ display: `${item.active_status == 3 ? 'none' : ''}` }}>活动数据</View>
-                                    <View className='end-activity oper-tip' onClick={this.endActivity.bind(this, item.id, index)} style={{ display: `${item.active_status == 2 ? 'none' : ''}` }}>结束活动</View>
+                                <View className='content-url col-url' onClick={this.copyUrl.bind(this,item.active_url, item.id)}>复制链接</View>
+                                <View className='oper-box col-oper'>
+                                    <View className='edit-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '修改')} style={{display:`${item.active_status == 2 ? 'none':''}`}}>修改活动</View>
+                                    <View className='copy-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '创建')} style={{display:`${item.active_status == 2 ? '':'none'}`}}>复制活动</View>
+                                    <View className='data-activity oper-tip' onClick={this.goToDataPage.bind(this, item.active_name, item.id)} style={{display:`${item.active_status == 3 ? 'none':''}`}}>活动数据</View>
+                                    <View className='end-activity oper-tip' onClick={this.endActivity.bind(this, item.id, index)} style={{display:`${item.active_status == 2 ? 'none':''}`}}>结束活动</View>
                                 </View>
                             </View>
                         )
@@ -183,11 +183,11 @@ class AllActivity extends Component {
                 {
                     isShow && <View className='all-activity-content'>
                         <View className='all-activity-title'>
-                            <View className='activity-name'>活动名称</View>
-                            <View className='activity-status'>活动状态</View>
-                            <View className='activity-time'>活动时间</View>
-                            <View className='activity-url'>活动链接</View>
-                            <View className='activity-oper'>操作</View>
+                            <View className='activity-name col-name'>活动名称</View>
+                            <View className='activity-status col-status'>活动状态</View>
+                            <View className='activity-time col-time'>活动时间</View>
+                            <View className='activity-url col-url'>活动链接</View>
+                            <View className='activity-oper col-oper'>操作</View>
                         </View>
                         <View className='activity-content'>
                             {

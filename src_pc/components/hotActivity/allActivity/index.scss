@@ -93,6 +93,21 @@
         background: #fff;
         border-radius: 16px;
         padding-bottom: 32px;
+        .col-name {
+            width: 240px;
+        }
+        .col-status {
+            width: 128px;
+        }
+        .col-time {
+            width: 332px;
+        }
+        .col-url {
+            width: 128px;
+        }
+        .col-oper {
+            width: 640px;
+        }
         .all-activity-title{
             background: #E6E6E6;
             height: 96px;
@@ -100,27 +115,19 @@
             color: #333333;
             display: flex;
             align-items: center;
+            justify-content: space-around;
             border-radius: 16px 16px 0px 0px;
-            .activity-name{
-                margin-left: 64px;
-                margin-right: 176px
-            }
-            .activity-time{
-                margin-left: 176px;
-                margin-right: 320px;
-            }
-            .activity-oper{
-                margin-left: 176px;
-            }
+            padding-right: 20px;
         }
         .activity-content{
             height: 65vh;
-            overflow-y: scroll;
+            overflow-y: auto;
             .activity-content-box{
                 height: 160px;
                 display: flex;
                 position: relative;
                 align-items: center;
+                justify-content: space-around;
                 font-size: 28px;
                 color: #0863FF;
                 &::after{
@@ -132,15 +139,7 @@
                     bottom: 0;
                     left: 2%;
                 }
-                &:hover{
-                    background: rgba(8,99,255,0.06);
-                }
-                .content-name{
-                    margin-left: 64px;
-                    width: 240px;
-                }
                 .content-status{
-                    margin-left: 64px;
                     color: #333333;
                 }
                 .content-time-box{
@@ -148,13 +147,8 @@
                     color: #767676;
                     display: flex;
                     flex-direction: column;
-                    margin-left: 220px;
-                }
-                .content-url{
-                    margin-left: 168px;
                 }
                 .oper-box{
-                    margin-left: 192px;
                     display: flex;
                     align-items: center;
                     .oper-tip{
