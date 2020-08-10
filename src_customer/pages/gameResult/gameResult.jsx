@@ -10,7 +10,7 @@ import { drawPrize } from "../../actions/game";
 import { showConfirmModal } from "../../../public/util";
 import { throttle } from "underscore";
 
-const close_btn_img = "http://q.aiyongbao.com/interact/close_btn.png"
+const close_btn_img = "http://q.aiyongbao.com/interact/close_btn.png";
 const successTip = "恭喜你!";
 const reviveTip = `天呐！运气爆棚！
 
@@ -51,7 +51,14 @@ class GameResult extends Component {
         });
     };
     render() {
-        const { isSuccess, onRestart, revive_times } = this.props;
+        const {
+            isSuccess,
+            onRestart,
+            revive_times,
+            userinfo: {
+                active_rewards: { datas },
+            },
+        } = this.props;
         let headerStyle = classNames(styles["header"], {
             [styles["win-header"]]: isSuccess,
             [styles["lose-header"]]: !isSuccess,
@@ -81,6 +88,7 @@ class GameResult extends Component {
             () => my.exit(),
         ];
         const btnText = ["立即领取", "再战一次", "退出游戏"];
+        const prizes = datas && datas.length > 0 ? [datas[0]] : [];
         return (
             <Modal
                 visible={true}
@@ -91,7 +99,11 @@ class GameResult extends Component {
             >
                 <Text className={tipStyle}>{tipText[status]}</Text>
                 {isSuccess && (
-                    <Text className={styles["prize-desc"]}>获得店铺优惠券</Text>
+                    <Text className={styles["prize-desc"]}>
+                        {prizes.length > 0
+                            ? `获得${prizes[0].amount / 100}元优惠券`
+                            : "获得店铺优惠券"}
+                    </Text>
                 )}
                 <View
                     className={styles["use-button"]}

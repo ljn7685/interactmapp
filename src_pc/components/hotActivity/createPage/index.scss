@@ -89,26 +89,6 @@
                 margin-left: 32px;
             }
         }
-        .warn-bar{
-            display: flex;
-            width: 768px;
-            height: 44px;
-            background: rgba(245,166,35,0.20);
-            margin-left: 128px;
-            margin-top: 16px;
-            align-items: center;
-            .warn-icno{
-                color: red;
-                margin-left: 18px;
-                margin-top: 10px;
-                margin-right: 8px;
-                font-size: 36px;
-            }
-            .warn-txt{
-                font-size: 24px;
-                color: #FF6100;
-            }
-        }
     }
     .rules-box{
         margin-top: 32px;

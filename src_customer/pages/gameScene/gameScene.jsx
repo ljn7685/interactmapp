@@ -19,9 +19,9 @@ import Taro, { getCurrentInstance } from "@tarojs/taro";
 import Bump from "bump.js";
 import GameTip from "./components/gameTip";
 import ToastBox from "../../components/toast/toast";
-const guide_gif = "http://q.aiyongbao.com/interact/guide.gif";
-const start_heart_gif = "http://q.aiyongbao.com/interact/start_heart.gif";
-const success_angel_gif = "http://q.aiyongbao.com/interact/success_angel.gif";
+import guide_gif from "../../assets/images/guide.gif";
+import start_heart_gif from "../../assets/images/start_heart.gif"
+import success_angel_gif from "../../assets/images/success_angel.gif"
 
 const { registerCanvas } = PIXI.miniprogram;
 
