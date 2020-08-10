@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Input, Image } from '@tarojs/components';
+import { Text, View, Input, Image, Radio, RadioGroup, Label,CheckboxGroup,Checkbox, Button } from '@tarojs/components';
 import './index.scss';
 import * as action from '../actions';
 import { isEmpty } from '../../utils/index';
@@ -39,6 +39,12 @@ class CreatePage extends Component {
     inputChange = (type, e) => {
         this.props.inputChangeAction(type, e.target.value)
     }
+    radioChange = (type, e) => {
+        this.props.inputChangeAction(type, e.detail.value)
+    }
+    checkboxChange = (type,  e) =>{
+        this.props.inputChangeAction(type, e.detail.value)
+    }
     /**
      * 跳转优惠券配置页面
      * @param {*} type 
@@ -70,6 +76,9 @@ class CreatePage extends Component {
     }
     render() {
         const { title, activityData } = this.props;
+        const isCheckShare = activityData.gameTask && activityData.gameTask.includes('share')
+        const isCheckCollect = activityData.gameTask && activityData.gameTask.includes('collect')
+        console.log('activityData',activityData)
         return (
             <View className='create-page'>
                 <View className='name-box'>
@@ -91,6 +100,59 @@ class CreatePage extends Component {
                     <Input className='time-input' value={activityData.startDate} onInput={(e) => { this.inputChange('startDate', e) }} />
                     <Text className='time-to'>至</Text>
                     <Input className='time-input' value={activityData.endDate} onInput={(e) => { this.inputChange('endDate', e) }} />
+                </View>
+                <View className='name-box'>
+                    <Text className='warn-xing'>*</Text>
+                    <View className='time-txt'>游戏难度</View>
+                    <RadioGroup onChange={e=>{this.radioChange('gameLevel',e)}}>
+                        <Label   key={0}>
+                            <Radio  value="0" checked={activityData.gameLevel==='0'}>简单</Radio>
+                        </Label>
+                        <Label   key={1}>
+                            <Radio  value="1" checked={activityData.gameLevel==='1'}>普通</Radio>
+                        </Label>
+                        <Label   key={2}>
+                            <Radio  value="2" checked={activityData.gameLevel==='2'} >困难</Radio>
+                        </Label>
+                    </RadioGroup>
+                </View>
+                <View className='task-box'>
+                    <Text className='warn-xing'>*</Text>
+                    <View className='task-txt'>复活任务</View>
+                    <View className='task-content'>
+                        <CheckboxGroup onChange={e=>{this.checkboxChange('gameTask',e)}}>
+                            <Label  key='share' className="task-check">
+                                <Checkbox  value='share' checked={isCheckShare}>分享</Checkbox>
+                            </Label>
+                            <Label  key='collect' className="task-check">
+                                <Checkbox  value='collect' checked={isCheckCollect}>收藏</Checkbox>
+                            </Label>
+                        </CheckboxGroup>
+                        {isCheckShare && <View className='share-box'>
+                            <Text className='share-left'>分享活动：每分享给1个好友，可获得1次游戏机会，最多邀请</Text>
+                            <Input type='number' className="num-input"  maxlength="2" value={activityData.maxShareNum} onInput={(e) => { this.inputChange('maxShareNum', e) }}/>
+                            <Text>好友</Text>
+                        </View>}
+                        {isCheckCollect && <View className='collect-box'>
+                            <View className="collect-input">
+                                <Text>收藏商品：可获得1次游戏机会，最多收藏</Text>
+                                <Input type='number' className="num-input" maxlength="2" value={activityData.maxCollectNum} onInput={(e) => { this.inputChange('maxCollectNum', e) }}/><Text>个商品</Text>
+                                </View>
+                                <View className="collect-select">
+                                <RadioGroup onChange={e=>{this.radioChange('collectType',e)}}>
+                                    <Label   key={0}>
+                                        <Radio className='collect-radio' value="random" checked={activityData.collectType==='random'}>随机推荐</Radio>
+                                    </Label>
+                                    <Label   key={1}>
+                                        <Radio className='collect-radio' value="appoint" checked={activityData.collectType==='appoint'}>指定商品</Radio>
+                                    </Label>
+                                </RadioGroup>
+                                {activityData.collectType==='appoint' && <View className='select-btn'>选择</View>}
+                                {activityData.collectType==='appoint' && <Text className='select-info'>已选<Text className='select-num'>5/20</Text>件商品</Text> }
+                            </View>
+                        </View>}
+                    </View>
+                    
                 </View>
                 <View className='name-box'>
                     <Text className='res-text'>&emsp;复活次数</Text>

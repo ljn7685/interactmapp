@@ -34,6 +34,85 @@
             left: 568px;
         }
     }
+    .task-box {
+        display: flex;
+        margin-top: 32px;
+        font-size: 24px;
+        color: #767676;
+        .task-txt {
+            margin-right: 30px;
+            margin-top: 8px;
+        }
+        .task-content{
+            color: #333333;
+            .task-check {
+                margin-right: 50px;
+                margin-bottom: 18px;
+            }
+            .share-box {
+                width: 880px;
+                height: 88px;
+                background: #F5F5F5;
+                line-height: 88px;
+                font-size: 12px;
+                margin-bottom: 16px;
+                .share-left {
+                    margin-left: 32px;
+                }
+            }
+            .collect-box {
+                width: 880px;
+                height: 152px;
+                background: #F5F5F5;
+                line-height: 1.3;
+                font-size: 12px;
+                .collect-input {
+                    height: 88px;
+                    margin-left: 32px;
+                    line-height: 88px;
+                }
+                .collect-select {
+                    height: 64px;
+                    margin-left: 153px;
+                    display: flex;
+                    align-items: center;
+                    .cellect-radio {
+                        font-size: 12px;
+                        color: #333333;
+                    }
+                }
+                .select-btn{
+                    width: 84px;
+                    height: 40px;
+                    box-sizing: border-box;
+                    background: #E4F0FD;
+                    border: 1px solid #3089DC;
+                    text-align: center;
+                    line-height: 38px;
+                    border-radius: 2px;
+                    margin: 0 32px;
+                    display: inline-block;
+                }
+                .select-info {
+                    font-size: 12px;
+                    color: #333333;
+                    .select-num {
+                        color: orange;
+                    }
+                }
+
+            }
+            .num-input {
+                width: 72px;
+                height: 56px;
+                font-size: 28px;
+                color: #333333;
+                margin: 0 8px;
+            }
+        }
+        
+    }
+    
     .time-txt{
         margin-right: 30px;
     }

@@ -32,7 +32,11 @@ class ActivityCard extends Component {
             'gameNumber': 0,
             'couponData': '',
             'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${isEmpty(getUserInfo().cVersion) ? '0.0.14' : getUserInfo().cVersion}&_mp_code=tb&query=activeID%3D`,
-            'activeRewards': ''
+            'activeRewards': '',
+            'gameLevel':1,
+            'maxShareNum':3,
+            'maxCollectNum':3,
+            'collectType':'random'
         })
     }
 
