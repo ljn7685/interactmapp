@@ -10,29 +10,29 @@ import * as style from "./preload.module.scss";
 import arrow_png from "../../assets/images/loading_arrow.png";
 import loading_thumb from "../../assets/images/loading_thumb.png";
 import useImgLoader from "../../components/imgLoader/useImgLoader";
+import loading_bg from "../../assets/images/loading_bg.png"
+import icon_gift from "../../assets/images/icon_gift.png"
+import guide_gif from "../../assets/images/guide.gif";
+import start_heart_gif from "../../assets/images/start_heart.gif"
+import success_angel_gif from "../../assets/images/success_angel.gif"
+import result_bg from "../../assets/images/result_bg.png";
+
 
 const start_player = "http://q.aiyongbao.com/interact/start_player.png";
 const start_turntable = "http://q.aiyongbao.com/interact/start_turntable.png";
 const turntable = "http://q.aiyongbao.com/interact/turntable.png";
 const turntable_line = "http://q.aiyongbao.com/interact/turntable_line.png";
 const game_title_icon = "http://q.aiyongbao.com/interact/game_title_icon.png";
-const loading_bg = "http://q.aiyongbao.com/interact/loading_bg.png";
 const bow = "http://q.aiyongbao.com/interact/bow.png";
 const arrow = "http://q.aiyongbao.com/interact/arrow.png";
 const fail_angel = "http://q.aiyongbao.com/interact/fail_angel.png";
 const win_title = "http://q.aiyongbao.com/interact/win_title.png";
 const lose_title = "http://q.aiyongbao.com/interact/lose_title.png";
-const result_bg = "http://q.aiyongbao.com/interact/result_bg.png";
 const titleIcon = "http://q.aiyongbao.com/interact/game_title_icon.png";
-const icon_gift = "http://q.aiyongbao.com/interact/icon_gift.png";
 const icon_rule = "http://q.aiyongbao.com/interact/icon_rule.png";
 const heart_img = "http://q.aiyongbao.com/interact/rule_heart.png";
 const close_btn_img = "http://q.aiyongbao.com/interact/close_btn.png";
 const coupon_img = "http://q.aiyongbao.com/interact/coupon.png";
-
-const guide_gif = "http://q.aiyongbao.com/interact/guide.gif";
-const start_heart_gif = "http://q.aiyongbao.com/interact/start_heart.gif";
-const success_angel_gif = "http://q.aiyongbao.com/interact/success_angel.gif";
 
 const { registerCanvas, devicePixelRatio } = PIXI.miniprogram;
 
