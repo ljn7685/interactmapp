@@ -108,10 +108,6 @@ class CreatePage extends Component {
                             !isEmpty(activityData.couponData) && <View className='prize-num'>已选奖池编号：{activityData.couponData}</View>
                         }
                     </View>
-                    <View className='warn-bar'>
-                        <View className='warn-icno iconfont'>&#xe607;</View>
-                        <View className='warn-txt'>优惠券为游戏胜利时发放，设置总中奖率不得低于99.99%</View>
-                    </View>
                 </View>
                 <View className='rules-box'>
                     <View className='rules-des'>规则说明</View>
