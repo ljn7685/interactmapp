@@ -4,11 +4,13 @@ import './index.scss';
 import * as action from '../actions';
 import { isEmpty } from '../../utils/index';
 import { connect } from 'react-redux';
+import SelectGoods from "../selectGoods";
 
 class CreatePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            showSelectGoods:false
         }
     }
     componentDidMount() {
@@ -45,6 +47,9 @@ class CreatePage extends Component {
     checkboxChange = (type,  e) =>{
         this.props.inputChangeAction(type, e.detail.value)
     }
+    onSelectChange = (type,value)=>{
+        this.props.inputChangeAction(type,value)
+    }
     /**
      * 跳转优惠券配置页面
      * @param {*} type 
@@ -76,6 +81,7 @@ class CreatePage extends Component {
     }
     render() {
         const { title, activityData } = this.props;
+        const {showSelectGoods} = this.state;
         const isCheckShare = activityData.gameTask && activityData.gameTask.includes('share')
         const isCheckCollect = activityData.gameTask && activityData.gameTask.includes('collect')
         console.log('activityData',activityData)
@@ -147,8 +153,8 @@ class CreatePage extends Component {
                                         <Radio className='collect-radio' value="appoint" checked={activityData.collectType==='appoint'}>指定商品</Radio>
                                     </Label>
                                 </RadioGroup>
-                                {activityData.collectType==='appoint' && <View className='select-btn'>选择</View>}
-                                {activityData.collectType==='appoint' && <Text className='select-info'>已选<Text className='select-num'>5/20</Text>件商品</Text> }
+                                {activityData.collectType==='appoint' && <View className='select-btn' onClick={()=>{this.setState({showSelectGoods:true})}}>选择</View>}
+                                {activityData.collectType==='appoint' && <Text className='select-info'>已选<Text className='select-num'>{activityData.goods? activityData.goods.length:0}/20</Text>件商品</Text> }
                             </View>
                         </View>}
                     </View>
@@ -200,7 +206,13 @@ class CreatePage extends Component {
                     }
 
                 </View>
-
+                {showSelectGoods && 
+                <SelectGoods 
+                    onClose={()=>{this.setState({showSelectGoods:false})}} 
+                    onSetGoods={value=>this.onSelectChange('goods',value)}
+                    goods={activityData.goods}
+                >
+                </SelectGoods>}
             </View>
         );
     }

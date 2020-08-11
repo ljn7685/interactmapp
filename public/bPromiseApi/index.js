@@ -1,4 +1,5 @@
 import { api, invokeTop } from '../util/api';
+import { reject } from 'underscore';
 /**
  * 获取用户创建的全部信息
  * @param {*} args 
@@ -94,3 +95,20 @@ export const benefitQueryApi =(args)=>{
         })
     })
 }
+
+export const getSaleGoodsApi=(args)=>{
+    return new Promise((resolve,reject)=>{
+        invokeTop({
+            api:'taobao.items.onsale.get',
+            params:args,
+            callback:(res)=>{
+                resolve(res)
+            },
+            errCallback:(err)=>{
+                reject(err)
+            }
+        })
+    })
+    
+}
+

@@ -1,0 +1,38 @@
+.overlay {
+  display: none;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.8);
+  visibility: hidden;
+  z-index: 998;
+}
+.overlay.visible {
+  display: block;
+  visibility: visible;
+}
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+.content {
+  margin: 0 auto;
+}
+
+.header {
+  margin: 0 auto;
+}
+
+.closeBtn {
+  outline: none;
+  border: none;
+  appearance: none;
+  font-size: 18px;
+  color: #d5d5d5;
+  cursor: pointer;
+}

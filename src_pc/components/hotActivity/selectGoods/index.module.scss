@@ -1,0 +1,233 @@
+.container {
+    background: #ffffff;
+    width: 1324px;
+    height: 932px;
+    .header {
+        height: 100px;
+        padding: 0 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f4f4f4;
+        .close {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+        }
+    }
+    .content {
+        .content-top {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            .top-bar {
+                width: 200px;
+                height: 100px;
+                box-sizing: border-box;
+                text-align: center;
+                line-height: 100px;
+                color: #333333;
+                font-size: 28px;
+            }
+            .top-bar.select {
+                color: #0863ff;
+                border-bottom: 1px solid #0863ff;
+            }
+            .top-search {
+                margin-left: 342px;
+                width: 520px;
+                height: 72px;
+                line-height: 72px;
+                display: flex;
+                font-size: 28px;
+                .search-input {
+                    width: 360px;
+                    height: 72px;
+                    box-sizing: border-box;
+                    background: #ffffff;
+                    border: 1px solid #0863ff;
+                    box-shadow: inset 2px 2px 2px 0 rgba(83, 100, 122, 0.2);
+                }
+                .search-btn {
+                    color: #ffffff;
+                    width: 160px;
+                    height: 72px;
+                    text-align: center;
+                    background: #0863ff;
+                    border-radius: 0px 3px 3px 0px;
+                    .search-text {
+                        margin-right: 16px;
+                        font-size: 28px;
+                    }
+                }
+            }
+        }
+        .content-middle {
+            height: 576px;
+            box-sizing: border-box;
+            border-bottom: 1px solid #f4f4f4;
+            padding: 32px 12px 0px;
+            .scroll {
+                height: 544px;
+                overflow-y: auto;
+                .scroll-content {
+                    width: 100%;
+                    display: flex;
+                    flex-wrap: wrap;
+                    .good-item {
+                        width: 220px;
+                        height: 292px;
+                        background: #ffffff;
+                        border: 2px solid #f4f4f4;
+                        border-radius: 2px;
+                        margin: 0 32px 32px 0;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        position: relative;
+                        .pic {
+                            background: #f4f4f4;
+                            width: 180px;
+                            height: 180px;
+                        }
+                        .title {
+                            width: 180px;
+                            font-size: 20px;
+                            color: #333333;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            margin-top: 4px;
+                            margin-bottom: 8px;
+                        }
+                        .price {
+                            width: 180px;
+                            font-size: 20px;
+                            color: #333333;
+                        }
+                    }
+                    .good-item.select {
+                        border: 2px solid #0863ff;
+                    }
+                }
+            }
+        }
+        .content-bottom {
+            width: 1324px;
+            height: 152px;
+            padding: 0 40px;
+            display: flex;
+            font-size: 24px;
+            color: #333333;
+            text-align: center;
+            align-items: center;
+            .page {
+                width: 208px;
+                height: 56px;
+                display: flex;
+                line-height: 56px;
+                text-align: center;
+                .page-btn {
+                    width: 56px;
+                    height: 56px;
+                    box-sizing: border-box;
+                    background: #ffffff;
+                    border: 1px solid #cccccc;
+                    border-radius: 2px;
+                    line-height: 56px;
+                    text-align: center;
+                }
+                .page-num {
+                    margin: 0 16px;
+                }
+            }
+            .confirm {
+                background: #0863ff;
+                border: 1px solid #0863ff;
+                color: #ffffff;
+                border-radius: 3px;
+                width: 160px;
+                height: 56px;
+                line-height: 56px;
+                margin-left: 676px;
+            }
+            .cancel {
+                background: #ffffff;
+                border: 1px solid #999999;
+                border-radius: 3px;
+                width: 160px;
+                height: 56px;
+                line-height: 56px;
+                margin-left: 24px;
+            }
+        }
+    }
+}
+/**
+ *   Flag component
+ */
+.flag {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+/**
+ * The traingle shape of the flag.
+ * 1. The size of the triangle.
+ */
+.flag:before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    border-style: solid;
+    border-width: 40px; /* [1] */
+    border-color: transparent transparent transparent #0863ff;
+    transform: rotate(-45deg);
+}
+// /*
+//  * Rotate the text and position it.
+//  * 1. Put on the GPU to ensure the text is rendered correctly
+//  */
+.flag-text {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    color: #ffffff;
+}
+// /*
+//  * Modifier classes for different colour flags
+//  */
+// .flag.is-new:before {
+//     border-color: rgba(4, 120, 0, 0.9) transparent transparent
+//         rgba(4, 120, 0, 0.9);
+// }
+// .flag.is-popular:before {
+//     border-color: rgba(206, 3, 5, 0.7) transparent transparent
+//         rgba(206, 3, 5, 0.7);
+// }
+@font-face {
+    font-family: "iconfont2"; /* project id 1999760 */
+    src: url("//at.alicdn.com/t/font_1999760_m97eg7gfpqf.eot");
+    src: url("//at.alicdn.com/t/font_1999760_m97eg7gfpqf.eot?#iefix")
+            format("embedded-opentype"),
+        url("//at.alicdn.com/t/font_1999760_m97eg7gfpqf.woff2") format("woff2"),
+        url("//at.alicdn.com/t/font_1999760_m97eg7gfpqf.woff") format("woff"),
+        url("//at.alicdn.com/t/font_1999760_m97eg7gfpqf.ttf") format("truetype"),
+        url("//at.alicdn.com/t/font_1999760_m97eg7gfpqf.svg#iconfont")
+            format("svg");
+}
+.iconfont {
+    font-family: "iconfont2" !important;
+    font-size: 20px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+.pointer:hover {
+    cursor: pointer;
+}
