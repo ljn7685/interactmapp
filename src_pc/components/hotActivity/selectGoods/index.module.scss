@@ -39,27 +39,30 @@
                 margin-left: 342px;
                 width: 520px;
                 height: 72px;
-                line-height: 72px;
                 display: flex;
-                font-size: 28px;
                 .search-input {
                     width: 360px;
                     height: 72px;
                     box-sizing: border-box;
+                    padding: 8px 0;
                     background: #ffffff;
                     border: 1px solid #0863ff;
-                    box-shadow: inset 2px 2px 2px 0 rgba(83, 100, 122, 0.2);
+                    border-radius: 3px 0 0 3px;
+                    box-shadow: inset 4px 4px 4px 0 rgba(83, 100, 122, 0.2);
                 }
                 .search-btn {
                     color: #ffffff;
                     width: 160px;
                     height: 72px;
-                    text-align: center;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     background: #0863ff;
                     border-radius: 0px 3px 3px 0px;
+                    font-size: 28px;
                     .search-text {
                         margin-right: 16px;
-                        font-size: 28px;
+                        font-size: 20px;
                     }
                 }
             }
@@ -69,6 +72,16 @@
             box-sizing: border-box;
             border-bottom: 1px solid #f4f4f4;
             padding: 32px 12px 0px;
+            .no-goods {
+                padding: 106px 0 0;
+                text-align: center;
+                font-size: 32px;
+                color: #767676;
+                .sad {
+                    font-size: 48px;
+                    margin-right: 16px;
+                }
+            }
             .scroll {
                 height: 544px;
                 overflow-y: auto;
@@ -128,8 +141,6 @@
                 width: 208px;
                 height: 56px;
                 display: flex;
-                line-height: 56px;
-                text-align: center;
                 .page-btn {
                     width: 56px;
                     height: 56px;
@@ -137,11 +148,14 @@
                     background: #ffffff;
                     border: 1px solid #cccccc;
                     border-radius: 2px;
-                    line-height: 56px;
-                    text-align: center;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                 }
                 .page-num {
+                    line-height: 56px;
                     margin: 0 16px;
+                    text-align: center;
                 }
             }
             .confirm {
@@ -198,17 +212,7 @@
     right: 4px;
     color: #ffffff;
 }
-// /*
-//  * Modifier classes for different colour flags
-//  */
-// .flag.is-new:before {
-//     border-color: rgba(4, 120, 0, 0.9) transparent transparent
-//         rgba(4, 120, 0, 0.9);
-// }
-// .flag.is-popular:before {
-//     border-color: rgba(206, 3, 5, 0.7) transparent transparent
-//         rgba(206, 3, 5, 0.7);
-// }
+
 @font-face {
     font-family: "iconfont2"; /* project id 1999760 */
     src: url("//at.alicdn.com/t/font_1999760_m97eg7gfpqf.eot");
@@ -222,7 +226,7 @@
 }
 .iconfont {
     font-family: "iconfont2" !important;
-    font-size: 20px;
+    font-size: 16px;
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -webkit-text-stroke-width: 0.2px;

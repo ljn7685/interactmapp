@@ -1,6 +1,6 @@
 module.exports = {
   "extends": ["taro"],
-  "globals": {"my": "object","Component":"function","Page": "function"},
+  "globals": {"my": "readonly","Component":"readonly","Page": "readonly","requirePlugin":"readonly"},
   "plugins": [
       "require-jsdoc-except"
   ],
@@ -16,7 +16,7 @@ module.exports = {
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
       "import/first": "off",
       "import/prefer-default-export": ["off"],
-      "no-console": ["error", { "allow": ["warn", "error"] }],
+    //   "no-console": ["error", { "allow": ["warn", "error"] }],
       "max-statements": ["error", 100],
       "require-jsdoc-except/require-jsdoc": ["error", {
           "require": {
@@ -30,6 +30,7 @@ module.exports = {
               "constructor",
               "componentWillMount",
               "componentDidMount",
+              "componentDidUpdate",
               "componentWillReceiveProps",
               "shouldComponentUpdate",
               "componentWillUpdate",
