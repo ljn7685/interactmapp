@@ -7,7 +7,6 @@ import { Text, View, Input, Image } from "@tarojs/components";
 import { getSaleGoodsApi } from "../../../../public/bPromiseApi/index.js";
 import Taro from "@tarojs/taro";
 
-const pageSize = 2;
 class SelectGoods extends Component {
     constructor (props) {
         super(props);
@@ -92,6 +91,7 @@ class SelectGoods extends Component {
      */
     async getSaleGoods () {
         const { pageNum, query, total } = this.state;
+        const { pageSize } = this.props;
         const args = {
             fields: "num_iid,title,price,pic_url",
             page_no: pageNum,
@@ -104,7 +104,7 @@ class SelectGoods extends Component {
             const goods = await getSaleGoodsApi(args);
             const pageData = goods && goods.items ? goods.items : [];
             const newTotal =
-                goods && goods.total_results
+                goods && goods.total_results !== undefined
                     ? Math.ceil(goods.total_results / pageSize)
                     : total;
             this.setState({
@@ -186,11 +186,7 @@ class SelectGoods extends Component {
         const header = [
             <Text>选择商品</Text>,
             <Text
-                className={classNames(
-                    styles["iconfont"],
-                    styles["close"],
-                    styles["pointer"]
-                )}
+                className={classNames(styles["iconfont"], styles["close"])}
                 onClick={onClose}
             >
                 &#xe624;
@@ -236,10 +232,7 @@ class SelectGoods extends Component {
                                 }}
                             />
                             <View
-                                className={classNames(
-                                    styles["search-btn"],
-                                    styles["pointer"]
-                                )}
+                                className={styles["search-btn"]}
                                 onClick={this.onClickSearch}
                             >
                                 <Text
@@ -283,21 +276,12 @@ class SelectGoods extends Component {
                         </View>
                     </View>
                     <View
-                        className={classNames(
-                            styles["confirm"],
-                            styles["pointer"]
-                        )}
+                        className={styles["confirm"]}
                         onClick={this.onConfirm}
                     >
                         确认
                     </View>
-                    <View
-                        className={classNames(
-                            styles["cancel"],
-                            styles["pointer"]
-                        )}
-                        onClick={onClose}
-                    >
+                    <View className={styles["cancel"]} onClick={onClose}>
                         取消
                     </View>
                 </View>

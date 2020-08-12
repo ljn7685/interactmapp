@@ -1,5 +1,4 @@
 import { api, invokeTop } from '../util/api';
-import { reject } from 'underscore';
 /**
  * 获取用户创建的全部信息
  * @param {*} args 
@@ -14,11 +13,11 @@ export const getActivityDataApi = (args) => {
                 resolve(res);
             },
             errCallback: err => {
-                reject(res)
-            }
-        })
-    })
-}
+                reject(err);
+            },
+        });
+    });
+};
 /**
  * 创建游戏，修改游戏
  * @param {*} args 
@@ -33,11 +32,11 @@ export const createActivityApi = (args) => {
                 resolve(res);
             },
             errCallback: err => {
-                reject(err)
-            }
-        })
-    })
-}
+                reject(err);
+            },
+        });
+    });
+};
 /**
  * 获取具体活动数据
  * @param {*} args 
@@ -49,14 +48,14 @@ export const getDataByIdApi = (args) => {
             method: '/interactive/getInteractData',
             args: args,
             callback: res => {
-                resolve(res)
+                resolve(res);
             },
             errCallback: err => {
-                reject(err)
-            }
-        })
-    })
-}
+                reject(err);
+            },
+        });
+    });
+};
 /**
  * 通过id拿到的游戏数据
  * @param {*} args 
@@ -68,47 +67,50 @@ export const getActivityInfoIdApi = (args) => {
             method: '/interactive/getDataById',
             args:args,
             callback: res => {
-                resolve(res)
+                resolve(res);
             },
-            errCallback: err=>{
-                reject(err)
-            }
-        })
-    })
-}
+            errCallback: err => {
+                reject(err);
+            },
+        });
+    });
+};
 
 /**
  * 查询发奖奖池的信息
  * @param {*} args 
  */
-export const benefitQueryApi =(args)=>{
-    return new Promise((resolve, reject)=>{
+export const benefitQueryApi = (args) => {
+    return new Promise((resolve, reject) => {
         invokeTop({
             api:'alibaba.benefit.query',
             params:args,
-            callback:res=>{
-                resolve(res)
+            callback:res => {
+                resolve(res);
             },
-            errCallback:err=>{
-                reject(err)
-            }
-        })
-    })
-}
-
-export const getSaleGoodsApi=(args)=>{
-    return new Promise((resolve,reject)=>{
+            errCallback:err => {
+                reject(err);
+            },
+        });
+    });
+};
+/**
+ * 获取在售商品列表
+ * @param {*} args 
+ */
+export const getSaleGoodsApi = (args) => {
+    return new Promise((resolve, reject) => {
         invokeTop({
             api:'taobao.items.onsale.get',
             params:args,
-            callback:(res)=>{
-                resolve(res)
+            callback:(res) => {
+                resolve(res);
             },
-            errCallback:(err)=>{
-                reject(err)
-            }
-        })
-    })
+            errCallback:(err) => {
+                reject(err);
+            },
+        });
+    });
     
-}
+};
 

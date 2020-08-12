@@ -9,6 +9,7 @@ import SelectGoods from "../selectGoods";
 import { getSaleGoodsApi } from '../../../../public/bPromiseApi';
 
 const collectLimit = 4;
+const pageSize = 2;
 class CreatePage extends Component {
     constructor (props) {
         super(props);
@@ -230,6 +231,7 @@ class CreatePage extends Component {
                     onSetGoods={value => this.onSelectChange('goods', value)}
                     goods={activityData.goods}
                     goodsLimit={collectLimit}
+                    pageSize={pageSize}
                 >
                 </SelectGoods>}
             </View>
