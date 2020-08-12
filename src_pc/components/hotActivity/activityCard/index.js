@@ -4,22 +4,20 @@ import './index.scss';
 import { changeTitleAction, changeActivityDataAction } from '../actions';
 import moment from 'moment';
 import { isEmpty } from '../../utils/index';
-import {getUserInfo} from '../../../public/util/userInfoChanger';
+import { getUserInfo } from '../../../public/util/userInfoChanger';
 
 import { connect } from 'react-redux';
+
 class ActivityCard extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
-        this.state = {
-        }
+        this.state = {};
     }
     /**
      * 帮助文档
      */
     goToYuque = () => {
-        my.qn.navigateToWebPage({
-            url: "https://www.yuque.com/xujingyi/kb/ufwevl"
-        });
+        my.qn.navigateToWebPage({ url: "https://www.yuque.com/xujingyi/kb/ufwevl" });
     }
     goToCreatePage = (title, titleType) => {
         const { changeTitleAction, changeActivityDataAction } = this.props;
@@ -35,10 +33,10 @@ class ActivityCard extends Component {
             'activeRewards': '',
             'maxShareNum':3,
             'maxCollectNum':3,
-        })
+        });
     }
 
-    render() {
+    render () {
 
         return (
             <View className='activity-box'>
@@ -68,10 +66,10 @@ class ActivityCard extends Component {
     }
 }
 
-//将store里面的值映射为props
+// 将store里面的值映射为props
 
 const mapDispatchToProps = {
     changeTitleAction,
-    changeActivityDataAction
-}
+    changeActivityDataAction,
+};
 export default connect(state => state.hotReducer, mapDispatchToProps)(ActivityCard);

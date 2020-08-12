@@ -5,30 +5,30 @@ import { isEmpty } from '../../utils/index';
 import Taro from '@tarojs/taro';
 import { connect } from 'react-redux';
 import TurnPage from '../../turnPage/index';
-import {getDataByIdApi} from '../../../public/bPromiseApi/index';
+import { getDataByIdApi } from '../../../public/bPromiseApi/index';
 
 class ActivityData extends Component {
 
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {
-            isShow: false, //是否有数据
-            dataList: '',//页面展示每天数据
-            dataAll: '' //全部数据
-        }
-        this.pageNo = 1; //初始页数
-        this.pageSize = 10; //页面条数
+            isShow: false, // 是否有数据
+            dataList: '', // 页面展示每天数据
+            dataAll: '', // 全部数据
+        };
+        this.pageNo = 1; // 初始页数
+        this.pageSize = 10; // 页面条数
     }
-    componentDidMount() {
-        this.getDataByID()
+    componentDidMount () {
+        this.getDataByID();
     }
     getDataByID = async () => {
         let data = await getDataByIdApi({ 'activeID': this.props.activityID, 'pageNo': this.pageNo, 'pageSize': this.pageSize });
         if (this.pageNo > 1 && isEmpty(data.data)) {
             Taro.showToast({
                 title: '已经是最后一页了',
-                duration: 2000
-            })
+                duration: 2000,
+            });
             this.pageNo -= 1;
             return;
         }
@@ -36,8 +36,8 @@ class ActivityData extends Component {
             this.setState({
                 isShow: true,
                 dataList: data.data,
-                dataAll: data.dataAll
-            })
+                dataAll: data.dataAll,
+            });
         }
     }
     /**
@@ -46,8 +46,8 @@ class ActivityData extends Component {
      */
 
     turnPage = (current) => {
-       this.pageNo = current;
-        this.getDataByID()
+        this.pageNo = current;
+        this.getDataByID();
     }
 
     /**
@@ -67,7 +67,7 @@ class ActivityData extends Component {
                                 <View className='col-follw'>{item.follow ? item.follow : 0}</View>
                                 <View className='col-reward'>{item.reward ? item.reward : 0}</View>
                             </View>
-                        )
+                        );
                     })
                 }
                 {
@@ -76,7 +76,7 @@ class ActivityData extends Component {
 
             </View>
 
-        )
+        );
     }
     /**
      * 空页面组件
@@ -87,10 +87,10 @@ class ActivityData extends Component {
                 <View className='empty-data-icno iconfont'>&#xe687;</View>
                 <View className='empty-data-txt'>暂无数据</View>
             </View>
-        )
+        );
     }
 
-    render() {
+    render () {
         const { isShow, dataAll } = this.state;
         return (
             <View className='activity-data-box'>
@@ -108,7 +108,7 @@ class ActivityData extends Component {
                         </View>
                         <View className='data-content'>
                             {
-                                this.pageNo == 1 && <View className='total-box'>
+                                this.pageNo === 1 && <View className='total-box'>
                                     <View className='col-date'>总计</View>
                                     <View className='col-num'>{dataAll.total_num ? dataAll.total_num : 0}</View>
                                     <View className='col-join'>{dataAll.total_join ? dataAll.total_join : 0}</View>
@@ -128,11 +128,9 @@ class ActivityData extends Component {
     }
 }
 
-//将store里面的值映射为props
+// 将store里面的值映射为props
 const mapStateToProps = ({ hotReducer }) => {
-    return {
-        activityID: hotReducer.activityID,
-    }
-}
+    return { activityID: hotReducer.activityID };
+};
 
 export default connect(mapStateToProps)(ActivityData);

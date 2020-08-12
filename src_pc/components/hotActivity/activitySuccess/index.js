@@ -6,41 +6,38 @@ import { connect } from 'react-redux';
 
 const posterUrl = {
     'posterOne': 'http://q.aiyongbao.com/interact/poster-one.png',
-    'posterTwo': 'http://q.aiyongbao.com/interact/poster-two.png'
-}
+    'posterTwo': 'http://q.aiyongbao.com/interact/poster-two.png',
+};
 class ActivitySuccess extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
-        this.state = {
-        }
+        this.state = {};
     }
     /**
      * 复制活动链接
      */
     copyUrl = (type) => {
-        let data = posterUrl[type]
-        if(type == 'activity'){
+        let data = posterUrl[type];
+        if(type === 'activity') {
             data = this.props.activityUrl;
         }
         Taro.setClipboardData({
             data: data,
-            success: function (res) {
+            success: function () {
                 Taro.showToast({
                     title: '复制成功',
-                    duration: 2000
-                })
-            }
-        })
+                    duration: 2000,
+                });
+            },
+        });
     }
     /**
      * 跳转装修页面
      */
     goToDecoration = () => {
-        my.qn.navigateToWebPage({
-            url: "https://wangpu.taobao.com/wirelessPageList.htm#/shop_index-index/basic?tabId=0",
-        });
+        my.qn.navigateToWebPage({ url: "https://wangpu.taobao.com/wirelessPageList.htm#/shop_index-index/basic?tabId=0" });
     }
-    render() {
+    render () {
         return (
             <View className='success-box'>
                 <View className='success-top'>
@@ -76,11 +73,9 @@ class ActivitySuccess extends Component {
         );
     }
 }
-//将store里面的值映射为props
+// 将store里面的值映射为props
 const mapStateToProps = ({ hotReducer }) => {
-    return {
-        activityUrl: hotReducer.activityUrl,
-    }
-}
+    return { activityUrl: hotReducer.activityUrl };
+};
 
 export default connect(mapStateToProps)(ActivitySuccess);

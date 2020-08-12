@@ -6,49 +6,47 @@ import Taro from '@tarojs/taro';
 import { isEmpty } from '../../utils/index';
 import { connect } from 'react-redux';
 import TurnPage from '../../turnPage/index';
-import SelectBox, { selectItem } from '../../selectBox/index';
+import SelectBox from '../../selectBox/index';
 import { getActivityDataApi, createActivityApi } from '../../../public/bPromiseApi/index';
 
 class AllActivity extends Component {
 
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {
             isShow: false,
-            dataList: ''
-        }
-        this.pageNo = 1; //初始页数
-        this.pageSize = 10; //页面条数
-        this.activeStatus = ''; //活动状态
+            dataList: '',
+        };
+        this.pageNo = 1; // 初始页数
+        this.pageSize = 10; // 页面条数
+        this.activeStatus = ''; // 活动状态
 
     }
 
-    componentDidMount() {
-        //初始化信息
+    componentDidMount () {
+        // 初始化信息
         this.getActivityData();
     }
     /**
      * 获取用户创建的游戏
      */
-    getActivityData = async() => {
+    getActivityData = async () => {
         let data = await getActivityDataApi({ 'pageNo': this.pageNo, 'pageSize': this.pageSize, 'activeStatus': this.activeStatus });
         if (this.pageNo > 1 && isEmpty(data)) {
             Taro.showToast({
                 title: '已经是最后一页了',
-                duration: 2000
-            })
+                duration: 2000,
+            });
             this.pageNo -= 1;
             return;
         }
         if (!isEmpty(data)) {
             this.setState({
                 dataList: data,
-                isShow: true
-            })
+                isShow: true,
+            });
         } else {
-            this.setState({
-                isShow: false
-            })
+            this.setState({ isShow: false });
         }
     }
     /**
@@ -103,10 +101,10 @@ class AllActivity extends Component {
             success: () => {
                 Taro.showToast({
                     title: '复制成功',
-                    duration: 2000
-                })
-            }
-        })
+                    duration: 2000,
+                });
+            },
+        });
     }
     /**
      * 结束游戏
@@ -115,12 +113,10 @@ class AllActivity extends Component {
     endActivity = async (id, index) => {
         let newData = Object.assign([], this.state.dataList);
         let data = await createActivityApi({ 'activeID': id, 'operationType': 3 });
-        if (data.code == 200) {
+        if (data.code === 200) {
             newData[index].active_status = 2;
             newData[index].status = '已结束';
-            this.setState({
-                dataList: newData
-            })
+            this.setState({ dataList: newData });
         }
     }
     /**
@@ -138,24 +134,24 @@ class AllActivity extends Component {
                                 <View className='content-status col-status'>{item.status}</View>
                                 <View className='content-time-box col-time'>
                                     <View className='time-start'>起：{item.start_date}</View>
-                                    <View className='time-end'>止：{item.end_date.substring(0,10)+' 23:59:59'}</View>
+                                    <View className='time-end'>止：{item.end_date.substring(0, 10) + ' 23:59:59'}</View>
                                 </View>
-                                <View className='content-url col-url' onClick={this.copyUrl.bind(this,item.active_url, item.id)}>复制链接</View>
+                                <View className='content-url col-url' onClick={this.copyUrl.bind(this, item.active_url, item.id)}>复制链接</View>
                                 <View className='oper-box col-oper'>
-                                    <View className='edit-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '修改')} style={{display:`${item.active_status == 2 ? 'none':''}`}}>修改活动</View>
-                                    <View className='copy-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '创建')} style={{display:`${item.active_status == 2 ? '':'none'}`}}>复制活动</View>
-                                    <View className='data-activity oper-tip' onClick={this.goToDataPage.bind(this, item.active_name, item.id)} style={{display:`${item.active_status == 3 ? 'none':''}`}}>活动数据</View>
-                                    <View className='end-activity oper-tip' onClick={this.endActivity.bind(this, item.id, index)} style={{display:`${item.active_status == 2 ? 'none':''}`}}>结束活动</View>
+                                    <View className='edit-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '修改')} style={{ display:`${item.active_status === 2 ? 'none' : ''}` }}>修改活动</View>
+                                    <View className='copy-activity oper-tip' onClick={this.editActivity.bind(this, item.id, '创建')} style={{ display:`${item.active_status === 2 ? '' : 'none'}` }}>复制活动</View>
+                                    <View className='data-activity oper-tip' onClick={this.goToDataPage.bind(this, item.active_name, item.id)} style={{ display:`${item.active_status === 3 ? 'none' : ''}` }}>活动数据</View>
+                                    <View className='end-activity oper-tip' onClick={this.endActivity.bind(this, item.id, index)} style={{ display:`${item.active_status === 2 ? 'none' : ''}` }}>结束活动</View>
                                 </View>
                             </View>
-                        )
+                        );
                     })
                 }
                 {
                     <TurnPage onPageNoChange={this.turnPage} pageNo={this.pageNo} />
                 }
             </View>
-        )
+        );
     }
     /**
      * 空页面
@@ -167,10 +163,10 @@ class AllActivity extends Component {
                 <View className='empty-go' onClick={this.goToCreatePage}>新建活动</View>
                 <View className='empty-txt'>吧～</View>
             </View>
-        )
+        );
     }
 
-    render() {
+    render () {
         const { isShow } = this.state;
         return (
             <View className='all-box'>
@@ -201,9 +197,9 @@ class AllActivity extends Component {
     }
 }
 
-//将store里面的值映射为props
+// 将store里面的值映射为props
 const mapDispatchToProps = {
     changeTitleAction,
-    getActivityByIdAction
-}
+    getActivityByIdAction,
+};
 export default connect(state => state.hotReducer, mapDispatchToProps)(AllActivity);

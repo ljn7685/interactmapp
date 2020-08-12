@@ -7,18 +7,17 @@ import { contactCustomerService } from '../../../public/util/openChat';
 
 class Layout extends Component {
 
-    constructor(props) {
+    constructor (props) {
         super(props);
-        this.state = {
-        }
+        this.state = {};
     }
     /**
      * 联系客服
      */
     connectKeFU = () => {
-        contactCustomerService()
+        contactCustomerService();
     }
-    render() {
+    render () {
         const { titleType, changeTitleAction } = this.props;
         return (
             <View className='layout-box'>
@@ -28,8 +27,8 @@ class Layout extends Component {
                     <View className='layout-desc'>由 爱用科技 提供</View>
                 </View>
                 {/* 当用户没有数据的时候，点击去“创建数据”，跳转hotActivity的页面，导航栏颜色要变 */}
-                <View className={`layout-item ${titleType.split('#')[0] == 'hotActivity' ? 'action' : ''}`} onClick={changeTitleAction.bind(this, '热门活动', 'hotActivity#activity')}>热门活动</View>
-                <View className={`layout-item ${titleType.split('#')[0] == 'management' ? 'action' : ''}`} onClick={changeTitleAction.bind(this, '活动管理', 'management#allActivity')}>活动管理</View>
+                <View className={`layout-item ${titleType.split('#')[0] === 'hotActivity' ? 'action' : ''}`} onClick={changeTitleAction.bind(this, '热门活动', 'hotActivity#activity')}>热门活动</View>
+                <View className={`layout-item ${titleType.split('#')[0] === 'management' ? 'action' : ''}`} onClick={changeTitleAction.bind(this, '活动管理', 'management#allActivity')}>活动管理</View>
                 <View className='layout-bottom' onClick={this.connectKeFU}>
                     <View className='icno-kefu iconfont'>&#xe65b;</View>
                     <View className='contact'>联系客服</View>
@@ -38,14 +37,10 @@ class Layout extends Component {
         );
     }
 }
-//将store里面的值映射为props
+// 将store里面的值映射为props
 const mapStateToProps = ({ hotReducer }) => {
-    return {
-        titleType: hotReducer.titleType,
-    }
-}
-const mapDispatchToProps = {
-    changeTitleAction
-}
+    return { titleType: hotReducer.titleType };
+};
+const mapDispatchToProps = { changeTitleAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layout);

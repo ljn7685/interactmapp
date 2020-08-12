@@ -8,19 +8,18 @@ import Taro from '@tarojs/taro';
  */
 class TurnPage extends Component {
 
-    constructor(props) {
+    constructor (props) {
         super(props);
-        this.state = {
-        }
+        this.state = {};
     }
-    onPageNoChange=(type)=>{
+    onPageNoChange=(type) => {
         let pageNo = this.props.pageNo;
-        if (type == 'up') {
-            if (pageNo == 1) {
+        if (type === 'up') {
+            if (pageNo === 1) {
                 Taro.showToast({
                     title: '已经是最前页了',
-                    duration: 2000
-                })
+                    duration: 2000,
+                });
                 return;
             }
             pageNo -= 1;
@@ -30,11 +29,11 @@ class TurnPage extends Component {
         this.props.onPageNoChange(pageNo);
     }
 
-    render() {
+    render () {
         return (
             <View className='all-activity-bottom'>
-                <View className='pre-page' onClick={this.onPageNoChange.bind(this,'up')}>上一页</View>
-                <View className='next-page' onClick={this.onPageNoChange.bind(this,'down')}>下一页</View>
+                <View className='pre-page' onClick={this.onPageNoChange.bind(this, 'up')}>上一页</View>
+                <View className='next-page' onClick={this.onPageNoChange.bind(this, 'down')}>下一页</View>
             </View>
         );
     }
