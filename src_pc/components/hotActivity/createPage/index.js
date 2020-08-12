@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import Taro from "@tarojs/taro";
 import { Text, View, Input, Image, Radio, RadioGroup, Label, CheckboxGroup, Checkbox } from '@tarojs/components';
 import './index.scss';
 import * as action from '../actions';
 import { isEmpty } from '../../utils/index';
 import { connect } from 'react-redux';
 import SelectGoods from "../selectGoods";
+import { getSaleGoodsApi } from '../../../../public/bPromiseApi';
 
 const collectLimit = 4;
 class CreatePage extends Component {
@@ -42,12 +44,29 @@ class CreatePage extends Component {
     }
     radioChange = (type, e) => {
         this.props.inputChangeAction(type, e.detail.value);
+        if (type === "collectType" && e.detail.value === 'random') {
+            this.onRandomSelect();
+        }
     }
     checkboxChange = (type,  e) => {
         this.props.inputChangeAction(type, e.detail.value);
     }
     onSelectChange = (type, value) => {
         this.props.inputChangeAction(type, value);
+    }
+    onRandomSelect = async () => {
+        try{
+            const goods = await getSaleGoodsApi({
+                fields: "num_iid,title,price,pic_url",
+                page_no: 1,
+                page_size: collectLimit,
+            });
+            if (goods.items) {
+                this.props.inputChangeAction('goods', goods.items);
+            }
+        } catch (err) {
+            Taro.showToast({ title:'随机推荐失败' });
+        }
     }
     /**
      * 跳转优惠券配置页面

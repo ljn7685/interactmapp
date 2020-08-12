@@ -33,6 +33,7 @@ class ActivityCard extends Component {
             'activeRewards': '',
             'maxShareNum':3,
             'maxCollectNum':3,
+            'goods':[],
         });
     }
 
