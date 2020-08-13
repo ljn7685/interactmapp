@@ -12,6 +12,24 @@ import AdCheckGroup from '../../checkbox/group.jsx';
 
 const collectLimit = 4;
 const pageSize = 2;
+const levelGroup = [
+    { key: "1", text: "简单" },
+    { key: "2", text: "普通" },
+    { key: "3", text: "困难" },
+];
+const collectTypeGroup = [
+    { key: "random", text: "随机推荐" },
+    { key: "appoint", text: "指定商品" },
+];
+const taskGroup = [
+    { key: "share", text: "分享" },
+    { key: "collect", text: "收藏" },
+];
+const levelConfig = {
+    "1":{ level:'1' },
+    "2":{ level:'2' },
+    "3":{ level:'3' },
+};
 class CreatePage extends Component {
     constructor (props) {
         super(props);
@@ -44,17 +62,11 @@ class CreatePage extends Component {
     inputChange = (type, e) => {
         this.props.inputChangeAction(type, e.target.value);
     }
-    radioChange = (type, value) => {
-        this.props.inputChangeAction(type, value);
-        if (type === "collectType" && value === 'random') {
+    configChange = (key, value) => {
+        this.props.configChangeAction(key, value);
+        if (key === "collectType" && value === 'random') {
             this.onRandomSelect();
         }
-    }
-    checkboxChange = (type, value) => {
-        this.props.inputChangeAction(type, value);
-    }
-    onSelectChange = (type, value) => {
-        this.props.inputChangeAction(type, value);
     }
     onRandomSelect = async () => {
         try{
@@ -64,7 +76,7 @@ class CreatePage extends Component {
                 page_size: collectLimit,
             });
             if (goods.items) {
-                this.props.inputChangeAction('goods', goods.items);
+                this.props.configChangeAction('goods', goods.items);
             }
         } catch (err) {
             Taro.showToast({ title:'随机推荐失败' });
@@ -100,23 +112,10 @@ class CreatePage extends Component {
         this.props.changeTitleAction('活动管理', 'management#allActivity');
     }
     render () {
-        const { title, activityData } = this.props;
+        const { title, activityData:{ gameConfig }, activityData } = this.props;
         const { showSelectGoods } = this.state;
-        const isCheckShare = activityData.gameTask && activityData.gameTask.includes('share');
-        const isCheckCollect = activityData.gameTask && activityData.gameTask.includes('collect');
-        const levelGroup = [
-            { key: "1", text: "简单" },
-            { key: "2", text: "普通" },
-            { key: "3", text: "困难" },
-        ];
-        const collectTypeGroup = [
-            { key: "random", text: "随机推荐" },
-            { key: "appoint", text: "指定商品" },
-        ];
-        const taskGroup = [
-            { key: "share", text: "分享" },
-            { key: "collect", text: "收藏" },
-        ];
+        const isCheckShare = gameConfig.gameTask && gameConfig.gameTask.includes('share');
+        const isCheckCollect = gameConfig.gameTask && gameConfig.gameTask.includes('collect');
         console.log('activityData', activityData, levelGroup);
         return (
             <View className='create-page'>
@@ -143,27 +142,27 @@ class CreatePage extends Component {
                 <View className='name-box'>
                     <Text className='warn-xing'>*</Text>
                     <View className='time-txt'>游戏难度</View>
-                    <AdRadioGroup groupList={levelGroup} itemClassName='level-radio' checkedKey={activityData.gameLevel} onChange={value => this.radioChange('gameLevel', value)} />
+                    <AdRadioGroup groupList={levelGroup} itemClassName='level-radio' checkedKey={gameConfig.gameLevel && gameConfig.gameLevel.level} onChange={value => this.configChange('gameLevel', levelConfig[value])} />
                 </View>
                 <View className='task-box'>
                     <Text className='warn-xing'>*</Text>
                     <View className='task-txt'>复活任务</View>
                     <View className='task-content'>
-                        <AdCheckGroup groupList={taskGroup} itemClassName='task-check' checkedArr={activityData.gameTask || []} onChange={value => this.checkboxChange('gameTask', value)}></AdCheckGroup>
+                        <AdCheckGroup groupList={taskGroup} itemClassName='task-check' checkedArr={gameConfig.gameTask || []} onChange={value => this.configChange('gameTask', value)}></AdCheckGroup>
                         {isCheckShare && <View className='share-box'>
                             <Text className='share-left'>分享活动：每分享给1个好友，可获得1次游戏机会，最多邀请</Text>
-                            <Input type='number' className='num-input'  maxlength='2' value={activityData.maxShareNum} onInput={(e) => { this.inputChange('maxShareNum', e); }} />
+                            <Input type='number' className='num-input'  maxlength='2' value={gameConfig.maxShareNum} onInput={(e) => { this.configChange('maxShareNum', e.detail.value); }} />
                             <Text>好友</Text>
                         </View>}
                         {isCheckCollect && <View className='collect-box'>
                             <View className='collect-input'>
                                 <Text>收藏商品：可获得1次游戏机会，最多收藏</Text>
-                                <Input type='number' className='num-input' maxlength='2' value={activityData.maxCollectNum} onInput={(e) => { this.inputChange('maxCollectNum', e); }} /><Text>个商品</Text>
+                                <Input type='number' className='num-input' maxlength='2' value={gameConfig.maxCollectNum} onInput={(e) => { this.configChange('maxCollectNum', e.detail.value); }} /><Text>个商品</Text>
                             </View>
                             <View className='collect-select'>
-                                <AdRadioGroup groupList={collectTypeGroup} itemClassName='collect-radio' checkedKey={activityData.collectType} onChange={value => this.radioChange('collectType', value)} />
-                                {activityData.collectType === 'appoint' && <View className='select-btn' onClick={() => {this.setState({ showSelectGoods:true });}}>选择</View>}
-                                {activityData.collectType === 'appoint' && <Text className='select-info'>已选<Text className='select-num'>{activityData.goods ? activityData.goods.length : 0}/{collectLimit}</Text>件商品</Text> }
+                                <AdRadioGroup groupList={collectTypeGroup} itemClassName='collect-radio' checkedKey={gameConfig.collectType} onChange={value => this.configChange('collectType', value)} />
+                                {gameConfig.collectType === 'appoint' && <View className='select-btn' onClick={() => {this.setState({ showSelectGoods:true });}}>选择</View>}
+                                {gameConfig.collectType === 'appoint' && <Text className='select-info'>已选<Text className='select-num'>{gameConfig.goods ? gameConfig.goods.length : 0}/{collectLimit}</Text>件商品</Text> }
                             </View>
                         </View>}
                     </View>
@@ -218,8 +217,8 @@ class CreatePage extends Component {
                 {showSelectGoods && 
                 <SelectGoods 
                     onClose={() => {this.setState({ showSelectGoods:false });}} 
-                    onSetGoods={value => this.onSelectChange('goods', value)}
-                    goods={activityData.goods}
+                    onSetGoods={value => this.configChange('goods', value)}
+                    goods={gameConfig.goods}
                     goodsLimit={collectLimit}
                     pageSize={pageSize}
                 >

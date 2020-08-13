@@ -1,4 +1,4 @@
-import { TITLE, SET_VALUE } from './actions';
+import { TITLE, SET_VALUE, SET_CONFIG } from './actions';
 
 export const version = '0.0.12';
 const defaultState = {
@@ -19,6 +19,11 @@ export default (state = defaultState, action) => {
             let activityData = Object.assign({}, state.activityData);
             activityData[action.typeItem] = action.value;
             return { ...state, activityData };
+        }
+        case SET_CONFIG: {
+            let gameConfig = Object.assign({}, state.activityData.gameConfig);
+            gameConfig[action.key] = action.value;
+            return { ...state, activityData:{ ...state.activityData, gameConfig:gameConfig } };
         }
         default:
             return state;

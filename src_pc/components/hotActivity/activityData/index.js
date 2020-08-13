@@ -5,7 +5,7 @@ import { isEmpty } from '../../utils/index';
 import Taro from '@tarojs/taro';
 import { connect } from 'react-redux';
 import TurnPage from '../../turnPage/index';
-import { getDataByIdApi } from '../../../public/bPromiseApi/index';
+import { getDataByIdApi, getActivityInfoIdApi } from '../../../public/bPromiseApi/index';
 
 class ActivityData extends Component {
 
@@ -15,15 +15,39 @@ class ActivityData extends Component {
             isShow: false, // 是否有数据
             dataList: '', // 页面展示每天数据
             dataAll: '', // 全部数据
+            showCollect:false,
+            showShare:false,
         };
         this.pageNo = 1; // 初始页数
         this.pageSize = 10; // 页面条数
     }
     componentDidMount () {
+        this.getActivityConfig();
         this.getDataByID();
+    }
+    /**
+     * 获取活动配置
+     */
+    async getActivityConfig () {
+        let data = await getActivityInfoIdApi({ 'activeID': this.props.activityID });
+        let activityData = Object.assign({}, data.data[0]);
+        let gameConfig = {};
+        try {
+            gameConfig = JSON.parse(activityData.game_config || '{}');
+        } catch (err) {
+            console.log('游戏配置解析失败');
+        }
+        console.log('gameConfig', gameConfig);
+        if(!isEmpty(gameConfig) && !isEmpty(gameConfig.gameTask)) {
+            this.setState({
+                showCollect:gameConfig.gameTask.includes('collect'),
+                showShare:gameConfig.gameTask.includes('share'),
+            });
+        }
     }
     getDataByID = async () => {
         let data = await getDataByIdApi({ 'activeID': this.props.activityID, 'pageNo': this.pageNo, 'pageSize': this.pageSize });
+        console.log('aaa data', data);
         if (this.pageNo > 1 && isEmpty(data.data)) {
             Taro.showToast({
                 title: '已经是最后一页了',
@@ -54,7 +78,7 @@ class ActivityData extends Component {
      * 数据展现组件
      */
     dataContentTip = () => {
-        const { dataList } = this.state;
+        const { dataList, showCollect, showShare } = this.state;
         return (
             <View>
                 {
@@ -66,6 +90,8 @@ class ActivityData extends Component {
                                 <View className='col-join'>{item.joinNum ? item.joinNum : 0}</View>
                                 <View className='col-follw'>{item.follow ? item.follow : 0}</View>
                                 <View className='col-reward'>{item.reward ? item.reward : 0}</View>
+                                {showShare && <View className='col-follw'>{item.share ? item.share : 0}</View>}
+                                {showCollect && <View className='col-follw'>{item.collect ? item.collect : 0}</View>}
                             </View>
                         );
                     })
@@ -91,7 +117,7 @@ class ActivityData extends Component {
     }
 
     render () {
-        const { isShow, dataAll } = this.state;
+        const { isShow, dataAll, showCollect, showShare } = this.state;
         return (
             <View className='activity-data-box'>
                 {
@@ -105,6 +131,8 @@ class ActivityData extends Component {
                             <View className='col-join'>参与人数</View>
                             <View className='col-follw'>关注店铺人数</View>
                             <View className='col-reward'>领取奖励人数</View>
+                            {showShare && <View className='col-follw'>分享活动人数</View>}
+                            {showShare && <View className='col-follw'>收藏宝贝人数</View>}
                         </View>
                         <View className='data-content'>
                             {
@@ -114,6 +142,8 @@ class ActivityData extends Component {
                                     <View className='col-join'>{dataAll.total_join ? dataAll.total_join : 0}</View>
                                     <View className='col-follw'>{dataAll.total_follow ? dataAll.total_follow : 0}</View>
                                     <View className='col-reward'>{dataAll.total_reward ? dataAll.total_reward : 0}</View>
+                                    {showShare && <View className='col-follw'>{dataAll.total_share ? dataAll.total_share : 0}</View>}
+                                    {showCollect && <View className='col-follw'>{dataAll.total_collect ? dataAll.total_collect : 0}</View>}
                                 </View>
                             }
                             {
