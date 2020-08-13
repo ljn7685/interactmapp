@@ -83,8 +83,8 @@ export const getActivityByIdAction = (id, operType) => {
     return async (dispatch) => {
         let data = await getActivityInfoIdApi({ 'activeID': id });
         let newData = Object.assign({}, data.data[0]);
-        console.log('newData', newData, newData.gameConfig, data);
-        const gameConfig = JSON.parse(newData.gameConfig || '{}');
+        console.log('newData', newData, newData.game_config, data);
+        const gameConfig = JSON.parse(newData.game_config || '{}');
         newData.activeUrl = decodeURIComponent(data.data[0].active_url);
         newData.activeName = data.data[0].active_name;
         newData.subTitle = data.data[0].sub_title;

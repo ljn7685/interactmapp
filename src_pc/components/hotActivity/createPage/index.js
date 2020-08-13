@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import Taro from "@tarojs/taro";
-import { Text, View, Input, Image, Radio, RadioGroup, Label, CheckboxGroup, Checkbox } from '@tarojs/components';
+import { Text, View, Input, Image } from '@tarojs/components';
 import './index.scss';
 import * as action from '../actions';
 import { isEmpty } from '../../utils/index';
 import { connect } from 'react-redux';
 import SelectGoods from "../selectGoods";
 import { getSaleGoodsApi } from '../../../../public/bPromiseApi';
+import AdRadioGroup from '../../radio/group.jsx';
+import AdCheckGroup from '../../checkbox/group.jsx';
 
 const collectLimit = 4;
 const pageSize = 2;
@@ -16,7 +18,6 @@ class CreatePage extends Component {
         this.state = { showSelectGoods:false };
     }
     componentDidMount () {
-        
         var plugin = requirePlugin("myPlugin");
         // 这个bridge用于和插件进行数据通信 
         let self = this;
@@ -43,14 +44,14 @@ class CreatePage extends Component {
     inputChange = (type, e) => {
         this.props.inputChangeAction(type, e.target.value);
     }
-    radioChange = (type, e) => {
-        this.props.inputChangeAction(type, e.detail.value);
-        if (type === "collectType" && e.detail.value === 'random') {
+    radioChange = (type, value) => {
+        this.props.inputChangeAction(type, value);
+        if (type === "collectType" && value === 'random') {
             this.onRandomSelect();
         }
     }
-    checkboxChange = (type,  e) => {
-        this.props.inputChangeAction(type, e.detail.value);
+    checkboxChange = (type, value) => {
+        this.props.inputChangeAction(type, value);
     }
     onSelectChange = (type, value) => {
         this.props.inputChangeAction(type, value);
@@ -103,7 +104,20 @@ class CreatePage extends Component {
         const { showSelectGoods } = this.state;
         const isCheckShare = activityData.gameTask && activityData.gameTask.includes('share');
         const isCheckCollect = activityData.gameTask && activityData.gameTask.includes('collect');
-        console.log('activityData', activityData);
+        const levelGroup = [
+            { key: "1", text: "简单" },
+            { key: "2", text: "普通" },
+            { key: "3", text: "困难" },
+        ];
+        const collectTypeGroup = [
+            { key: "random", text: "随机推荐" },
+            { key: "appoint", text: "指定商品" },
+        ];
+        const taskGroup = [
+            { key: "share", text: "分享" },
+            { key: "collect", text: "收藏" },
+        ];
+        console.log('activityData', activityData, levelGroup);
         return (
             <View className='create-page'>
                 <View className='name-box'>
@@ -129,30 +143,13 @@ class CreatePage extends Component {
                 <View className='name-box'>
                     <Text className='warn-xing'>*</Text>
                     <View className='time-txt'>游戏难度</View>
-                    <RadioGroup onChange={e => {this.radioChange('gameLevel', e);}}>
-                        <Label   key={0}>
-                            <Radio  value='0' checked={activityData.gameLevel === '0'}>简单</Radio>
-                        </Label>
-                        <Label   key={1}>
-                            <Radio  value='1' checked={activityData.gameLevel === '1'}>普通</Radio>
-                        </Label>
-                        <Label   key={2}>
-                            <Radio  value='2' checked={activityData.gameLevel === '2'} >困难</Radio>
-                        </Label>
-                    </RadioGroup>
+                    <AdRadioGroup groupList={levelGroup} itemClassName='level-radio' checkedKey={activityData.gameLevel} onChange={value => this.radioChange('gameLevel', value)} />
                 </View>
                 <View className='task-box'>
                     <Text className='warn-xing'>*</Text>
                     <View className='task-txt'>复活任务</View>
                     <View className='task-content'>
-                        <CheckboxGroup onChange={e => {this.checkboxChange('gameTask', e);}}>
-                            <Label  key='share' className='task-check'>
-                                <Checkbox  value='share' checked={isCheckShare}>分享</Checkbox>
-                            </Label>
-                            <Label  key='collect' className='task-check'>
-                                <Checkbox  value='collect' checked={isCheckCollect}>收藏</Checkbox>
-                            </Label>
-                        </CheckboxGroup>
+                        <AdCheckGroup groupList={taskGroup} itemClassName='task-check' checkedArr={activityData.gameTask || []} onChange={value => this.checkboxChange('gameTask', value)}></AdCheckGroup>
                         {isCheckShare && <View className='share-box'>
                             <Text className='share-left'>分享活动：每分享给1个好友，可获得1次游戏机会，最多邀请</Text>
                             <Input type='number' className='num-input'  maxlength='2' value={activityData.maxShareNum} onInput={(e) => { this.inputChange('maxShareNum', e); }} />
@@ -164,14 +161,7 @@ class CreatePage extends Component {
                                 <Input type='number' className='num-input' maxlength='2' value={activityData.maxCollectNum} onInput={(e) => { this.inputChange('maxCollectNum', e); }} /><Text>个商品</Text>
                             </View>
                             <View className='collect-select'>
-                                <RadioGroup onChange={e => {this.radioChange('collectType', e);}}>
-                                    <Label   key={0}>
-                                        <Radio className='collect-radio' value='random' checked={activityData.collectType === 'random'}>随机推荐</Radio>
-                                    </Label>
-                                    <Label   key={1}>
-                                        <Radio className='collect-radio' value='appoint' checked={activityData.collectType === 'appoint'}>指定商品</Radio>
-                                    </Label>
-                                </RadioGroup>
+                                <AdRadioGroup groupList={collectTypeGroup} itemClassName='collect-radio' checkedKey={activityData.collectType} onChange={value => this.radioChange('collectType', value)} />
                                 {activityData.collectType === 'appoint' && <View className='select-btn' onClick={() => {this.setState({ showSelectGoods:true });}}>选择</View>}
                                 {activityData.collectType === 'appoint' && <Text className='select-info'>已选<Text className='select-num'>{activityData.goods ? activityData.goods.length : 0}/{collectLimit}</Text>件商品</Text> }
                             </View>

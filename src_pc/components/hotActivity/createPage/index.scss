@@ -33,6 +33,10 @@
             color: #CCCCCC;
             left: 568px;
         }
+        .level-radio{
+            margin-right: 50px;
+            margin-left: 0 !important;
+        }
     }
     .task-box {
         display: flex;
@@ -45,7 +49,8 @@
         }
         .task-content{
             color: #333333;
-            .task-check {
+            .task-check{
+                margin-left: 0px;
                 margin-right: 50px;
                 margin-bottom: 18px;
             }
@@ -76,9 +81,10 @@
                     margin-left: 153px;
                     display: flex;
                     align-items: center;
-                    .cellect-radio {
-                        font-size: 12px;
-                        color: #333333;
+                    .collect-radio {
+                        margin-top: 0;
+                        margin-right: 50px;
+                        margin-left: 0 !important;
                     }
                 }
                 .select-btn{
@@ -240,14 +246,3 @@
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-

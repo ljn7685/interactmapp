@@ -1,0 +1,56 @@
+@import "../base.scss";
+.ad--radio{
+    font-size: var(--ad-font-size-3);
+    color: var(--ad-font-color-desc);
+    display: flex;
+    align-items: center;
+    & .ad--box{
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        box-sizing: border-box;
+        border: 2px solid var(--ad-main-color);
+        // position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all .2s ease-in;
+        margin-right: 5px;
+        .ad--on{
+            // position: absolute;//absolute;
+            display: inline-block;
+            border-radius: 50%;
+            background-color: white;
+            width: 10px;
+            height: 10px;
+            // left: 8px;
+            // top: 8px;
+        }
+    }
+    &.ad--checked .ad--box{
+        background-color: var(--ad-main-color);
+    }
+    &.ad--unchecked .ad--box{
+        background-color: white;
+    }
+    &.ad--disabled{
+        color: var(--ad-font-color-grey);
+        &.ad--checked .ad--box{
+            border-color: var(--ad-font-color-grey);
+            background-color: var(--ad-font-color-grey);
+        }
+        &.ad--unchecked .ad--box{
+            border-color: var(--ad-font-color-grey);
+        }
+    }
+}
+.ad--radio-group{
+    display: flex;
+    flex-wrap: wrap;
+    & .ad--group-item:not(:first-child){
+        margin-left: 15px;
+    }
+    & .ad--group-item {
+        margin-top: 6px;
+    }
+}
