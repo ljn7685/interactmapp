@@ -5,9 +5,14 @@
         background: #FFFFFF;
         border-radius: 16px;
         height: 100px;
-        padding-top: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 64px;
+        .search-box {
+            margin-left: auto;
+        }
         .select-box{
-            margin-left: 32px;
             position: relative;
             .selected{
                 background: #FFFFFF;

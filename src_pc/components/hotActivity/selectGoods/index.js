@@ -3,8 +3,9 @@ import React, { Component } from "react";
 import classNames from "classnames";
 import Modal from "../../../public/components/modal/modal.jsx";
 import styles from "./index.module.scss";
-import { Text, View, Input, Image } from "@tarojs/components";
+import { Text, View, Image } from "@tarojs/components";
 import { getSaleGoodsApi } from "../../../../public/bPromiseApi/index.js";
+import SearchBox from "../../searchBox";
 import Taro from "@tarojs/taro";
 
 class SelectGoods extends Component {
@@ -16,7 +17,6 @@ class SelectGoods extends Component {
             query: "",
             pageData: [],
             selectGoods: this.props.goods || [],
-            searchInput: "",
             showType: "onsale",
         };
     }
@@ -78,8 +78,7 @@ class SelectGoods extends Component {
             });
         }
     }
-    onClickSearch = () => {
-        const { searchInput } = this.state;
+    onClickSearch = (searchInput) => {
         this.setState({
             query: searchInput,
             pageNum: 1,
@@ -150,7 +149,7 @@ class SelectGoods extends Component {
                                             <Text
                                                 className={classNames(
                                                     styles["flag-text"],
-                                                    styles["iconfont"]
+                                                    "iconfont2"
                                                 )}
                                             >
                                                 &#xe615;
@@ -186,7 +185,7 @@ class SelectGoods extends Component {
         const header = [
             <Text>选择商品</Text>,
             <Text
-                className={classNames(styles["iconfont"], styles["close"])}
+                className={classNames("iconfont2", styles["close"])}
                 onClick={onClose}
             >
                 &#xe624;
@@ -223,29 +222,11 @@ class SelectGoods extends Component {
                         已选择{selectGoods.length}/{goodsLimit}
                     </View>
                     {showType === "onsale" && (
-                        <View className={styles["top-search"]}>
-                            <Input
-                                placeholder='请输入关键字搜索'
-                                className={styles["search-input"]}
-                                onInput={(e) => {
-                                    this.setState({ searchInput: e.target.value });
-                                }}
-                            />
-                            <View
-                                className={styles["search-btn"]}
-                                onClick={this.onClickSearch}
-                            >
-                                <Text
-                                    className={classNames(
-                                        styles["search-text"],
-                                        styles["iconfont"]
-                                    )}
-                                >
-                                    &#xe60e;
-                                </Text>
-                                搜索
-                            </View>
-                        </View>
+                        <SearchBox
+                            placeholder='请输入关键字搜索'
+                            onSearch={this.onClickSearch}
+                            className={styles['search-box']}
+                        />
                     )}
                 </View>
                 <View className={styles["content-middle"]}>
@@ -255,7 +236,7 @@ class SelectGoods extends Component {
                     <View className={styles["page"]}>
                         <View
                             className={classNames(
-                                styles["iconfont"],
+                                "iconfont2",
                                 styles["page-btn"]
                             )}
                             onClick={this.onChangePageNum.bind(this, "prev")}
@@ -267,7 +248,7 @@ class SelectGoods extends Component {
                         </Text>
                         <View
                             className={classNames(
-                                styles["iconfont"],
+                                "iconfont2",
                                 styles["page-btn"]
                             )}
                             onClick={this.onChangePageNum.bind(this, "next")}

@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import TurnPage from '../../turnPage/index';
 import SelectBox from '../../selectBox/index';
 import { getActivityDataApi, createActivityApi } from '../../../public/bPromiseApi/index';
+import SearchBox from '../../searchBox';
 
 class AllActivity extends Component {
 
@@ -20,7 +21,7 @@ class AllActivity extends Component {
         this.pageNo = 1; // 初始页数
         this.pageSize = 10; // 页面条数
         this.activeStatus = ''; // 活动状态
-
+        this.query = '';
     }
 
     componentDidMount () {
@@ -31,7 +32,15 @@ class AllActivity extends Component {
      * 获取用户创建的游戏
      */
     getActivityData = async () => {
-        let data = await getActivityDataApi({ 'pageNo': this.pageNo, 'pageSize': this.pageSize, 'activeStatus': this.activeStatus });
+        const { query } = this;
+        const args = { 'pageNo': this.pageNo, 'pageSize': this.pageSize, 'activeStatus': this.activeStatus };
+        if(query) {
+            args.query = query;
+        }
+        let data = await getActivityDataApi(args).catch(err => {
+            console.log('activity err', err);
+        });
+        console.log('activity data', data);
         if (this.pageNo > 1 && isEmpty(data)) {
             Taro.showToast({
                 title: '已经是最后一页了',
@@ -165,6 +174,12 @@ class AllActivity extends Component {
             </View>
         );
     }
+    onClickSearch = (query) => {
+        console.log('onClickSearch');
+        this.pageNo = 1;
+        this.query = query;
+        this.getActivityData();
+    }
 
     render () {
         const { isShow } = this.state;
@@ -172,6 +187,11 @@ class AllActivity extends Component {
             <View className='all-box'>
                 <View className='all-top'>
                     <SelectBox changeStatu={this.selectStatu} />
+                    <SearchBox
+                        className='search-box'
+                        placeholder='请输入活动名称搜索'
+                        onSearch={this.onClickSearch}
+                    />
                 </View>
                 {
                     !isShow && this.emptyPage()
