@@ -10,8 +10,8 @@ import { getSaleGoodsApi } from '../../../../public/bPromiseApi';
 import AdRadioGroup from '../../radio/group.jsx';
 import AdCheckGroup from '../../checkbox/group.jsx';
 
-const collectLimit = 4;
-const pageSize = 2;
+const collectLimit = 20;
+const pageSize = 20;
 const levelGroup = [
     { key: "1", text: "简单" },
     { key: "2", text: "普通" },

@@ -95,6 +95,9 @@
                             color: #333333;
                         }
                     }
+                    .good-item:nth-child(5n) {
+                        margin-right: 0;
+                    }
                     .good-item.select {
                         border: 2px solid #0863ff;
                     }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View } from '@tarojs/components';
+import moment from 'moment';
 import './index.scss';
 import { changeTitleAction, getActivityByIdAction } from '../actions';
 import Taro from '@tarojs/taro';
@@ -10,6 +11,11 @@ import SelectBox from '../../selectBox/index';
 import { getActivityDataApi, createActivityApi } from '../../../public/bPromiseApi/index';
 import SearchBox from '../../searchBox';
 
+const status_config = {
+    "1":"进行中",
+    "2":"已结束",
+    "3":"未开始",
+};
 class AllActivity extends Component {
 
     constructor (props) {
@@ -137,6 +143,17 @@ class AllActivity extends Component {
             <View>
                 {
                     dataList.map((item, index) => {
+                        if(moment(item.start_date).isBefore(new Date()) && item.active_status === 3) {
+                            console.warn('活动自动开始', { ...item });
+                            item.active_status = 1;
+                        }
+                        if(moment(item.end_date).isBefore(new Date()) && item.active_status === 1) {
+                            console.warn('活动自动结束', { ...item });
+                            item.active_status = 2;
+                        }
+                        if(item.status === undefined || item.status !== status_config[item.active_status]) {
+                            item.status = status_config[item.active_status];
+                        }
                         return (
                             <View className='activity-content-box' key={item.id}>
                                 <View className='content-name col-name'>{item.active_name}</View>
