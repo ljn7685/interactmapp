@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Taro from "@tarojs/taro";
 import { Text, View, Input, Image } from '@tarojs/components';
+import moment from 'moment';
 import './index.scss';
 import * as action from '../actions';
 import { isEmpty } from '../../utils/index';
@@ -9,6 +10,7 @@ import SelectGoods from "../selectGoods";
 import { getSaleGoodsApi } from '../../../../public/bPromiseApi';
 import AdRadioGroup from '../../radio/group.jsx';
 import AdCheckGroup from '../../checkbox/group.jsx';
+import DatePicker from '../../datePicker';
 
 const collectLimit = 20;
 const pageSize = 20;
@@ -33,7 +35,7 @@ const levelConfig = {
 class CreatePage extends Component {
     constructor (props) {
         super(props);
-        this.state = { showSelectGoods:false };
+        this.state = { showSelectGoods:false, selectDate:'' };
     }
     componentDidMount () {
         var plugin = requirePlugin("myPlugin");
@@ -111,9 +113,12 @@ class CreatePage extends Component {
     giveUpEdit = () => {
         this.props.changeTitleAction('活动管理', 'management#allActivity');
     }
+    onSelectDate=(type, value) => {
+        this.props.inputChangeAction(type, value.dateTimeStr);
+    }
     render () {
         const { title, activityData:{ gameConfig }, activityData } = this.props;
-        const { showSelectGoods } = this.state;
+        const { showSelectGoods, selectDate } = this.state;
         const isCheckShare = gameConfig.gameTask && gameConfig.gameTask.includes('share');
         const isCheckCollect = gameConfig.gameTask && gameConfig.gameTask.includes('collect');
         console.log('activityData', activityData, levelGroup);
@@ -135,9 +140,11 @@ class CreatePage extends Component {
                 <View className='name-box'>
                     <Text className='warn-xing'>*</Text>
                     <View className='time-txt'>活动时间</View>
-                    <Input className='time-input' value={activityData.startDate} onInput={(e) => { this.inputChange('startDate', e); }} />
+                    <Input className='time-input' value={activityData.startDate} onInput={() => this.setState({ selectDate:'start' })} onClick={() => this.setState({ selectDate:'start' })} />
                     <Text className='time-to'>至</Text>
-                    <Input className='time-input' value={activityData.endDate} onInput={(e) => { this.inputChange('endDate', e); }} />
+                    <Input className='time-input' value={activityData.endDate} onInput={() => this.setState({ selectDate:'end' })} onClick={() => this.setState({ selectDate:'end' })} />
+                    {selectDate === "start" && <DatePicker rangeStart={moment().format("YYYY-MM-DD")} rangeEnd={activityData.endDate} onSelect={value => this.onSelectDate('startDate', value)} pickerShow></DatePicker>}
+                    {selectDate === "end" && <DatePicker rangeStart={activityData.startDate} rangeEnd={moment().add(3, 'years').format("YYYY-MM-DD")} onSelect={value => this.onSelectDate('endDate', value)} pickerShow></DatePicker>}
                 </View>
                 <View className='name-box'>
                     <Text className='warn-xing'>*</Text>

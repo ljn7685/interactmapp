@@ -25,8 +25,8 @@ class ActivityCard extends Component {
         changeActivityDataAction({
             'activeName': '',
             'subTitle': '',
-            'startDate': moment().format("YYYY-MM-DD"),
-            'endDate': moment().add(7, 'days').format("YYYY-MM-DD"),
+            'startDate': moment().format("YYYY-MM-DD  HH:mm:ss"),
+            'endDate': moment().add(7, 'days').format("YYYY-MM-DD  HH:mm:ss"),
             'gameNumber': 0,
             'couponData': '',
             'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${isEmpty(getUserInfo().cVersion) ? '0.0.14' : getUserInfo().cVersion}&_mp_code=tb&query=activeID%3D`,
