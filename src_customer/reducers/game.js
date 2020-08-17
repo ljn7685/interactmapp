@@ -8,7 +8,8 @@ import { ADD_GAMETIMES,
     SET_USER_INFO,
     SET_FAVOR_SHOP,
     SET_JOIN_GAME,
-    SET_RECEIVE_REWARDS, } from "../constants/game";
+    SET_RECEIVE_REWARDS, 
+    COLLECT_GOOD_ITEM } from "../constants/game";
 
 const initState = {
     gametimes: 0,
@@ -72,7 +73,7 @@ export default function reducer (state = initState, action) {
                 ...state,
                 userinfo: { ...state.userinfo, is_receive_rewards: 1 },
             };
-        case SET_USER_INFO:
+        case SET_USER_INFO: {
             const { userinfo } = action;
             const { game_rule } = state;
             if (typeof userinfo.active_rewards === "string") {
@@ -80,6 +81,9 @@ export default function reducer (state = initState, action) {
             }
             if (typeof userinfo.game_config === "string") {
                 userinfo.game_config = JSON.parse(userinfo.game_config);
+            }
+            if (typeof userinfo.collect_goods === 'string') {
+                userinfo.collect_goods = userinfo.collect_goods.split(',');
             }
             userinfo.ename = userinfo.active_rewards.ename;
             return {
@@ -93,6 +97,20 @@ export default function reducer (state = initState, action) {
                 },
                 userinfo,
             };
+        }
+        case COLLECT_GOOD_ITEM: {
+            const { userinfo } = state;
+            const collect_goods = Array.isArray(userinfo.collect_goods) ? userinfo.collect_goods.slice() : [];
+            collect_goods.push(action.item.num_iid);
+            return {
+                ...state,
+                userinfo:{
+                    ...userinfo,
+                    collect_goods,
+                },
+            };
+        }
+
         default:
             return state;
     }

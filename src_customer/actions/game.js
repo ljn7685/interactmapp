@@ -8,9 +8,11 @@ import { ADD_GAMETIMES,
     RESET_REVIVE_TIMES,
     SET_FAVOR_SHOP,
     SET_RECEIVE_REWARDS,
-    SET_JOIN_GAME, } from "../constants/game";
+    SET_JOIN_GAME,
+    COLLECT_GOOD_ITEM, } from "../constants/game";
 import { api } from "../../public/util/api";
 import Taro from "@tarojs/taro";
+import { getUserInfo } from "../../public/util/userInfoChanger";
 
 export const addGametimes = () => {
     return { type: ADD_GAMETIMES };
@@ -54,6 +56,10 @@ export const setFavorShop = () => {
 
 export const setReceiveRewards = () => {
     return { type: SET_RECEIVE_REWARDS };
+};
+
+export const collectGoodItem = (item) => {
+    return { type: COLLECT_GOOD_ITEM, item };
 };
 
 /**
@@ -238,3 +244,65 @@ export const drawPrize = (userinfo, cb) => {
         }
     };
 };
+/**
+ * 收藏商品API
+ * @param {*} item
+ * @param {*} gameConfig
+ */
+export function collectGoodApi (item, gameConfig) {
+    return new Promise((resolve, reject) => {
+        api({
+            apiName: "aiyong.interactc.user.data.update",
+            method: "/interactive/updateInterActCData",
+            args: {
+                operType: 1,
+                goodID: item.num_iid,
+                maxCollectNum: gameConfig.maxCollectNum,
+                active_id: getUserInfo().active_id,
+            },
+            callback: (res) => {
+                if (res.code === 200) {
+                    resolve(res);
+                } else {
+                    reject(res);
+                }
+            },
+            errCallback: (err) => {
+                reject(err);
+            },
+        });
+    });
+}
+/**
+ * 收藏商品action
+ * @param {*} item
+ */
+export function collectGoodAction (item, gameConfig) {
+    return async (dispatch) => {
+        my.tb.collectGoods({
+            id: item.num_iid,
+            success: (res) => {
+                console.log("success - " + JSON.stringify(res));
+                collectGoodApi(item, gameConfig)
+                    .then(() => {
+                        dispatch(collectGoodItem(item));
+                    })
+                    .catch(() => {
+                        Taro.showToast({
+                            title: "收藏商品失败",
+                            icon: "fail",
+                            duration: 2000,
+                        });
+                    });
+            },
+            fail: (error) => {
+                console.log("fail - ", error);
+                Taro.showToast({
+                    title: (error && error.message) || "收藏商品失败",
+                    icon: "fail",
+                    duration: 2000,
+                });
+            },
+        });
+    };
+}
