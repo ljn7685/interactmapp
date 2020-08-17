@@ -1,5 +1,4 @@
-import {
-    ADD_GAMETIMES,
+import { ADD_GAMETIMES,
     MINUS_GAMETIMES,
     SET_PRELOADED,
     SET_BEST_SCORE,
@@ -9,8 +8,7 @@ import {
     SET_USER_INFO,
     SET_FAVOR_SHOP,
     SET_JOIN_GAME,
-    SET_RECEIVE_REWARDS,
-} from "../constants/game";
+    SET_RECEIVE_REWARDS, } from "../constants/game";
 
 const initState = {
     gametimes: 0,
@@ -41,7 +39,12 @@ const initState = {
         ],
     },
 };
-export default function reducer(state = initState, action) {
+/**
+ * c端reducer
+ * @param {*} state 
+ * @param {*} action 
+ */
+export default function reducer (state = initState, action) {
     switch (action.type) {
         case ADD_GAMETIMES:
             return { ...state, gametimes: state.gametimes + 1 };

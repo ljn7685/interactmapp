@@ -22,23 +22,17 @@ const failTip = `啊哦～差一点点就过关咯!
 多加练习，再来挑战～～`;
 @connect(
     ({ game }) => {
-        return {
-            userinfo: game.userinfo,
-        };
+        return { userinfo: game.userinfo };
     },
-    {
-        drawPrize,
-    }
+    { drawPrize }
 )
 class GameResult extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {};
     }
     onClickClose = () => {
-        Taro.redirectTo({
-            url: "/pages/gameIndex/gameIndex?gameover=true",
-        });
+        Taro.redirectTo({ url: "/pages/gameIndex/gameIndex?gameover=true" });
     };
     exchangePrize = () => {
         console.log("exchangePrize");
@@ -50,14 +44,12 @@ class GameResult extends Component {
             });
         });
     };
-    render() {
+    render () {
         const {
             isSuccess,
             onRestart,
             revive_times,
-            userinfo: {
-                active_rewards: { datas },
-            },
+            userinfo: { active_rewards: { datas } },
         } = this.props;
         let headerStyle = classNames(styles["header"], {
             [styles["win-header"]]: isSuccess,
@@ -66,7 +58,7 @@ class GameResult extends Component {
         const footer = !isSuccess && revive_times > 0 && (
             <Image
                 src={close_btn_img}
-                mode="widthFix"
+                mode='widthFix'
                 className={styles["footer"]}
                 onClick={() => {
                     showConfirmModal({
@@ -91,7 +83,7 @@ class GameResult extends Component {
         const prizes = datas && datas.length > 0 ? [datas[0]] : [];
         return (
             <Modal
-                visible={true}
+                visible
                 footer={footer}
                 headerStyle={headerStyle}
                 contentStyle={styles["content"]}

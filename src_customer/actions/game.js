@@ -1,5 +1,4 @@
-import {
-    ADD_GAMETIMES,
+import { ADD_GAMETIMES,
     MINUS_GAMETIMES,
     SET_PRELOADED,
     SET_BEST_SCORE,
@@ -9,8 +8,7 @@ import {
     RESET_REVIVE_TIMES,
     SET_FAVOR_SHOP,
     SET_RECEIVE_REWARDS,
-    SET_JOIN_GAME,
-} from "../constants/game";
+    SET_JOIN_GAME, } from "../constants/game";
 import { api } from "../../public/util/api";
 import Taro from "@tarojs/taro";
 
@@ -62,7 +60,7 @@ export const setReceiveRewards = () => {
  * 淘宝关注店铺API
  * @param {*} userinfo
  */
-function tbShopFavor(userinfo) {
+function tbShopFavor (userinfo) {
     return new Promise((resolve, reject) => {
         my.tb.checkShopFavoredStatus({
             id: userinfo.seller_id,
@@ -76,9 +74,7 @@ function tbShopFavor(userinfo) {
                         success: resolve,
                         fail: (res) => {
                             console.log(res);
-                            reject({
-                                msg: res.errorMessage,
-                            });
+                            reject({ msg: res.errorMessage });
                         },
                     });
                 }

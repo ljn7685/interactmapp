@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image, Text, Canvas } from "@tarojs/components";
+import { View, Image,  Canvas } from "@tarojs/components";
 import * as PIXI from "@tbminiapp/pixi-miniprogram-engine";
 
 import Game from "./game";
-import {
-    minusGametimes,
+import { minusGametimes,
     resetReviveTimes,
     userRevive,
-    setBestScore,
-} from "../../actions/game";
+    setBestScore, } from "../../actions/game";
 
 import styles from "./gameScene.module.scss";
 import "../../styles/common.scss";
@@ -20,13 +18,13 @@ import Bump from "bump.js";
 import GameTip from "./components/gameTip";
 import ToastBox from "../../components/toast/toast";
 import guide_gif from "../../assets/images/guide.gif";
-import start_heart_gif from "../../assets/images/start_heart.gif"
-import success_angel_gif from "../../assets/images/success_angel.gif"
+import start_heart_gif from "../../assets/images/start_heart.gif";
+import success_angel_gif from "../../assets/images/success_angel.gif";
 
 const { registerCanvas } = PIXI.miniprogram;
 
 class GameScene extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {
             showGuide: false,
@@ -40,13 +38,11 @@ class GameScene extends Component {
         };
     }
 
-    componentDidMount() {
+    componentDidMount () {
         const { revive } = getCurrentInstance().router.params;
         const { userinfo } = this.props;
         if (this.props.gametimes <= 0 && !revive) {
-            Taro.redirectTo({
-                url: "/pages/gameIndex/gameIndex?no_enough_times=true",
-            });
+            Taro.redirectTo({ url: "/pages/gameIndex/gameIndex?no_enough_times=true" });
         } else {
             if (revive) {
                 this.setState({ showTip: false });
@@ -61,7 +57,7 @@ class GameScene extends Component {
             }
         }
     }
-    componentWillUnmount() {
+    componentWillUnmount () {
         if (this.timer) {
             clearTimeout(this.timer);
             this.timer = null;
@@ -71,7 +67,10 @@ class GameScene extends Component {
             game.destroy();
         }
     }
-    gameStart() {
+    /**
+     * 游戏开始
+     */
+    gameStart () {
         console.log("gameStart");
         const { game } = this.state;
         game.gameReady();
@@ -80,7 +79,10 @@ class GameScene extends Component {
             this.changeState("showGuide", false);
         }, 1150 * 3);
     }
-    onCanvasReady() {
+    /**
+     * 设置canvas
+     */
+    onCanvasReady () {
         console.log("onCanvasReady");
         const { game } = this.state;
         game.bump = new Bump(PIXI);
@@ -100,10 +102,10 @@ class GameScene extends Component {
                 canvas.width = clientWidth;
                 canvas.height = clientHeight;
                 this.pixiCanvas = canvas;
-                //为pixi引擎注册当前的canvas
+                // 为pixi引擎注册当前的canvas
                 registerCanvas(canvas);
-                //初始化PIXI.Application
-                //计算application的宽高
+                // 初始化PIXI.Application
+                // 计算application的宽高
                 const size = {
                     width: 750,
                     height: (clientHeight / clientWidth) * 750,
@@ -169,14 +171,12 @@ class GameScene extends Component {
         }
     };
     changeState = (name, value) => {
-        this.setState({
-            [name]: value,
-        });
+        this.setState({ [name]: value });
     };
     onClickModal = (name) => {
         this.setState({ [name]: !this.state[name] });
     };
-    render() {
+    render () {
         const {
             showGuide,
             showHeart,
@@ -187,11 +187,11 @@ class GameScene extends Component {
             score,
             game,
         } = this.state;
-        const { imgList, revive_times } = this.props;
+        const { revive_times } = this.props;
         const ratio = game.getRatio();
         return (
             <View
-                id="gameroot"
+                id='gameroot'
                 ref={(ref) => (this.root = ref)}
                 onTouchStart={game.onPointStart}
                 onTouchMove={game.onPointMove}
@@ -201,41 +201,35 @@ class GameScene extends Component {
                 style={showGameResult ? { pointerEvents: "none" } : {}}
             >
                 <Canvas
-                    id="canvas"
-                    type="webgl"
+                    id='canvas'
+                    type='webgl'
                     className={styles["canvas"]}
                 ></Canvas>
                 {showGuide ? (
                     <Image
                         src={guide_gif}
-                        alt=""
+                        alt=''
                         className={styles["guide"]}
-                        mode="widthFix"
-                        style={{
-                            transform: `translateX(-23.913%) scale(${ratio})`,
-                        }}
+                        mode='widthFix'
+                        style={{ transform: `translateX(-23.913%) scale(${ratio})` }}
                     />
                 ) : null}
                 {showHeart ? (
                     <Image
                         src={start_heart_gif}
-                        alt=""
+                        alt=''
                         className={styles["heart"]}
-                        mode="widthFix"
-                        style={{
-                            transform: `translateX(-50%) scale(${ratio})`,
-                        }}
+                        mode='widthFix'
+                        style={{ transform: `translateX(-50%) scale(${ratio})` }}
                     />
                 ) : null}
                 {showSuccessAngel ? (
                     <Image
                         src={success_angel_gif}
-                        alt=""
+                        alt=''
                         className={styles["success-angel"]}
-                        mode="widthFix"
-                        style={{
-                            transform: `translateX(-50%) scale(${ratio})`,
-                        }}
+                        mode='widthFix'
+                        style={{ transform: `translateX(-50%) scale(${ratio})` }}
                     />
                 ) : null}
                 {showGameResult ? (

@@ -10,11 +10,11 @@ import * as style from "./preload.module.scss";
 import arrow_png from "../../assets/images/loading_arrow.png";
 import loading_thumb from "../../assets/images/loading_thumb.png";
 import useImgLoader from "../../components/imgLoader/useImgLoader";
-import loading_bg from "../../assets/images/loading_bg.png"
-import icon_gift from "../../assets/images/icon_gift.png"
+import loading_bg from "../../assets/images/loading_bg.png";
+import icon_gift from "../../assets/images/icon_gift.png";
 import guide_gif from "../../assets/images/guide.gif";
-import start_heart_gif from "../../assets/images/start_heart.gif"
-import success_angel_gif from "../../assets/images/success_angel.gif"
+import start_heart_gif from "../../assets/images/start_heart.gif";
+import success_angel_gif from "../../assets/images/success_angel.gif";
 import result_bg from "../../assets/images/result_bg.png";
 
 
@@ -73,7 +73,7 @@ const resources_ui = [
     success_angel_gif,
 ];
 class Preload extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {
             total_progress: 0,
@@ -81,11 +81,11 @@ class Preload extends Component {
             ui_progress: 0,
         };
     }
-    componentDidMount() {
+    componentDidMount () {
         if (!this.props.preloaded) {
             this.onCanvasReady();
         } else {
-            this.setState({ progress: 1 });
+            this.setState({ total_progress: 1 });
             this.onComplete();
         }
     }
@@ -93,7 +93,7 @@ class Preload extends Component {
      * 计算进度条长度
      * @param {*} progress 进度
      */
-    getBarWidth(progress) {
+    getBarWidth (progress) {
         const contentWidth = progress_width - content_padding;
         const barWidth = Math.max(
             0,
@@ -170,21 +170,19 @@ class Preload extends Component {
         console.log("onComplete", this.state.total_progress);
         if (this.state.total_progress < 1) return;
         setTimeout(() => {
-            Taro.redirectTo({
-                url: "/pages/gameIndex/gameIndex",
-            });
+            Taro.redirectTo({ url: "/pages/gameIndex/gameIndex" });
         }, 500);
         this.props.setPreloaded(true);
     };
-    render() {
+    render () {
         const barWidth = this.getBarWidth(this.state.total_progress);
         return (
             <View className={style["bg"]}>
                 <Image
                     className={style["arrow"]}
-                    alt=""
+                    alt=''
                     src={arrow_png}
-                    mode="widthFix"
+                    mode='widthFix'
                 />
                 <View className={style["progress"]}>
                     <View className={style["progress-content"]}>
@@ -195,14 +193,14 @@ class Preload extends Component {
                         <Image
                             className={style["progress-point"]}
                             src={loading_thumb}
-                            mode="widthFix"
+                            mode='widthFix'
                         />
                     </View>
                 </View>
                 <View className={style["tip-text"]}>Ready...</View>
                 <Canvas
-                    id="canvas"
-                    type="webgl"
+                    id='canvas'
+                    type='webgl'
                     className={style["canvas"]}
                 ></Canvas>
                 <View
@@ -213,13 +211,9 @@ class Preload extends Component {
     }
 }
 const mapStateToProps = ({ game }) => {
-    return {
-        preloaded: game.preloaded,
-    };
+    return { preloaded: game.preloaded };
 };
-const mapDispatchToProps = {
-    setPreloaded,
-};
+const mapDispatchToProps = { setPreloaded };
 const wrapper = connect(
     mapStateToProps,
     mapDispatchToProps

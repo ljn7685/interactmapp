@@ -4,11 +4,9 @@ import { Provider } from "react-redux";
 import configStore from "./store";
 
 import "./app.scss";
-import {
-    setActivityEnded,
+import { setActivityEnded,
     setUserInfo as setUserInfoAction,
-    addGametimes,
-} from "./actions/game";
+    addGametimes, } from "./actions/game";
 import { userInfoInit } from "../public/util/userinfo";
 import { getUserInfo, setUserInfo } from "../public/util/userInfoChanger";
 import { showConfirmModal } from "../public/util";
@@ -17,10 +15,13 @@ import Taro from "@tarojs/taro";
 const store = configStore();
 
 class App extends Component {
-    componentDidMount() {
+    componentDidMount () {
         this.init();
     }
-    async init() {
+    /**
+     * 初始化获取用户信息
+     */
+    async init () {
         await this.getLaunchParams();
         userInfoInit(() => {
             const userinfo = getUserInfo();
@@ -45,13 +46,16 @@ class App extends Component {
             }
             store.dispatch(setUserInfoAction(userinfo));
             if (userinfo.is_follow && !userinfo.is_join) {
-                dispatch(addGametimes());
+                store.dispatch(addGametimes());
             }
             console.log(store.getState().game.activity_ended);
         });
     }
-    getLaunchParams() {
-        return new Promise((resolve, reject) => {
+    /**
+     * 获取启动参数
+     */
+    getLaunchParams () {
+        return new Promise((resolve) => {
             let options = Taro.getLaunchOptionsSync();
             if (!(options && options.query && options.query.activeID)) {
                 console.log("options", options);
@@ -70,15 +74,15 @@ class App extends Component {
         });
     }
 
-    componentDidShow() {}
+    componentDidShow () {}
 
-    componentDidHide() {}
+    componentDidHide () {}
 
-    componentDidCatchError() {}
+    componentDidCatchError () {}
 
     // 在 App 类中的 render() 函数没有实际作用
     // 请勿修改此函数
-    render() {
+    render () {
         return <Provider store={store}>{this.props.children}</Provider>;
     }
 }

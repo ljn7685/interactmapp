@@ -2,15 +2,16 @@ import React, { Component } from "react";
 import styles from "./gameTip.module.scss";
 import GameModal from "../../../components/gameModal/gameModal";
 import { Text, View } from "@tarojs/components";
+
 class GameTip extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {};
     }
-    render() {
+    render () {
         const { onClose } = this.props;
         return (
-            <GameModal visible={true} showClose={false} title="游戏规则" contentStyle={styles["content"]}>
+            <GameModal visible showClose={false} title='游戏规则' contentStyle={styles["content"]}>
                 <Text className={styles["rule-desc"]}>{`*向后拉动弓箭，手指离开屏幕弓箭发射；
 
 *规定时间内弓箭全部射中靶上，即可获得奖励；

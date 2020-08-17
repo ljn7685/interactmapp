@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
-import { View, Image, Text, Button } from "@tarojs/components";
+import { View, Image, Text } from "@tarojs/components";
 import classNames from "classnames";
 
 import styles from "./gameIndex.module.scss";
@@ -9,19 +9,19 @@ import "../../styles/common.scss";
 import GameRule from "../gameRule/gameRule";
 import GamePrize from "../gamePrize/gamePrize";
 import ToastBox from "../../components/toast/toast";
-import {
-    setActivityEnded,
+import { setActivityEnded,
     setUserInfo,
     favorShop,
-    joinGame,
-} from "../../actions/game";
+    joinGame, } from "../../actions/game";
 import icon_gift from "../../assets/images/icon_gift.png"
-const titleIcon = "http://q.aiyongbao.com/interact/game_title_icon.png"
-const start_turntable = "http://q.aiyongbao.com/interact/start_turntable.png"
-const start_player = "http://q.aiyongbao.com/interact/start_player.png"
-const icon_rule = "http://q.aiyongbao.com/interact/icon_rule.png"
+;
+
+const titleIcon = "http://q.aiyongbao.com/interact/game_title_icon.png";
+const start_turntable = "http://q.aiyongbao.com/interact/start_turntable.png";
+const start_player = "http://q.aiyongbao.com/interact/start_player.png";
+const icon_rule = "http://q.aiyongbao.com/interact/icon_rule.png";
 class GameIndex extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {
             isRotate: true,
@@ -30,7 +30,7 @@ class GameIndex extends Component {
             jumpIcon: false,
         };
     }
-    componentDidMount() {
+    componentDidMount () {
         let {
             no_enough_times,
             successfully_received,
@@ -38,25 +38,22 @@ class GameIndex extends Component {
         } = getCurrentInstance().router.params;
         console.log(getCurrentInstance().router.params);
         if (gameover) {
-            this.setState({
-                isRotate: false,
-            });
+            this.setState({ isRotate: false });
         }
         if (no_enough_times) {
             this.showNoEnoughTimes();
         } else if (successfully_received) {
-            this.setState({
-                jumpIcon: true,
-            });
+            this.setState({ jumpIcon: true });
             setTimeout(() => {
-                this.setState({
-                    jumpIcon: false,
-                });
+                this.setState({ jumpIcon: false });
             }, 2500);
             this.toast.info("领取成功", 2000);
         }
     }
-    showNoEnoughTimes() {
+    /**
+     * 游戏次数不足的提示
+     */
+    showNoEnoughTimes () {
         this.toast.info("已经参与过该游戏咯～", 2000);
     }
     /**
@@ -79,16 +76,14 @@ class GameIndex extends Component {
         if (this.props.gametimes <= 0) {
             this.showNoEnoughTimes();
         } else {
-            Taro.redirectTo({
-                url: "/pages/gameScene/gameScene",
-            });
+            Taro.redirectTo({ url: "/pages/gameScene/gameScene" });
         }
     };
     /**
      * 关注店铺
      */
     onFavorShop = () => {
-        const { userinfo, gametimes } = this.props;
+        const { userinfo } = this.props;
         this.props.favorShop(userinfo, () => {
             if (userinfo.is_played) {
                 this.toast.info("已经参与过该游戏咯～");
@@ -98,7 +93,7 @@ class GameIndex extends Component {
     onClickModal = (name) => {
         this.setState({ [name]: !this.state[name] });
     };
-    render() {
+    render () {
         const { showRule, showPrize, jumpIcon } = this.state;
         const {
             activity_ended,
@@ -110,30 +105,30 @@ class GameIndex extends Component {
                 <View className={styles["title"]}>
                     <Image
                         src={titleIcon}
-                        alt=""
+                        alt=''
                         className={styles["title-img"]}
-                        mode="widthFix"
+                        mode='widthFix'
                     />
                     <Text className={styles["title-desc"]}>{sub_title}</Text>
                 </View>
                 <View className={styles["game-preview"]}>
                     <Image
                         src={start_turntable}
-                        alt=""
+                        alt=''
                         className={`${styles["preview-turntable"]} ${
                             this.state.isRotate ? styles["preview-rotate"] : ""
                         }`}
                         key={start_turntable}
-                        mode="widthFix"
+                        mode='widthFix'
                     />
                     <Image
                         src={start_player}
-                        alt=""
+                        alt=''
                         className={
                             styles["preview-content"] + " " + styles["player"]
                         }
                         key={start_player}
-                        mode="widthFix"
+                        mode='widthFix'
                     />
                 </View>
                 <View className={styles["game-info"]}>
@@ -152,41 +147,39 @@ class GameIndex extends Component {
                         {activity_ended
                             ? "活动已经结束"
                             : is_follow
-                            ? "开始游戏 赢好礼"
-                            : "关注店铺 获取游戏次数"}
+                                ? "开始游戏 赢好礼"
+                                : "关注店铺 获取游戏次数"}
                     </View>
                 </View>
-                <View className="sidebar">
+                <View className='sidebar'>
                     <View
-                        className="side-btn"
+                        className='side-btn'
                         onClick={this.onClickModal.bind(this, "showRule")}
-                        key="rule"
+                        key='rule'
                     >
                         <Image
                             src={icon_rule}
-                            alt=""
-                            className="side-img"
-                            mode="widthFix"
+                            alt=''
+                            className='side-img'
+                            mode='widthFix'
                         ></Image>
-                        <Text className="side-btn-desc">游戏规则</Text>
+                        <Text className='side-btn-desc'>游戏规则</Text>
                     </View>
                     <View className={styles["jump-container"]}>
                         <View
-                            className={classNames("side-btn", {
-                                [styles["jump-icon"]]: jumpIcon,
-                            })}
+                            className={classNames("side-btn", { [styles["jump-icon"]]: jumpIcon })}
                             onClick={() => {
                                 this.onClickModal("showPrize");
                             }}
-                            key="prize"
+                            key='prize'
                         >
                             <Image
                                 src={icon_gift}
-                                alt=""
-                                className="side-img"
-                                mode="widthFix"
+                                alt=''
+                                className='side-img'
+                                mode='widthFix'
                             ></Image>
-                            <Text className="side-btn-desc">我的礼品</Text>
+                            <Text className='side-btn-desc'>我的礼品</Text>
                         </View>
                     </View>
                 </View>

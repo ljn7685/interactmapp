@@ -18,21 +18,19 @@ import { View } from "@tarojs/components";
  * @extends {PureComponent}
  */
 class Modal extends PureComponent {
-    constructor(props) {
+    constructor (props) {
         super(props);
         const { visible } = this.props;
         const rootStyle = classnames({
             [styles.overlay]: true,
             [styles.visible]: visible,
         });
-        this.state = {
-            rootStyle,
-        };
+        this.state = { rootStyle };
     }
-    componentDidMount() {
+    componentDidMount () {
         this.checkIfVisible();
     }
-    componentDidUpdate(prevProps) {
+    componentDidUpdate (prevProps) {
         if (prevProps.visible !== this.props.visible) {
             this.checkIfVisible();
         }
@@ -44,11 +42,9 @@ class Modal extends PureComponent {
             [styles.overlay]: true,
             [styles.visible]: visible,
         });
-        this.setState({
-            rootStyle,
-        });
+        this.setState({ rootStyle });
     };
-    render() {
+    render () {
         const {
             visible,
             closeBtn,
@@ -83,9 +79,10 @@ class Modal extends PureComponent {
                         {closeBtn ? closeBtn : null}
                     </View>
                     <View className={classnames({
-                            [styles.content]: styles.content,
-                            [contentStyle]: contentStyle,
-                        })}>
+                        [styles.content]: styles.content,
+                        [contentStyle]: contentStyle,
+                    })}
+                    >
                         {children}
                     </View>
                     {footer}

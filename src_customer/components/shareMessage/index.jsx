@@ -1,17 +1,22 @@
-export default function useShareMessage(WrappedComponent) {
+import React from 'react';
+/**
+ * 配置分享信息高阶组件
+ * @param {*} WrappedComponent 
+ */
+export default function useShareMessage (WrappedComponent) {
     return class extends Component {
-        constructor(props) {
+        constructor (props) {
             super(props);
             this.info = {};
         }
-        onShareAppMessage() {
+        onShareAppMessage () {
             console.log("onShareAppMessage");
             return this.info;
         }
         setShareInfo = (info) => {
             this.info = info;
         };
-        render() {
+        render () {
             const newProps = { setShareInfo: this.setShareInfo };
             return (
                 <WrappedComponent

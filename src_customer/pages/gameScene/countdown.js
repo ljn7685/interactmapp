@@ -8,7 +8,7 @@ const update_interval = 80;
  * 倒计时
  */
 class CountDown extends Container {
-    constructor(properties) {
+    constructor (properties) {
         super();
         this.game = properties.game;
         this.maxTime = (properties.time * 1000) / update_interval;
@@ -19,7 +19,10 @@ class CountDown extends Container {
     time = 0;
     startTip = false;
     delta = 0;
-    initText() {
+    /**
+     * 初始化文字
+     */
+    initText () {
         let style = new TextStyle({
             fontFamily: "Arial",
             fontSize: 48,
@@ -33,24 +36,39 @@ class CountDown extends Container {
         this.label.pivot.y = this.label.height / 2;
         this.addChild(this.label);
     }
-    removeText() {
+    /**
+     * 移除文字
+     */
+    removeText () {
         if (this.label) {
             this.removeChild(this.label);
             this.label = null;
         }
     }
-    setText() {
+    /**
+     * 设置文字
+     */
+    setText () {
         this.removeText();
         this.initText();
     }
-    restart() {
+    /**
+     * 重新开始倒计时
+     */
+    restart () {
         this.time = this.maxTime;
         this.start();
     }
-    start() {
+    /**
+     * 开始倒计时
+     */
+    start () {
         this.tick();
     }
-    stop() {
+    /**
+     * 停止倒计时
+     */
+    stop () {
         if (this.timer) {
             clearTimeout(this.timer);
         }
@@ -58,7 +76,7 @@ class CountDown extends Container {
     /**
      * 添加最后3秒的提示动画
      */
-    onTip() {
+    onTip () {
         let times = 6;
         let anim = () => {
             let obj = { value: 0 };
@@ -66,9 +84,7 @@ class CountDown extends Container {
             let target = origon === 1 ? 1.5 : 1;
             new Tween(obj)
                 .to(
-                    {
-                        value: 1,
-                    },
+                    { value: 1 },
                     500
                 )
                 .onUpdate((object, elapsed) => {
@@ -88,7 +104,7 @@ class CountDown extends Container {
     /**
      * 每一帧的回调，更新倒计时时间，显示最后几秒的提示动画
      */
-    tick() {
+    tick () {
         this.timer = setTimeout(() => {
             this.time--;
             this.setText();
