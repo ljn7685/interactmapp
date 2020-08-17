@@ -17,6 +17,7 @@ import icon_gift from "../../assets/images/icon_gift.png"
 ;
 import GameButton from "../../components/gameButton";
 import GameTask from "../gameTask";
+import CollectGoods from "../collectGoods";
 
 const titleIcon = "http://q.aiyongbao.com/interact/game_title_icon.png";
 const start_turntable = "http://q.aiyongbao.com/interact/start_turntable.png";
@@ -30,6 +31,7 @@ class GameIndex extends Component {
             showRule: false,
             showPrize: false,
             showTask: false,
+            showCollect: false,
             jumpIcon: false,
         };
     }
@@ -97,7 +99,7 @@ class GameIndex extends Component {
         this.setState({ [name]: !this.state[name] });
     };
     render () {
-        const { showRule, showPrize, jumpIcon, showTask } = this.state;
+        const { showRule, showPrize, jumpIcon, showTask, showCollect } = this.state;
         const {
             activity_ended,
             userinfo: { is_follow, sub_title },
@@ -204,7 +206,8 @@ class GameIndex extends Component {
                         }}
                     ></GamePrize>
                 ) : null}
-                {showTask ? (<GameTask onClose={this.onToggleModal.bind(this, "showTask")} />) : null}
+                {showTask ? (<GameTask onClose={this.onToggleModal.bind(this, "showTask")} openCollect={this.onToggleModal.bind(this, 'showCollect')} onFavorShop={this.onFavorShop} />) : null}
+                {showCollect ? <CollectGoods onClose={this.onToggleModal.bind(this, 'showCollect')} /> : null}
                 <ToastBox ref={(ref) => (this.toast = ref)}></ToastBox>
             </View>
         );

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Image, Text } from "@tarojs/components";
-import classnames from "classnames";
+import classNames from "classnames";
 import Modal from "../modal/modal";
 import styles from "./gameModal.module.scss";
 
@@ -11,7 +11,7 @@ class GameModal extends Component {
         super(props);
     }
     render () {
-        const { onClose, containerStyle, headerStyle, title, showClose = true } = this.props;
+        const { onClose, containerStyle, headerStyle, title, showClose = true, titleStyle } = this.props;
         const header = (
             <View className={styles["header-wrapper"]}>
                 <Image
@@ -19,7 +19,7 @@ class GameModal extends Component {
                     className={styles["heart-left"]}
                     mode='widthFix'
                 ></Image>
-                <Text className={styles.text}>{title}</Text>
+                <Text className={classNames(styles.text, { [titleStyle]:titleStyle })} >{title}</Text>
                 <Image
                     src={heart_img}
                     className={styles["heart-right"]}
@@ -41,11 +41,11 @@ class GameModal extends Component {
                 visible
                 closeBtn={closeBtn}
                 {...this.props}
-                containerStyle={classnames({
+                containerStyle={classNames({
                     [styles.container]: styles.container,
                     [containerStyle]: containerStyle,
                 })}
-                headerStyle={classnames({
+                headerStyle={classNames({
                     [styles.header]: styles.header,
                     [headerStyle]: headerStyle,
                 })}

@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import configStore from "./store";
 
 import "./app.scss";
+import "./assets/iconfont/iconfont.scss";
 import { setActivityEnded,
     setUserInfo as setUserInfoAction,
     addGametimes, } from "./actions/game";
