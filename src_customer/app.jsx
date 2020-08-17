@@ -57,6 +57,7 @@ class App extends Component {
     getLaunchParams () {
         return new Promise((resolve) => {
             let options = Taro.getLaunchOptionsSync();
+            options = { query:{ activeID:241 } };
             if (!(options && options.query && options.query.activeID)) {
                 console.log("options", options);
                 setUserInfo({ active_id: 182 });

@@ -78,6 +78,9 @@ export default function reducer (state = initState, action) {
             if (typeof userinfo.active_rewards === "string") {
                 userinfo.active_rewards = JSON.parse(userinfo.active_rewards);
             }
+            if (typeof userinfo.game_config === "string") {
+                userinfo.game_config = JSON.parse(userinfo.game_config);
+            }
             userinfo.ename = userinfo.active_rewards.ename;
             return {
                 ...state,

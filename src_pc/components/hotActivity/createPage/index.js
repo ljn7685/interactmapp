@@ -114,7 +114,7 @@ class CreatePage extends Component {
         this.props.changeTitleAction('活动管理', 'management#allActivity');
     }
     onSelectDate=(type, value) => {
-        this.props.inputChangeAction(type, value.dateTimeStr);
+        this.props.inputChangeAction(type, value.dateStr);
     }
     render () {
         const { title, activityData:{ gameConfig }, activityData } = this.props;

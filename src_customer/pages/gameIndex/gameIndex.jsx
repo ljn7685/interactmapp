@@ -15,6 +15,8 @@ import { setActivityEnded,
     joinGame, } from "../../actions/game";
 import icon_gift from "../../assets/images/icon_gift.png"
 ;
+import GameButton from "../../components/gameButton";
+import GameTask from "../gameTask";
 
 const titleIcon = "http://q.aiyongbao.com/interact/game_title_icon.png";
 const start_turntable = "http://q.aiyongbao.com/interact/start_turntable.png";
@@ -27,6 +29,7 @@ class GameIndex extends Component {
             isRotate: true,
             showRule: false,
             showPrize: false,
+            showTask: false,
             jumpIcon: false,
         };
     }
@@ -90,11 +93,11 @@ class GameIndex extends Component {
             }
         });
     };
-    onClickModal = (name) => {
+    onToggleModal = (name) => {
         this.setState({ [name]: !this.state[name] });
     };
     render () {
-        const { showRule, showPrize, jumpIcon } = this.state;
+        const { showRule, showPrize, jumpIcon, showTask } = this.state;
         const {
             activity_ended,
             userinfo: { is_follow, sub_title },
@@ -135,10 +138,8 @@ class GameIndex extends Component {
                     当前游戏次数: {gametimes}
                 </View>
                 <View className={styles["game-button-group"]}>
-                    <View
-                        className={
-                            styles["start-game"] + " " + styles["button"]
-                        }
+                    <GameButton
+                        className={styles["start-game"]}
                         onClick={() => {
                             !activity_ended && is_follow && this.onGameStart();
                             !activity_ended && !is_follow && this.onFavorShop();
@@ -149,12 +150,18 @@ class GameIndex extends Component {
                             : is_follow
                                 ? "开始游戏 赢好礼"
                                 : "关注店铺 获取游戏次数"}
-                    </View>
+                    </GameButton>
+                    <GameButton className={styles['game-times']} onClick={this.onToggleModal.bind(this, 'showTask')}>
+                        获取更多游戏次数
+                    </GameButton>
                 </View>
+                <Text className={styles['game-desc']}>
+                        连续参与游戏成功率更高哦
+                </Text>
                 <View className='sidebar'>
                     <View
                         className='side-btn'
-                        onClick={this.onClickModal.bind(this, "showRule")}
+                        onClick={this.onToggleModal.bind(this, "showRule")}
                         key='rule'
                     >
                         <Image
@@ -169,7 +176,7 @@ class GameIndex extends Component {
                         <View
                             className={classNames("side-btn", { [styles["jump-icon"]]: jumpIcon })}
                             onClick={() => {
-                                this.onClickModal("showPrize");
+                                this.onToggleModal("showPrize");
                             }}
                             key='prize'
                         >
@@ -186,17 +193,18 @@ class GameIndex extends Component {
                 {showRule ? (
                     <GameRule
                         onClose={() => {
-                            this.onClickModal("showRule");
+                            this.onToggleModal("showRule");
                         }}
                     ></GameRule>
                 ) : null}
                 {showPrize ? (
                     <GamePrize
                         onClose={() => {
-                            this.onClickModal("showPrize");
+                            this.onToggleModal("showPrize");
                         }}
                     ></GamePrize>
                 ) : null}
+                {showTask ? (<GameTask onClose={this.onToggleModal.bind(this, "showTask")} />) : null}
                 <ToastBox ref={(ref) => (this.toast = ref)}></ToastBox>
             </View>
         );

@@ -22,10 +22,11 @@
         .heart-right {
             width: 22px;
             margin-top: 10px;
+            margin-left: -5px;
             transform: rotate(45deg);
         }
         .text {
-            font-size: 44px;
+            font-size: 40px;
             color: #ffffff;
             height: 81px;
             line-height: 81px;
@@ -33,8 +34,8 @@
     }
     .close-btn {
         position: absolute;
-        left: 511px;
-        top: 0px;
+        right: -25px;
+        top: -23px;
         width: 66px;
     }
 }

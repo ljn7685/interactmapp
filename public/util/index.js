@@ -15,7 +15,7 @@ export function isIDE () {
         return my.isIDE;
     }
 }
-
+let trimReg = /(^\s*)|(\s*$)/g;
 /**
  * 判断一个东西是不是空 空格 空字符串 undefined 长度为0的数组及对象会被认为是空的
  * @param key
@@ -59,20 +59,20 @@ export function showConfirmModal (
         onCancel = NOOP,
         showCancel = true,
     }) {
-        Taro.showModal({
-            title,
-            showCancel,
-            content,
-            confirmText,
-            cancelText,
-            success:(res) => {
-                if (res.cancel || res.confirm == false) {
-                    onCancel();
-                }else  {
-                    onConfirm();
-                }
-            },
-        });
+    Taro.showModal({
+        title,
+        showCancel,
+        content,
+        confirmText,
+        cancelText,
+        success:(res) => {
+            if (res.cancel || res.confirm == false) {
+                onCancel();
+            }else  {
+                onConfirm();
+            }
+        },
+    });
 }
 
 /**
@@ -90,9 +90,39 @@ export function getDeferred ()  {
     return promise;
 };
 
-// 动画延时
+/**
+ *  动画延时
+ * @param {*} time 
+ */
 export function sleep (time) {
     return new Promise(resolve => {
         setTimeout(resolve, time);
     });
+}
+/**
+ * 特殊字符替换
+ * @param {*} text 
+ */
+export function descReplace (text) {
+    text = text.replace(/&quot;/g, "\"");
+    text = text.replace(/&lsquo;/g, "\‘");
+    text = text.replace(/&rsquo;/g, "\’");
+    text = text.replace(/(&rdquo;)/g, "”");
+    text = text.replace(/(&ldquo;)/g, "“");
+    text = text.replace(/&cent;/g, "￠");
+    text = text.replace(/&yen;/g, "¥");
+    text = text.replace(/&pound;/g, "£");
+    text = text.replace(/&euro;/g, "€");
+    text = text.replace(/&sect;/g, "§");
+    text = text.replace(/&copy;/g, "©");
+    text = text.replace(/&reg;/g, "®");
+    text = text.replace(/&trade;/g, "™");
+    text = text.replace(/&times;/g, "×");
+    text = text.replace(/&divide;/g, "÷");
+    text = text.replace(/&hellip;/g, '…');
+    text = text.replace(/&mdash;/g, '—');
+    text = text.replace(/&middot;/g, '·');
+    text = text.replace(/&gt;/g, '>');
+    text = text.replace(/&ldquo;/g, '“');
+    return text;
 }

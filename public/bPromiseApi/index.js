@@ -1,4 +1,5 @@
 import { api, invokeTop } from '../util/api';
+import { descReplace } from '../util';
 /**
  * 获取用户创建的全部信息
  * @param {*} args 
@@ -104,6 +105,9 @@ export const getSaleGoodsApi = (args) => {
             api:'taobao.items.onsale.get',
             params:args,
             callback:(res) => {
+                res.items && res.items.forEach(item => {
+                    item.title = descReplace(item.title);
+                });
                 resolve(res);
             },
             errCallback:(err) => {
