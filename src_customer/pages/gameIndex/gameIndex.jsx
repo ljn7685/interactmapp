@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { throttle } from "underscore";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Image, Text, Button } from "@tarojs/components";
 import classNames from "classnames";
@@ -15,11 +16,11 @@ import {
     favorShop,
     joinGame,
 } from "../../actions/game";
-import icon_gift from "../../assets/images/icon_gift.png"
-const titleIcon = "http://q.aiyongbao.com/interact/game_title_icon.png"
-const start_turntable = "http://q.aiyongbao.com/interact/start_turntable.png"
-const start_player = "http://q.aiyongbao.com/interact/start_player.png"
-const icon_rule = "http://q.aiyongbao.com/interact/icon_rule.png"
+import icon_gift from "../../assets/images/icon_gift.png";
+const titleIcon = "http://q.aiyongbao.com/interact/game_title_icon.png";
+const start_turntable = "http://q.aiyongbao.com/interact/start_turntable.png";
+const start_player = "http://q.aiyongbao.com/interact/start_player.png";
+const icon_rule = "http://q.aiyongbao.com/interact/icon_rule.png";
 class GameIndex extends Component {
     constructor(props) {
         super(props);
@@ -98,6 +99,14 @@ class GameIndex extends Component {
     onClickModal = (name) => {
         this.setState({ [name]: !this.state[name] });
     };
+    onClickBtn = () => {
+        const {
+            activity_ended,
+            userinfo: { is_follow},
+        } = this.props;
+        !activity_ended && is_follow && this.onGameStart();
+        !activity_ended && !is_follow && this.onFavorShop();
+    }
     render() {
         const { showRule, showPrize, jumpIcon } = this.state;
         const {
@@ -144,10 +153,7 @@ class GameIndex extends Component {
                         className={
                             styles["start-game"] + " " + styles["button"]
                         }
-                        onClick={() => {
-                            !activity_ended && is_follow && this.onGameStart();
-                            !activity_ended && !is_follow && this.onFavorShop();
-                        }}
+                        onClick={throttle(this.onClickBtn,1000)}
                     >
                         {activity_ended
                             ? "活动已经结束"

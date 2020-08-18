@@ -13,17 +13,13 @@ class GameModal extends Component {
         const { onClose, containerStyle, headerStyle, title, showClose = true } = this.props;
         const header = (
             <View className={styles["header-wrapper"]}>
-                <Image
-                    src={heart_img}
+                <View
                     className={styles["heart-left"]}
-                    mode="widthFix"
-                ></Image>
+                ></View>
                 <Text className={styles.text}>{title}</Text>
-                <Image
-                    src={heart_img}
+                <View
                     className={styles["heart-right"]}
-                    mode="widthFix"
-                ></Image>
+                ></View>
             </View>
         );
         const closeBtn = showClose && (
