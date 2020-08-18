@@ -1,4 +1,3 @@
-import { Container, Text, TextStyle } from "@tbminiapp/pixi-miniprogram-engine";
 import TWEEN from "@tweenjs/tween.js";
 
 const { Tween } = TWEEN;
@@ -7,50 +6,30 @@ const update_interval = 80;
 /**
  * 倒计时
  */
-class CountDown extends Container {
+class CountDown {
     constructor (properties) {
-        super();
         this.game = properties.game;
         this.maxTime = (properties.time * 1000) / update_interval;
         this.time = this.maxTime;
-        this.initText();
+        this.setText();
     }
     label = null;
     time = 0;
     startTip = false;
     delta = 0;
-    /**
-     * 初始化文字
-     */
-    initText () {
-        let style = new TextStyle({
-            fontFamily: "Arial",
-            fontSize: 48,
-            fill: "white",
-        });
-        let strTime = ((this.time * update_interval) / 1000)
-            .toFixed(2)
-            .toString();
-        this.label = new Text(`倒计时${strTime}`, style);
-        this.label.pivot.x = this.label.width / 2;
-        this.label.pivot.y = this.label.height / 2;
-        this.addChild(this.label);
-    }
-    /**
-     * 移除文字
-     */
-    removeText () {
-        if (this.label) {
-            this.removeChild(this.label);
-            this.label = null;
-        }
-    }
+    scale = 1;
+    value = '00:00'
     /**
      * 设置文字
      */
     setText () {
-        this.removeText();
-        this.initText();
+        this.value = ((this.time * update_interval) / 1000)
+            .toFixed(2)
+            .toString();
+        this.game.emit('countdown', {
+            value:this.value,
+            scale: this.scale,
+        });
     }
     /**
      * 重新开始倒计时
@@ -80,16 +59,19 @@ class CountDown extends Container {
         let times = 6;
         let anim = () => {
             let obj = { value: 0 };
-            let origon = this.label.scale.x;
-            let target = origon === 1 ? 1.5 : 1;
+            let origon = this.scale;
+            let target = this.scale === 1 ? 1.5 : 1;
             new Tween(obj)
                 .to(
                     { value: 1 },
                     500
                 )
                 .onUpdate((object, elapsed) => {
-                    this.label.scale.x = this.label.scale.y =
-                        origon + (target - origon) * elapsed;
+                    this.scale = origon + (target - origon) * elapsed;
+                    this.game.emit('countdown', {
+                        value:this.value,
+                        scale: this.scale,
+                    });
                 })
                 .onComplete(() => {
                     times--;

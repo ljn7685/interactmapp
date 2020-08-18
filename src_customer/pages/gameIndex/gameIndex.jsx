@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { throttle } from "underscore";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
 import classNames from "classnames";
@@ -106,6 +107,14 @@ class GameIndex extends Component {
     onToggleModal = (name) => {
         this.setState({ [name]: !this.state[name] });
     };
+    onClickBtn = () => {
+        const {
+            activity_ended,
+            userinfo: { is_follow },
+        } = this.props;
+        !activity_ended && is_follow && this.onGameStart();
+        !activity_ended && !is_follow && this.onFavorShop();
+    }
     render () {
         const { showRule, showPrize, jumpIcon, showTask, showCollect, showShare } = this.state;
         const {
@@ -150,10 +159,7 @@ class GameIndex extends Component {
                 <View className={styles["game-button-group"]}>
                     <GameButton
                         className={styles["start-game"]}
-                        onClick={() => {
-                            !activity_ended && is_follow && this.onGameStart();
-                            !activity_ended && !is_follow && this.onFavorShop();
-                        }}
+                        onClick={throttle(this.onClickBtn, 1000)}
                     >
                         {activity_ended
                             ? "活动已经结束"

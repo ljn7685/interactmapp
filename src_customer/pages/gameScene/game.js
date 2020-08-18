@@ -8,8 +8,6 @@ import CountDown from "./countdown";
 const {
     loader: { resources },
     Sprite,
-    Text,
-    TextStyle,
 } = PIXI;
 const { Tween } = TWEEN;
 class Game extends EventEmitter {
@@ -167,18 +165,7 @@ class Game extends EventEmitter {
      * 初始化弓箭数量文本
      */
     initArrowTotal () {
-        // 当前分数
-        let style = new TextStyle({
-            fontFamily: "Arial",
-            fontSize: 48,
-            fill: "white",
-        });
-        this.arrowTotal = new Text(`X${this.arrow_count}`, style);
-        this.stage.addChild(this.arrowTotal);
-        // 设置当前分数的位置
-        this.arrowTotal.x = 93;
-        this.arrowTotal.y = 1183;
-        this.onSceneResize();
+        this.emit('arrow_count', this.arrow_count);
     }
     /**
      * 更新弓箭数量
@@ -187,8 +174,7 @@ class Game extends EventEmitter {
     setArrowCount (count) {
         if (count >= 0 && count <= this.config.arrow_count) {
             this.arrow_count = count;
-            this.removeArrowTotal();
-            this.initArrowTotal();
+            this.emit('arrow_count', this.arrow_count);
         }
     }
     /**
@@ -204,13 +190,10 @@ class Game extends EventEmitter {
      * 初始化倒计时
      */
     initCountdown () {
-        let countdown = (this.countdown = new CountDown({
+        this.countdown = new CountDown({
             game: this,
             time: this.duration / 1000,
-        }));
-        this.stage.addChild(countdown);
-        countdown.y = 219;
-        countdown.x = this.width / 2;
+        });
     }
     /**
      * 触摸开始

@@ -4,7 +4,6 @@ import classNames from "classnames";
 import Modal from "../modal/modal";
 import styles from "./gameModal.module.scss";
 
-const heart_img = "http://q.aiyongbao.com/interact/rule_heart.png";
 const close_btn_img = "http://q.aiyongbao.com/interact/close_btn.png";
 class GameModal extends Component {
     constructor (props) {
@@ -14,17 +13,14 @@ class GameModal extends Component {
         const { onClose, containerStyle, headerStyle, title, showClose = true, showTitle = true, titleStyle } = this.props;
         const header = showTitle && (
             <View className={styles["header-wrapper"]}>
-                <Image
-                    src={heart_img}
+                <View
                     className={styles["heart-left"]}
                     mode='widthFix'
-                ></Image>
+                ></View>
                 <Text className={classNames(styles.text, { [titleStyle]:titleStyle })} >{title}</Text>
-                <Image
-                    src={heart_img}
+                <View
                     className={styles["heart-right"]}
-                    mode='widthFix'
-                ></Image>
+                ></View>
             </View>
         );
         const closeBtn = showClose && (

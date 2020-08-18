@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image,  Canvas } from "@tarojs/components";
+import { View, Image,  Canvas, Text } from "@tarojs/components";
 import * as PIXI from "@tbminiapp/pixi-miniprogram-engine";
 
 import Game from "./game";
@@ -34,6 +34,8 @@ class GameScene extends Component {
             showTip: true,
             isSuccess: false,
             score: 0,
+            arrow_count: 0,
+            countdown: { value: "00:00", scale: 1 },
             game: new Game(),
         };
     }
@@ -126,11 +128,6 @@ class GameScene extends Component {
                 });
                 game.width = size.width;
                 game.height = size.height;
-                game.init(this.application, {
-                    arrow_count: this.props.arrow_count,
-                    game_duration: this.props.game_duration,
-                    arrow_score: this.props.arrow_score,
-                });
                 game.on("pointstart", () => {
                     this.changeState("showGuide", false);
                 });
@@ -141,6 +138,17 @@ class GameScene extends Component {
                     this.changeState("showSuccessAngel", visible);
                 });
                 game.on("gameover", this.onGameOver);
+                game.on("arrow_count", (arrow_count) => {
+                    this.setState({ arrow_count: arrow_count });
+                });
+                game.on("countdown", (countdown) => {
+                    this.setState({ countdown });
+                });
+                game.init(this.application, {
+                    arrow_count: this.props.arrow_count,
+                    game_duration: this.props.game_duration,
+                    arrow_score: this.props.arrow_score,
+                });
             },
         });
     }
@@ -186,6 +194,8 @@ class GameScene extends Component {
             isSuccess,
             score,
             game,
+            arrow_count,
+            countdown,
         } = this.state;
         const { revive_times } = this.props;
         const ratio = game.getRatio();
@@ -205,6 +215,20 @@ class GameScene extends Component {
                     type='webgl'
                     className={styles["canvas"]}
                 ></Canvas>
+                <Text
+                    className={styles["countdown"]}
+                    style={{
+                        transform: `translate(-50%,-50%) scale(${
+                            ratio * countdown.scale
+                        })`,
+                    }}
+                >{`倒计时 ${countdown.value}`}</Text>
+                <Text
+                    style={{ transform: `translate(-50%,-50%) scale(${ratio})` }}
+                    className={styles["arrow-count"]}
+                >
+                    {`X${arrow_count}`}
+                </Text>
                 {showGuide ? (
                     <Image
                         src={guide_gif}
@@ -220,7 +244,7 @@ class GameScene extends Component {
                         alt=''
                         className={styles["heart"]}
                         mode='widthFix'
-                        style={{ transform: `translateX(-50%) scale(${ratio})` }}
+                        style={{ transform: `translate(-50%,-50%) scale(${ratio})` }}
                     />
                 ) : null}
                 {showSuccessAngel ? (
@@ -229,7 +253,7 @@ class GameScene extends Component {
                         alt=''
                         className={styles["success-angel"]}
                         mode='widthFix'
-                        style={{ transform: `translateX(-50%) scale(${ratio})` }}
+                        style={{ transform: `translate(-50%,-50%) scale(${ratio})` }}
                     />
                 ) : null}
                 {showGameResult ? (
