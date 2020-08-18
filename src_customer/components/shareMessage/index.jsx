@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 /**
  * 配置分享信息高阶组件
  * @param {*} WrappedComponent 

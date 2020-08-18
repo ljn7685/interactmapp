@@ -11,8 +11,8 @@ class GameModal extends Component {
         super(props);
     }
     render () {
-        const { onClose, containerStyle, headerStyle, title, showClose = true, titleStyle } = this.props;
-        const header = (
+        const { onClose, containerStyle, headerStyle, title, showClose = true, showTitle = true, titleStyle } = this.props;
+        const header = showTitle && (
             <View className={styles["header-wrapper"]}>
                 <Image
                     src={heart_img}

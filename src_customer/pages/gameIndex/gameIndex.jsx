@@ -18,6 +18,8 @@ import icon_gift from "../../assets/images/icon_gift.png"
 import GameButton from "../../components/gameButton";
 import GameTask from "../gameTask";
 import CollectGoods from "../collectGoods";
+import GameShare from "../gameShare";
+import useShareMessage from "../../components/shareMessage";
 
 const titleIcon = "http://q.aiyongbao.com/interact/game_title_icon.png";
 const start_turntable = "http://q.aiyongbao.com/interact/start_turntable.png";
@@ -32,6 +34,7 @@ class GameIndex extends Component {
             showPrize: false,
             showTask: false,
             showCollect: false,
+            showShare:false,
             jumpIcon: false,
         };
     }
@@ -54,6 +57,11 @@ class GameIndex extends Component {
             }, 2500);
             this.toast.info("领取成功", 2000);
         }
+        this.props.setShareInfo({
+            title: '小程序示例',
+            desc: '小程序官方示例 Demo，展示已支持的接口能力及组件。',
+            path: `/pages/preload/preload?activeID=${this.props.userinfo.active_id}&fromNick=${this.props.userinfo.buyerNick}`,  
+        });
     }
     /**
      * 游戏次数不足的提示
@@ -99,7 +107,7 @@ class GameIndex extends Component {
         this.setState({ [name]: !this.state[name] });
     };
     render () {
-        const { showRule, showPrize, jumpIcon, showTask, showCollect } = this.state;
+        const { showRule, showPrize, jumpIcon, showTask, showCollect, showShare } = this.state;
         const {
             activity_ended,
             userinfo: { is_follow, sub_title },
@@ -206,8 +214,9 @@ class GameIndex extends Component {
                         }}
                     ></GamePrize>
                 ) : null}
-                {showTask ? (<GameTask onClose={this.onToggleModal.bind(this, "showTask")} openCollect={this.onToggleModal.bind(this, 'showCollect')} onFavorShop={this.onFavorShop} />) : null}
+                {showTask ? (<GameTask onClose={this.onToggleModal.bind(this, "showTask")} openCollect={this.onToggleModal.bind(this, 'showCollect')} openShare={this.onToggleModal.bind(this, 'showShare')} onFavorShop={this.onFavorShop} />) : null}
                 {showCollect ? <CollectGoods onClose={this.onToggleModal.bind(this, 'showCollect')} /> : null}
+                {showShare ? <GameShare onClose={this.onToggleModal.bind(this, 'showShare')} /> : null}
                 <ToastBox ref={(ref) => (this.toast = ref)}></ToastBox>
             </View>
         );
@@ -226,5 +235,5 @@ const mapDispatchToProps = {
     favorShop,
     joinGame,
 };
-const wrapper = connect(mapStateToProps, mapDispatchToProps)(GameIndex);
+const wrapper = useShareMessage(connect(mapStateToProps, mapDispatchToProps)(GameIndex)) ;
 export default wrapper;

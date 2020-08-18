@@ -5,7 +5,6 @@ import GameButton from "../../components/gameButton";
 import styles from "./index.module.scss";
 import { View, Text } from "@tarojs/components";
 import { connect } from "react-redux";
-import { isEmpty } from "../../../public/util";
 
 /**
  * 游戏任务Item
@@ -70,9 +69,7 @@ class GameTask extends Component {
         ];
         if (game_config && game_config.gameTask) {
             if (game_config.gameTask.includes("share")) {
-                const share_num = isEmpty(shared_users) || shared_users === 0
-                    ? 0
-                    : shared_users.length;
+                const share_num = Array.isArray(shared_users)  ? shared_users.length : 0;
                 const share_total = game_config.maxShareNum;
                 taskList.push({
                     current: share_num,
@@ -85,9 +82,7 @@ class GameTask extends Component {
                 });
             }
             if (game_config.gameTask.includes("collect")) {
-                const collect_num = isEmpty(collect_goods) || collect_goods === 0
-                    ? 0
-                    : collect_goods.length;
+                const collect_num = Array.isArray(collect_goods)  ? collect_goods.length : 0;
                 const collect_total = game_config.maxCollectNum;
                 taskList.push({
                     current: collect_num,
