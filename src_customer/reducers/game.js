@@ -9,7 +9,8 @@ import { ADD_GAMETIMES,
     SET_FAVOR_SHOP,
     SET_JOIN_GAME,
     SET_RECEIVE_REWARDS, 
-    COLLECT_GOOD_ITEM } from "../constants/game";
+    COLLECT_GOOD_ITEM,
+    HELP_SHARE_USER } from "../constants/game";
 
 const initState = {
     gametimes: 0,
@@ -85,6 +86,9 @@ export default function reducer (state = initState, action) {
             if (typeof userinfo.collect_goods === 'string') {
                 userinfo.collect_goods = userinfo.collect_goods.split(',');
             }
+            if (typeof userinfo.shared_users === 'string') {
+                userinfo.shared_users = userinfo.shared_users.split(',');
+            }
             userinfo.ename = userinfo.active_rewards.ename;
             return {
                 ...state,
@@ -107,6 +111,16 @@ export default function reducer (state = initState, action) {
                 userinfo:{
                     ...userinfo,
                     collect_goods,
+                },
+            };
+        }
+        case HELP_SHARE_USER: {
+            const { userinfo } = state;
+            return {
+                ...state,
+                userinfo:{
+                    ...userinfo,
+                    fromNick:undefined,
                 },
             };
         }

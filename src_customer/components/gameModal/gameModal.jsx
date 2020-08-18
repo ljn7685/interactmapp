@@ -10,17 +10,23 @@ class GameModal extends Component {
         super(props);
     }
     render () {
-        const { onClose, containerStyle, headerStyle, title, showClose = true, showTitle = true, titleStyle } = this.props;
-        const header = showTitle && (
+        const {
+            onClose,
+            containerStyle,
+            headerStyle,
+            title,
+            showClose = true,
+            titleStyle,
+        } = this.props;
+        const header = (
             <View className={styles["header-wrapper"]}>
-                <View
-                    className={styles["heart-left"]}
-                    mode='widthFix'
-                ></View>
-                <Text className={classNames(styles.text, { [titleStyle]:titleStyle })} >{title}</Text>
-                <View
-                    className={styles["heart-right"]}
-                ></View>
+                <View className={styles["heart-left"]} mode='widthFix'></View>
+                <Text
+                    className={classNames(styles.text, { [titleStyle]: titleStyle })}
+                >
+                    {title}
+                </Text>
+                <View className={styles["heart-right"]}></View>
             </View>
         );
         const closeBtn = showClose && (
