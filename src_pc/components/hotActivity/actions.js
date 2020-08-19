@@ -1,7 +1,7 @@
 import { getActivityInfoIdApi, createActivityApi, benefitQueryApi } from '../../public/bPromiseApi/index';
 import Taro from '@tarojs/taro';
 import moment from 'moment';
-import { isEmpty, matchNum, matchTime } from '../utils/index';
+import { isEmpty, matchTime } from '../utils/index';
 
 export const TITLE = "TITLE"; // 顶部的标题
 export const SET_DATA = "SET_DATA"; // 通过id保存游戏配置数据
