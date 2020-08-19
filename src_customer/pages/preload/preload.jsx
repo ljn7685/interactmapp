@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 
-import Taro from "@tarojs/taro";
+import Taro, { getCurrentInstance } from "@tarojs/taro";
+import { setActivityEnded,
+    setUserInfo as setUserInfoAction,
+    addGametimes, setPreloaded } from "../../actions/game";
+import { userInfoInit } from "../../public/util/userinfo";
+import { getUserInfo, setUserInfo } from "../../public/util/userInfoChanger";
+import { showConfirmModal } from "../../public/util";
 import * as PIXI from "@tbminiapp/pixi-miniprogram-engine";
 import { View, Image, Canvas } from "@tarojs/components";
 import { connect } from "react-redux";
-import { setPreloaded } from "../../actions/game";
 
 import * as style from "./preload.module.scss";
 import arrow_png from "../../assets/images/loading_arrow.png";
@@ -79,15 +84,78 @@ class Preload extends Component {
             total_progress: 0,
             game_progress: 0,
             ui_progress: 0,
+            inited: false,
         };
     }
     componentDidMount () {
+        const params = getCurrentInstance().router.params || {};
+        this.init(params);
         if (!this.props.preloaded) {
             this.onCanvasReady();
         } else {
             this.setState({ total_progress: 1 });
             this.onComplete();
         }
+    }
+    /**
+     * 初始化获取用户信息
+     */
+    async init (params) {
+        const { setActivityEnded, setUserInfoAction, addGametimes } = this.props;
+        await this.getLaunchParams(params);
+        userInfoInit(() => {
+            const userinfo = getUserInfo();
+            if (
+                (userinfo.code === 500 && userinfo.msg === "活动已经结束") ||
+                userinfo.active_status === 2
+            ) {
+                setActivityEnded(true);
+            } else {
+                if (userinfo.active_status === 3) {
+                    showConfirmModal({
+                        title: "提示",
+                        content: "活动未开始！",
+                        showCancel: false,
+                        onConfirm: () => {
+                            my.exit();
+                        },
+                    });
+                    return;
+                }
+                setActivityEnded(false);
+            }
+            setUserInfoAction(userinfo);
+            if (userinfo.is_follow && !userinfo.is_join) {
+                addGametimes();
+            }
+            this.setState({ inited:true });
+            this.onComplete();
+        });
+    }
+    /**
+     * 获取启动参数
+     */
+    getLaunchParams (params) {
+        return new Promise((resolve) => {
+            let options = Taro.getLaunchOptionsSync();
+            // options = { ...options, query:{ ...options.query, activeID:240, ...params }  };
+            options = { ...options, query:{ ...options.query, ...params }  };
+            if (!(options && options.query && options.query.activeID)) {
+                console.log("options", options);
+                setUserInfo({ active_id: 182 });
+                showConfirmModal({
+                    title: "提示",
+                    content: "商家活动暂未开启，进入试玩模式吧~",
+                    showCancel: false,
+                    onConfirm: () => {},
+                });
+                resolve();
+            } else {
+                const { query } = options;
+                setUserInfo({ active_id: query.activeID, fromNick:query.fromNick ? query.fromNick : undefined });
+                resolve();
+            }
+        });
     }
     /**
      * 计算进度条长度
@@ -168,7 +236,7 @@ class Preload extends Component {
      */
     onComplete = () => {
         console.log("onComplete", this.state.total_progress);
-        if (this.state.total_progress < 1) return;
+        if (this.state.total_progress < 1 || !this.state.inited) return;
         setTimeout(() => {
             Taro.redirectTo({ url: "/pages/gameIndex/gameIndex" });
         }, 500);
@@ -213,7 +281,7 @@ class Preload extends Component {
 const mapStateToProps = ({ game }) => {
     return { preloaded: game.preloaded };
 };
-const mapDispatchToProps = { setPreloaded };
+const mapDispatchToProps = { setPreloaded, setActivityEnded, addGametimes, setUserInfoAction };
 const wrapper = connect(
     mapStateToProps,
     mapDispatchToProps

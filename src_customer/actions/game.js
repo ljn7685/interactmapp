@@ -9,7 +9,8 @@ import { ADD_GAMETIMES,
     SET_FAVOR_SHOP,
     SET_RECEIVE_REWARDS,
     SET_JOIN_GAME,
-    COLLECT_GOOD_ITEM, } from "../constants/game";
+    COLLECT_GOOD_ITEM,
+    HELP_SHARE_USER, } from "../constants/game";
 import { api } from "../../public/util/api";
 import Taro from "@tarojs/taro";
 import { getUserInfo } from "../../public/util/userInfoChanger";
@@ -60,6 +61,10 @@ export const setReceiveRewards = () => {
 
 export const collectGoodItem = (item) => {
     return { type: COLLECT_GOOD_ITEM, item };
+};
+
+export const helpShareUser = () => {
+    return { type: HELP_SHARE_USER };
 };
 
 /**
@@ -272,6 +277,56 @@ export function collectGoodApi (item, gameConfig) {
             },
         });
     });
+}
+/**
+ * 分享助力API
+ * @param {*} item
+ * @param {*} gameConfig
+ */
+export function shareHelpApi (fromNick, gameConfig) {
+    return new Promise((resolve, reject) => {
+        api({
+            apiName: "aiyong.interactc.user.data.update",
+            method: "/interactive/updateInterActCData",
+            args: {
+                operType: 2,
+                fromNick,
+                maxShareNum: gameConfig.maxShareNum,
+                active_id: getUserInfo().active_id,
+            },
+            callback: (res) => {
+                if (res.code === 200) {
+                    resolve(res);
+                } else {
+                    reject(res);
+                }
+            },
+            errCallback: (err) => {
+                reject(err);
+            },
+        });
+    });
+}
+/**
+ * 分享助力Action
+ * @param {*} fromNick
+ * @param {*} gameConfig
+ */
+export function helpShareUserAction (fromNick, gameConfig, callback) {
+    return async (dispatch) => {
+        try {
+            await shareHelpApi(fromNick, gameConfig);
+            dispatch(helpShareUser());
+            callback && callback(true);
+        } catch (error) {
+            Taro.showToast({
+                title: error.message || "分享助力失败",
+                icon: "fail",
+                duration: 2000,
+            });
+            callback && callback(false);
+        }
+    };
 }
 /**
  * 收藏商品action

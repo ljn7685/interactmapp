@@ -20,7 +20,7 @@ export default function useShareMessage (WrappedComponent) {
             const newProps = { setShareInfo: this.setShareInfo };
             return (
                 <WrappedComponent
-                    {...this.props}
+                    // {...this.props}
                     {...newProps}
                 ></WrappedComponent>
             );

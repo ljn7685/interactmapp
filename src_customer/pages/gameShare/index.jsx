@@ -34,7 +34,6 @@ class GameShare extends Component {
                 containerStyle={styles.container}
                 contentStyle={styles.content}
                 headerStyle={styles.header}
-                showTitle={false}
                 onClose={onClose}
             >
                 <Text className={styles.title}>

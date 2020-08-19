@@ -14,13 +14,14 @@ import { setActivityEnded,
     setUserInfo,
     favorShop,
     joinGame, } from "../../actions/game";
-import icon_gift from "../../assets/images/icon_gift.png"
-;
+import icon_gift from "../../assets/images/icon_gift.png";
 import GameButton from "../../components/gameButton";
 import GameTask from "../gameTask";
 import CollectGoods from "../collectGoods";
 import GameShare from "../gameShare";
 import useShareMessage from "../../components/shareMessage";
+import HelpShare from "../../components/helpShare";
+import HelpShareResult from "../../components/helpShareResult";
 
 const titleIcon = "http://q.aiyongbao.com/interact/game_title_icon.png";
 const start_turntable = "http://q.aiyongbao.com/interact/start_turntable.png";
@@ -35,7 +36,10 @@ class GameIndex extends Component {
             showPrize: false,
             showTask: false,
             showCollect: false,
-            showShare:false,
+            showShare: false,
+            showHelpShare: false,
+            showShareResult: false,
+            shareResult: false,
             jumpIcon: false,
         };
     }
@@ -58,11 +62,17 @@ class GameIndex extends Component {
             }, 2500);
             this.toast.info("领取成功", 2000);
         }
+        const query = `activeID=${this.props.userinfo.active_id}&fromNick=${this.props.userinfo.buyerNick}`;
         this.props.setShareInfo({
-            title: '小程序示例',
-            desc: '小程序官方示例 Demo，展示已支持的接口能力及组件。',
-            path: `/pages/preload/preload?activeID=${this.props.userinfo.active_id}&fromNick=${this.props.userinfo.buyerNick}`,  
+            title: "丘比特之箭",
+            desc: "快来和我一起参与游戏吧！",
+            path: `/pages/preload/preload?${query}`,
+            imageUrl: 'https://img.alicdn.com/imgextra/i1/877021141/O1CN01MAQyVz1KIcWr6xHN5_!!877021141.png',
         });
+        const { userinfo } = this.props;
+        if (userinfo.fromNick) {
+            this.setState({ showHelpShare: true });
+        }
     }
     /**
      * 游戏次数不足的提示
@@ -114,12 +124,21 @@ class GameIndex extends Component {
         } = this.props;
         !activity_ended && is_follow && this.onGameStart();
         !activity_ended && !is_follow && this.onFavorShop();
-    }
+    };
     render () {
-        const { showRule, showPrize, jumpIcon, showTask, showCollect, showShare } = this.state;
+        const {
+            showRule,
+            showPrize,
+            jumpIcon,
+            showTask,
+            showCollect,
+            showShare,
+            showHelpShare,
+            showShareResult,
+        } = this.state;
         const {
             activity_ended,
-            userinfo: { is_follow, sub_title },
+            userinfo: { is_follow, sub_title, fromNick },
             gametimes,
         } = this.props;
         return (
@@ -167,12 +186,15 @@ class GameIndex extends Component {
                                 ? "开始游戏 赢好礼"
                                 : "关注店铺 获取游戏次数"}
                     </GameButton>
-                    <GameButton className={styles['game-times']} onClick={this.onToggleModal.bind(this, 'showTask')}>
+                    <GameButton
+                        className={styles["game-times"]}
+                        onClick={this.onToggleModal.bind(this, "showTask")}
+                    >
                         获取更多游戏次数
                     </GameButton>
                 </View>
-                <Text className={styles['game-desc']}>
-                        连续参与游戏成功率更高哦
+                <Text className={styles["game-desc"]}>
+                    连续参与游戏成功率更高哦
                 </Text>
                 <View className='sidebar'>
                     <View
@@ -220,9 +242,46 @@ class GameIndex extends Component {
                         }}
                     ></GamePrize>
                 ) : null}
-                {showTask ? (<GameTask onClose={this.onToggleModal.bind(this, "showTask")} openCollect={this.onToggleModal.bind(this, 'showCollect')} openShare={this.onToggleModal.bind(this, 'showShare')} onFavorShop={this.onFavorShop} />) : null}
-                {showCollect ? <CollectGoods onClose={this.onToggleModal.bind(this, 'showCollect')} /> : null}
-                {showShare ? <GameShare onClose={this.onToggleModal.bind(this, 'showShare')} /> : null}
+                {showTask ? (
+                    <GameTask
+                        onClose={this.onToggleModal.bind(this, "showTask")}
+                        openCollect={this.onToggleModal.bind(
+                            this,
+                            "showCollect"
+                        )}
+                        openShare={this.onToggleModal.bind(this, "showShare")}
+                        onFavorShop={this.onFavorShop}
+                    />
+                ) : null}
+                {showCollect ? (
+                    <CollectGoods
+                        onClose={this.onToggleModal.bind(this, "showCollect")}
+                    />
+                ) : null}
+                {showShare ? (
+                    <GameShare
+                        onClose={this.onToggleModal.bind(this, "showShare")}
+                    />
+                ) : null}
+                {showHelpShare ? (
+                    <HelpShare
+                        onClose={this.onToggleModal.bind(this, "showHelpShare")}
+                        fromNick={fromNick}
+                        openShareResult={(res) => {
+                            this.onToggleModal("showShareResult");
+                            this.setState({ shareResult: res });
+                        }}
+                    />
+                ) : null}
+                {showShareResult ? (
+                    <HelpShareResult
+                        onClose={this.onToggleModal.bind(
+                            this,
+                            "showShareResult"
+                        )}
+                        isSuccess={this.state.shareResult}
+                    />
+                ) : null}
                 <ToastBox ref={(ref) => (this.toast = ref)}></ToastBox>
             </View>
         );
@@ -241,5 +300,7 @@ const mapDispatchToProps = {
     favorShop,
     joinGame,
 };
-const wrapper = useShareMessage(connect(mapStateToProps, mapDispatchToProps)(GameIndex)) ;
+const wrapper = useShareMessage(
+    connect(mapStateToProps, mapDispatchToProps)(GameIndex)
+);
 export default wrapper;
