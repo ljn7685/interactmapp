@@ -22,7 +22,6 @@ class DatePicker extends Component {
             seconds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 26, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59],
             initTimeValue: [0, 0, 0], // 初始化选中时间的时,分,秒
             timeValue: [0, 0, 0], // 选中时间的时,分,秒，
-            pickerShow: props.pickerShow,
         };
     }
     componentDidMount () {
@@ -78,20 +77,17 @@ class DatePicker extends Component {
 	 * 取消按钮点击
 	 */
     cancel () {
-        this.setState({ pickerShow: false });
         setTimeout(() => {
             this.setState({ mode: 'date' });
         }, 300);
         this.initDate(this.props.date);
+        this.props.onSelect();
     }
     /**
 	 * 确定按钮点击
 	 */
     confirm () {
-        this.setState({
-            pickerShow: false,
-            mode: 'date',
-        });
+        this.setState({ mode: 'date' });
         let selectedDate = this.state.selectedDate;
         let year = selectedDate.getFullYear(), month = selectedDate.getMonth(), day = selectedDate.getDate();
         let timeValue = this.state.timeValue;
@@ -396,7 +392,8 @@ class DatePicker extends Component {
     }
     render () {
         console.log('render');
-        const { mode, currentDateStr, pickerShow, timeValue, selectedDateStr, selectedDateShow, currentData, hours, minutes, seconds, initTimeValue } = this.state;
+        const { pickerShow } = this.props;
+        const { mode, currentDateStr, timeValue, selectedDateStr, selectedDateShow, currentData, hours, minutes, seconds, initTimeValue } = this.state;
         const timeData = [
             hours.map(item => ({ value:item, label:item + "时" })),
             minutes.map(item => ({ value:item, label:item + "分" })),

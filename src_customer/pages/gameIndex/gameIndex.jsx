@@ -90,7 +90,7 @@ class GameIndex extends Component {
      */
     onGameStart = () => {
         const { userinfo, joinGame } = this.props;
-        if (!userinfo.is_join && !userinfo.is_played) {
+        if (!userinfo.is_join) {
             joinGame(userinfo, () => {
                 this.redirectToGame();
             });
@@ -250,11 +250,14 @@ class GameIndex extends Component {
                 {showTask ? (
                     <GameTask
                         onClose={this.onToggleModal.bind(this, "showTask")}
-                        openCollect={this.onToggleModal.bind(
-                            this,
-                            "showCollect"
-                        )}
-                        openShare={this.onToggleModal.bind(this, "showShare")}
+                        openCollect={() => {
+                            this.onToggleModal("showTask"); 
+                            this.onToggleModal("showCollect");
+                        }}
+                        openShare={() => {
+                            this.onToggleModal("showTask");
+                            this.onToggleModal("showShare");
+                        }}
                         onFavorShop={this.onFavorShop}
                     />
                 ) : null}

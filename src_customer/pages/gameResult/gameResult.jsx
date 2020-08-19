@@ -24,7 +24,7 @@ const failTip = `啊哦～差一点点就过关咯!
 多加练习，再来挑战～～`;
 @connect(
     ({ game }) => {
-        return { userinfo: game.userinfo };
+        return { userinfo: game.userinfo, gametimes:game.gametimes };
     },
     { drawPrize }
 )
@@ -58,14 +58,14 @@ class GameResult extends Component {
         const {
             isSuccess,
             onRestart,
-            revive_times,
+            gametimes,
             userinfo: { active_rewards: { datas } },
         } = this.props;
         let headerStyle = classNames(styles["header"], {
             [styles["win-header"]]: isSuccess,
             [styles["lose-header"]]: !isSuccess,
         });
-        const footer = !isSuccess && revive_times > 0 && (
+        const footer = !isSuccess && gametimes > 0 && (
             <Image
                 src={close_btn_img}
                 mode='widthFix'
@@ -82,7 +82,7 @@ class GameResult extends Component {
             ></Image>
         );
         const tipStyle = isSuccess ? styles["success-tip"] : styles["fail-tip"];
-        const status = isSuccess ? 0 : revive_times > 0 ? 1 : 2;
+        const status = isSuccess ? 0 : gametimes > 0 ? 1 : 2;
         const tipText = [successTip, reviveTip, failTip];
         const onClickBtn = [
             this.exchangePrize,

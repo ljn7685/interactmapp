@@ -4,7 +4,7 @@ import classNames from "classnames";
 import Modal from "../../../public/components/modal/modal.jsx";
 import styles from "./index.module.scss";
 import { Text, View, Image } from "@tarojs/components";
-import { getSaleGoodsApi } from "../../../../public/bPromiseApi/index.js";
+import { getSaleGoodsApi } from "../../../public/bPromiseApi/index.js";
 import SearchBox from "../../searchBox";
 import Taro from "@tarojs/taro";
 

@@ -5,6 +5,7 @@ import { setUserInfo, getUserInfo } from "./userInfoChanger";
 import { events } from "mapp_common/utils/eventManager";
 import { storage } from "mapp_common/utils/storage";
 import Taro from "@tarojs/taro";
+
 export const userInfoDeferred = getDeferred();
 
 export const initUserInfoFromCache = () => {
@@ -104,7 +105,7 @@ export async function authorize () {
                     resolve({ authRes });
                 },
                 fail: (authErr) => {
-                    console.log(authErr)
+                    console.log(authErr);
                     resolve({  authErr });
                 },
             });
@@ -121,7 +122,7 @@ export async function authorize () {
                     resolve({ userRes });
                 },
                 fail: (userErr) => {
-                    console.log(userErr)
+                    console.log(userErr);
                     resolve({ userErr });
                 },
             });
@@ -150,7 +151,7 @@ export async function authorize () {
 /*
  * @Description 从tcUser获取用户信息
 */
-export const fetchUserInfoFromTcUser = ({ callback, nick  }) => {
+export const fetchUserInfoFromTcUser = ({ callback }) => {
     let args = { isqap: 1, slot: 'miniapp' };
     if (isIDE()) {
         args.nick = testUser.nickName;
@@ -158,7 +159,7 @@ export const fetchUserInfoFromTcUser = ({ callback, nick  }) => {
     }
     
     args.active_id = getUserInfo().active_id;
-    console.log('args',args);
+    console.log('args', args);
     api({
         apiName:ENV.userApiName,
         method:ENV.userMethod,
@@ -170,7 +171,7 @@ export const fetchUserInfoFromTcUser = ({ callback, nick  }) => {
                 Object.assign(newUserInfo, res.userInfo);
             }
             callback(newUserInfo);
-        }
+        },
     });
 };
 
@@ -184,7 +185,7 @@ export const isNotVip = () => {
 };
 
 export const getMainUserName = () => {
-    return getUserInfo().userNick.split(':')[0];
+    return getUserInfo().nickName.split(':')[0];
 };
 
 

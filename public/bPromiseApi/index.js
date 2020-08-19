@@ -117,4 +117,22 @@ export const getSaleGoodsApi = (args) => {
     });
     
 };
+/**
+ * 订购关系查询 
+ * @param {*} args 
+ */
+export const getSubscribeAPI = (args) => {
+    return new Promise((resolve, reject) => {
+        invokeTop({
+            api:'taobao.vas.subscribe.get',
+            params:args,
+            callback:(res) => {
+                resolve(res);
+            },
+            errCallback:(err) => {
+                reject(err);
+            },
+        });
+    });
+};
 

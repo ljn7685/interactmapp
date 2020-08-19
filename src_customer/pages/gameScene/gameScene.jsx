@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image,  Canvas, Text } from "@tarojs/components";
+import { View, Image, Canvas, Text } from "@tarojs/components";
 import * as PIXI from "@tbminiapp/pixi-miniprogram-engine";
 
 import Game from "./game";
 import { minusGametimes,
-    resetReviveTimes,
-    userRevive,
+    addGameNumberAction,
     setBestScore, } from "../../actions/game";
 
 import styles from "./gameScene.module.scss";
@@ -47,15 +46,13 @@ class GameScene extends Component {
         } else {
             if (revive) {
                 this.setState({ showTip: false });
-                this.props.userRevive(userinfo, () => {
-                    this.onCanvasReady();
-                    this.gameStart();
-                });
-            } else {
-                this.props.resetReviveTimes();
-                this.props.minusGametimes();
-                this.onCanvasReady();
             }
+            this.props.addGameNumberAction(userinfo, () => {
+                this.onCanvasReady();
+                if (revive) {
+                    this.gameStart();
+                }
+            });
         }
     }
     componentWillUnmount () {
@@ -171,17 +168,13 @@ class GameScene extends Component {
     };
     onRestart = () => {
         const { isSuccess } = this.state;
-        const { gametimes, revive_times } = this.props;
-        console.log("onRestart", gametimes, revive_times, isSuccess);
-        if (revive_times === 0 && gametimes === 0) {
+        const { gametimes } = this.props;
+        console.log("onRestart", gametimes, isSuccess);
+        if (gametimes === 0) {
             this.toast.info("暂无游戏次数", 2000);
             return;
         }
-        if (isSuccess || revive_times === 0) {
-            Taro.redirectTo({ url: "/pages/gameScene/gameScene?revive=false" });
-        } else {
-            Taro.redirectTo({ url: "/pages/gameScene/gameScene?revive=true" });
-        }
+        Taro.redirectTo({ url: "/pages/gameScene/gameScene?revive=true" });
     };
     changeState = (name, value) => {
         this.setState({ [name]: value });
@@ -202,7 +195,6 @@ class GameScene extends Component {
             arrow_count,
             countdown,
         } = this.state;
-        const { revive_times } = this.props;
         const ratio = game.getRatio();
         return (
             <View
@@ -266,7 +258,6 @@ class GameScene extends Component {
                         isSuccess={isSuccess}
                         score={score}
                         onRestart={this.onRestart}
-                        revive_times={revive_times}
                     ></GameResult>
                 ) : null}
                 {showTip ? (
@@ -289,15 +280,12 @@ const mapStateToProps = ({ game }) => {
         best_score: game.best_score,
         gametimes: game.gametimes,
         game_duration: game.game_duration,
-        max_fail_times: game.max_fail_times,
-        revive_times: game.revive_times,
         userinfo: game.userinfo,
     };
 };
 const mapDispatchToProps = {
     minusGametimes,
-    resetReviveTimes,
-    userRevive,
+    addGameNumberAction,
     setBestScore,
 };
 

@@ -4,8 +4,6 @@ import { ADD_GAMETIMES,
     SET_BEST_SCORE,
     SET_ACTIVITY_ENDED,
     SET_USER_INFO,
-    MINUS_REVIVE_TIMES,
-    RESET_REVIVE_TIMES,
     SET_FAVOR_SHOP,
     SET_RECEIVE_REWARDS,
     SET_JOIN_GAME,
@@ -21,14 +19,6 @@ export const addGametimes = () => {
 
 export const minusGametimes = () => {
     return { type: MINUS_GAMETIMES };
-};
-
-export const minusReviveTimes = () => {
-    return { type: MINUS_REVIVE_TIMES };
-};
-
-export const resetReviveTimes = () => {
-    return { type: RESET_REVIVE_TIMES };
 };
 
 export const setPreloaded = (preloaded) => {
@@ -115,7 +105,7 @@ export const favorShop = (userinfo, cb) => {
                         game_stage: 1,
                         active_id: userinfo.active_id,
                     },
-                    callback: (res) => {
+                    callback: async (res) => {
                         console.log("~~~~~~~~~~~~~~~~~~~~", res);
                         dispatch(setFavorShop());
                         if (!userinfo.is_played) {
@@ -163,12 +153,11 @@ export const joinGame = (userinfo, cb) => {
     };
 };
 /**
- * 用户复活action
- * @param {*} userinfo
- * @param {*} cb
+ * 更新用户游戏次数API
+ * @param {*} userinfo 
  */
-export const userRevive = (userinfo, cb) => {
-    return (dispatch) => {
+export const updateGameNumberApi = (userinfo) => {
+    return new Promise((resolve, reject) => {
         api({
             apiName: "aiyong.interactc.user.data.update",
             method: "/interactive/updateInterActCData",
@@ -177,14 +166,29 @@ export const userRevive = (userinfo, cb) => {
                 active_id: userinfo.active_id,
             },
             callback: (res) => {
-                console.log("~~~~~~~~~~~~~~~~~~~~", res);
-                dispatch(minusReviveTimes());
-                cb && cb();
+                if(res.code === 200) {
+                    resolve(res);
+                } else {
+                    reject(res);
+                }
             },
             errCallback: (err) => {
-                console.log(err);
+                reject(err);
             },
         });
+    });
+};
+/**
+ * 用户更新游戏次数action
+ * @param {*} userinfo
+ * @param {*} cb
+ */
+export const addGameNumberAction = (userinfo, cb) => {
+    return async (dispatch) => {
+        const res = await updateGameNumberApi(userinfo);
+        console.log("~~~~~~~~~~~~~~~~~~~~", res);
+        dispatch(minusGametimes());
+        cb && cb();
     };
 };
 const draw = (userinfo) => {
@@ -325,6 +329,7 @@ export function helpShareUserAction (fromNick, gameConfig, callback) {
         try {
             await shareHelpApi(fromNick, gameConfig);
             dispatch(helpShareUser());
+            dispatch(addGametimes());
             callback && callback(true);
         } catch (error) {
             Taro.showToast({
@@ -349,6 +354,7 @@ export function collectGoodAction (item, gameConfig) {
                 collectGoodApi(item, gameConfig)
                     .then(() => {
                         dispatch(collectGoodItem(item));
+                        dispatch(addGametimes());
                     })
                     .catch((err) => {
                         Taro.showToast({

@@ -3,8 +3,6 @@ import { ADD_GAMETIMES,
     SET_PRELOADED,
     SET_BEST_SCORE,
     SET_ACTIVITY_ENDED,
-    MINUS_REVIVE_TIMES,
-    RESET_REVIVE_TIMES,
     SET_USER_INFO,
     SET_FAVOR_SHOP,
     SET_JOIN_GAME,
@@ -14,8 +12,6 @@ import { ADD_GAMETIMES,
 
 const initState = {
     gametimes: 0,
-    max_fail_times: 0,
-    revive_times: 0,
     preloaded: false,
     arrow_count: 10,
     arrow_score: 10,
@@ -52,10 +48,6 @@ export default function reducer (state = initState, action) {
             return { ...state, gametimes: state.gametimes + 1 };
         case MINUS_GAMETIMES:
             return { ...state, gametimes: state.gametimes - 1 };
-        case MINUS_REVIVE_TIMES:
-            return { ...state, revive_times: state.revive_times - 1 };
-        case RESET_REVIVE_TIMES:
-            return { ...state, revive_times: state.max_fail_times };
         case SET_PRELOADED:
             return { ...state, preloaded: action.preloaded };
         case SET_BEST_SCORE:
@@ -94,8 +86,7 @@ export default function reducer (state = initState, action) {
             // userinfo.is_played = false;
             return {
                 ...state,
-                max_fail_times: userinfo.game_number,
-                revive_times: userinfo.game_number,
+                gametimes: userinfo.get_times - userinfo.game_number,
                 game_rule: {
                     ...game_rule,
                     start_date: userinfo.start_date,

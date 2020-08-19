@@ -60,13 +60,13 @@ export const matchTime = (type) => {
  * 校验是否非负整数
  * @param {*} value 
  */
-export const matchNum = (value) => {
+export const matchNum = (value, name = "活动次数") => {
     var regPos = /^\d+$/; // 非负整数
     if (regPos.test(value)) {
         return true;
     } else {
         Taro.showToast({
-            title: '活动次数为非负整数',
+            title: name + '为非负整数',
             duration: 2000,
         });
         return false;

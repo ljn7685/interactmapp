@@ -100,7 +100,6 @@ export const getActivityByIdAction = (id, operType) => {
         newData.activeUrl = decodeURIComponent(data.data[0].active_url);
         newData.activeName = data.data[0].active_name;
         newData.subTitle = data.data[0].sub_title;
-        newData.gameNumber = data.data[0].game_number;
         newData.gameConfig = gameConfig;
         if (operType === '创建') {
             newData.startDate = moment().format("YYYY-MM-DD");
@@ -176,7 +175,7 @@ export const creacteActivityAction = (operationType) => {
         newArgs.activeUrl = encodeURIComponent(newArgs.activeUrl);// 活动地址
         newArgs.activeID = getState().hotReducer.activityID;
         console.log('newArgs:', newArgs);
-        if (matchTime([newArgs.startDate, newArgs.endDate]) && matchNum(newArgs.gameNumber)) {
+        if (matchTime([newArgs.startDate, newArgs.endDate])) {
             let data = await createActivityApi({ ...newArgs });
             if (data.code === 200) {
                 if (operationType === 2) {
