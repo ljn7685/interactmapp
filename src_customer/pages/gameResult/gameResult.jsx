@@ -8,7 +8,7 @@ import { Text, View, Image } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import { drawPrize } from "../../actions/game";
 import { showConfirmModal } from "../../../public/util";
-import { throttle } from "underscore";
+import GameButton from "../../components/gameButton";
 
 const close_btn_img = "http://q.aiyongbao.com/interact/close_btn.png";
 const successTip = "恭喜你!";
@@ -44,6 +44,9 @@ class GameResult extends Component {
             });
         });
     };
+    onClickGametimes = () => {
+        Taro.redirectTo({ url: "/pages/gameIndex/gameIndex?gameover=true&showTask=true" });
+    };
     render () {
         const {
             isSuccess,
@@ -75,11 +78,16 @@ class GameResult extends Component {
         const status = isSuccess ? 0 : revive_times > 0 ? 1 : 2;
         const tipText = [successTip, reviveTip, failTip];
         const onClickBtn = [
-            throttle(this.exchangePrize, 1000),
+            this.exchangePrize,
             onRestart,
-            () => my.exit(),
+            this.onClickGametimes,
         ];
-        const btnText = ["立即领取", "再战一次", "退出游戏"];
+        const btnClass = [
+            styles.exchange,
+            styles.again,
+            classNames(styles.gametimes, styles.big),
+        ];
+        const btnText = ["立即领取", "再战一次", "获取游戏次数"];
         const prizes = datas && datas.length > 0 ? [datas[0]] : [];
         return (
             <Modal
@@ -97,11 +105,21 @@ class GameResult extends Component {
                             : "获得店铺优惠券"}
                     </Text>
                 )}
-                <View
-                    className={styles["use-button"]}
-                    onClick={onClickBtn[status]}
-                >
-                    <Text className={styles["text"]}>{btnText[status]}</Text>
+                <View className={styles["button-group"]}>
+                    {status === 1 && (
+                        <GameButton
+                            className={styles.gametimes}
+                            onClick={this.onClickGametimes}
+                        >
+                            获取游戏次数
+                        </GameButton>
+                    )}
+                    <GameButton
+                        className={btnClass[status]}
+                        onClick={onClickBtn[status]}
+                    >
+                        {btnText[status]}
+                    </GameButton>
                 </View>
             </Modal>
         );

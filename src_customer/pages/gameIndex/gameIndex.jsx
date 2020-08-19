@@ -48,10 +48,14 @@ class GameIndex extends Component {
             no_enough_times,
             successfully_received,
             gameover,
+            showTask,
         } = getCurrentInstance().router.params;
         console.log(getCurrentInstance().router.params);
         if (gameover) {
             this.setState({ isRotate: false });
+        }
+        if (showTask) {
+            this.setState({ showTask: true });
         }
         if (no_enough_times) {
             this.showNoEnoughTimes();
@@ -67,7 +71,8 @@ class GameIndex extends Component {
             title: "丘比特之箭",
             desc: "快来和我一起参与游戏吧！",
             path: `/pages/preload/preload?${query}`,
-            imageUrl: 'https://img.alicdn.com/imgextra/i1/877021141/O1CN01MAQyVz1KIcWr6xHN5_!!877021141.png',
+            imageUrl:
+                "https://img.alicdn.com/imgextra/i1/877021141/O1CN01MAQyVz1KIcWr6xHN5_!!877021141.png",
         });
         const { userinfo } = this.props;
         if (userinfo.fromNick) {
