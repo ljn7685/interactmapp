@@ -7,10 +7,12 @@ import styles from "./gameResult.module.scss";
 import { Text, View, Image } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import { drawPrize } from "../../actions/game";
-import { showConfirmModal } from "../../../public/util";
+import { showConfirmModal, getAudioContext } from "../../../public/util";
 import GameButton from "../../components/gameButton";
 
 const close_btn_img = "http://q.aiyongtech.com/interact/close_btn.png";
+const success_result_mp3 = "http://q.aiyongtech.com/interact/success_result.mp3";
+const fail_result_mp3 = "http://q.aiyongtech.com/interact/fail_result.mp3";
 const successTip = "恭喜你!";
 const reviveTip = `天呐！运气爆棚！
 
@@ -30,6 +32,11 @@ class GameResult extends Component {
     constructor (props) {
         super(props);
         this.state = {};
+        const { isSuccess } = this.props;
+        this.audioContext = isSuccess ? getAudioContext(success_result_mp3) : getAudioContext(fail_result_mp3);
+    }
+    componentDidMount () {
+        this.audioContext.play();
     }
     onClickClose = () => {
         Taro.redirectTo({ url: "/pages/gameIndex/gameIndex?gameover=true" });

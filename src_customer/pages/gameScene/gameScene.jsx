@@ -39,7 +39,6 @@ class GameScene extends Component {
             game: new Game(),
         };
     }
-
     componentDidMount () {
         const { revive } = getCurrentInstance().router.params;
         const { userinfo } = this.props;
@@ -68,6 +67,12 @@ class GameScene extends Component {
         if (game) {
             game.destroy();
         }
+    }
+    /**
+     * onLoad
+     */
+    onLoad () {
+        this.state.game.initAudio();
     }
     /**
      * 游戏开始

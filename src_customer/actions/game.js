@@ -211,6 +211,32 @@ const draw = (userinfo) => {
     });
 };
 /**
+ * 获得奖励API
+ * @param {*} userinfo 
+ */
+const receiveRewardsApi = (userinfo) => {
+    return new Promise((resolve, reject) => {
+        api({
+            apiName: "aiyong.interactc.user.data.update",
+            method: "/interactive/updateInterActCData",
+            args: {
+                game_stage: 3,
+                active_id: userinfo.active_id,
+            },
+            callback: (res) => {
+                if(res.code === 200) {
+                    resolve(res);
+                } else {
+                    reject(res);
+                }
+            },
+            errCallback: (err) => {
+                reject(err);
+            },
+        });
+    });
+};
+/**
  * 抽奖action
  * @param {*} userinfo
  * @param {*} cb
@@ -219,30 +245,12 @@ export const drawPrize = (userinfo, cb) => {
     return async (dispatch) => {
         try {
             await draw(userinfo);
-            api({
-                apiName: "aiyong.interactc.user.data.update",
-                method: "/interactive/updateInterActCData",
-                args: {
-                    game_stage: 3,
-                    active_id: userinfo.active_id,
-                },
-                callback: async (res) => {
-                    console.log("~~~~~~~~~~~~~~~~~~~~", res);
-                    dispatch(setReceiveRewards());
-                    cb && cb();
-                },
-                errCallback: (err) => {
-                    console.log(err);
-                    Taro.showToast({
-                        title: "抽奖失败",
-                        icon: "fail",
-                        duration: 2000,
-                    });
-                },
-            });
-        } catch (e) {
+            await receiveRewardsApi(userinfo);
+            dispatch(setReceiveRewards());
+            cb && cb();
+        } catch (err) {
             Taro.showToast({
-                title: "抽奖失败",
+                title: err.msg || "抽奖失败",
                 icon: "fail",
                 duration: 2000,
             });
@@ -320,7 +328,7 @@ export function helpShareUserAction (fromNick, gameConfig, callback) {
             callback && callback(true);
         } catch (error) {
             Taro.showToast({
-                title: error.message || "分享助力失败",
+                title: error.msg || "分享助力失败",
                 icon: "fail",
                 duration: 2000,
             });
@@ -342,9 +350,9 @@ export function collectGoodAction (item, gameConfig) {
                     .then(() => {
                         dispatch(collectGoodItem(item));
                     })
-                    .catch(() => {
+                    .catch((err) => {
                         Taro.showToast({
-                            title: "收藏商品失败",
+                            title: err.msg || "收藏商品失败",
                             icon: "fail",
                             duration: 2000,
                         });

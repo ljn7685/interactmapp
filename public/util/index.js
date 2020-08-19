@@ -126,3 +126,17 @@ export function descReplace (text) {
     text = text.replace(/&ldquo;/g, '“');
     return text;
 }
+/**
+ * 播放音频
+ * @param {*} src 
+ */
+export function getAudioContext (src, autoplay = false) {
+    const innerAudioContext = my.createInnerAudioContext();
+    innerAudioContext.autoplay = autoplay;
+    innerAudioContext.src = src;
+    innerAudioContext.onPlay(() => {
+        console.log('onPlay', src);
+    });
+    console.log('getAudioContext');
+    return innerAudioContext;
+}

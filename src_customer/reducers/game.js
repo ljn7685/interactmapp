@@ -90,6 +90,8 @@ export default function reducer (state = initState, action) {
                 userinfo.shared_users = userinfo.shared_users.split(',');
             }
             userinfo.ename = userinfo.active_rewards.ename;
+            // userinfo.is_follow = userinfo.is_join = 0;
+            // userinfo.is_played = false;
             return {
                 ...state,
                 max_fail_times: userinfo.game_number,

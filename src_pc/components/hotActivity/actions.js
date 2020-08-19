@@ -139,7 +139,7 @@ export const getActivityByIdAction = (id, operType) => {
  */
 export const creacteActivityAction = (operationType) => {
     return async (dispatch, getState) => {
-        let newArgs = getState().hotReducer.activityData;
+        let newArgs = JSON.parse(JSON.stringify(getState().hotReducer.activityData));
         const gameConfig = newArgs.gameConfig;
         // 判断收藏商品是否符合条件
         let toastTitle = '';

@@ -143,8 +143,8 @@ class CreatePage extends Component {
                     <Input className='time-input' value={activityData.startDate} onInput={() => this.setState({ selectDate:'start' })} onClick={() => this.setState({ selectDate:'start' })} />
                     <Text className='time-to'>至</Text>
                     <Input className='time-input' value={activityData.endDate} onInput={() => this.setState({ selectDate:'end' })} onClick={() => this.setState({ selectDate:'end' })} />
-                    {selectDate === "start" && <DatePicker rangeStart={moment().format("YYYY-MM-DD")} rangeEnd={activityData.endDate} onSelect={value => this.onSelectDate('startDate', value)} pickerShow></DatePicker>}
-                    {selectDate === "end" && <DatePicker rangeStart={activityData.startDate} rangeEnd={moment().add(3, 'years').format("YYYY-MM-DD")} onSelect={value => this.onSelectDate('endDate', value)} pickerShow></DatePicker>}
+                    {selectDate === "start" && <DatePicker date={activityData.startDate} rangeStart={moment().format("YYYY-MM-DD")} rangeEnd={activityData.endDate} onSelect={value => this.onSelectDate('startDate', value)} pickerShow></DatePicker>}
+                    {selectDate === "end" && <DatePicker date={activityData.endDate} rangeStart={activityData.startDate} rangeEnd={moment().add(3, 'years').format("YYYY-MM-DD")} onSelect={value => this.onSelectDate('endDate', value)} pickerShow></DatePicker>}
                 </View>
                 <View className='name-box'>
                     <Text className='warn-xing'>*</Text>

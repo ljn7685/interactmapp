@@ -4,6 +4,10 @@ import TWEEN from "@tweenjs/tween.js";
 import TurnTable from "./turntable";
 import Bow from "./bow";
 import CountDown from "./countdown";
+import { getAudioContext } from "../../../public/util";
+
+// const arrow_flying_mp3 = 'http://download.taobaocdn.com/freedom/90053/media/Animal.mp3';
+const arrow_flying_mp3 = "http://q.aiyongtech.com/interact/arrow_flying.mp3";
 
 const {
     loader: { resources },
@@ -31,6 +35,12 @@ class Game extends EventEmitter {
     state = 0;
 
     isFlying = false;
+    /**
+     * 初始化音频
+     */
+    initAudio () {
+        this.audioContext = getAudioContext(arrow_flying_mp3);
+    }
     /**
      *
      * @param {PIXI.Application} app
@@ -247,6 +257,7 @@ class Game extends EventEmitter {
      */
     arrowFlying (arrow) {
         this.isFlying = true;
+        this.audioContext.play();
         let distance = this.bow.getArrowY() - this.turntable.getHitBottom();
         let tween = new Tween(arrow)
             .to(
