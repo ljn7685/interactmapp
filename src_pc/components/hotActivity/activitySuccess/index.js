@@ -5,8 +5,8 @@ import Taro from '@tarojs/taro';
 import { connect } from 'react-redux';
 
 const posterUrl = {
-    'posterOne': 'http://q.aiyongbao.com/interact/poster-one.png',
-    'posterTwo': 'http://q.aiyongbao.com/interact/poster-two.png'
+    'posterOne': 'http://q.aiyongtech.com/interact/poster-one.png',
+    'posterTwo': 'http://q.aiyongtech.com/interact/poster-two.png'
 }
 class ActivitySuccess extends Component {
     constructor(props) {
@@ -58,11 +58,11 @@ class ActivitySuccess extends Component {
                         <View className='poster-title'>2.推广海报</View>
                         <View className='poster-img-box'>
                             <View className='poster'>
-                                <Image className='poster-img' src='http://q.aiyongbao.com/interact/poster-one.png' alt='poster' />
+                                <Image className='poster-img' src='http://q.aiyongtech.com/interact/poster-one.png' alt='poster' />
                                 <View className='copy-img' onClick={this.copyUrl.bind(this, 'posterOne')}>复制图片链接</View>
                             </View>
                             <View className='poster'>
-                                <Image className='poster-img' src='http://q.aiyongbao.com/interact/poster-two.png' alt='poster' />
+                                <Image className='poster-img' src='http://q.aiyongtech.com/interact/poster-two.png' alt='poster' />
                                 <View className='copy-img' onClick={this.copyUrl.bind(this, 'posterTwo')}>复制图片链接</View>
                             </View>
                         </View>

@@ -18,21 +18,21 @@ import success_angel_gif from "../../assets/images/success_angel.gif"
 import result_bg from "../../assets/images/result_bg.png";
 
 
-const start_player = "http://q.aiyongbao.com/interact/start_player.png";
-const start_turntable = "http://q.aiyongbao.com/interact/start_turntable.png";
-const turntable = "http://q.aiyongbao.com/interact/turntable.png";
-const turntable_line = "http://q.aiyongbao.com/interact/turntable_line.png";
-const game_title_icon = "http://q.aiyongbao.com/interact/game_title_icon.png";
-const bow = "http://q.aiyongbao.com/interact/bow.png";
-const arrow = "http://q.aiyongbao.com/interact/arrow.png";
-const fail_angel = "http://q.aiyongbao.com/interact/fail_angel.png";
-const win_title = "http://q.aiyongbao.com/interact/win_title.png";
-const lose_title = "http://q.aiyongbao.com/interact/lose_title.png";
-const titleIcon = "http://q.aiyongbao.com/interact/game_title_icon.png";
-const icon_rule = "http://q.aiyongbao.com/interact/icon_rule.png";
-const heart_img = "http://q.aiyongbao.com/interact/rule_heart.png";
-const close_btn_img = "http://q.aiyongbao.com/interact/close_btn.png";
-const coupon_img = "http://q.aiyongbao.com/interact/coupon.png";
+const start_player = "http://q.aiyongtech.com//interact/start_player.png";
+const start_turntable = "http://q.aiyongtech.com/interact/start_turntable.png";
+const turntable = "http://q.aiyongtech.com/interact/turntable.png";
+const turntable_line = "http://q.aiyongtech.com/interact/turntable_line.png";
+const game_title_icon = "http://q.aiyongtech.com/interact/game_title_icon.png";
+const bow = "http://q.aiyongtech.com/interact/bow.png";
+const arrow = "http://q.aiyongtech.com/interact/arrow.png";
+const fail_angel = "http://q.aiyongtech.com/interact/fail_angel.png";
+const win_title = "http://q.aiyongtech.com/interact/win_title.png";
+const lose_title = "http://q.aiyongtech.com/interact/lose_title.png";
+const titleIcon = "http://q.aiyongtech.com/interact/game_title_icon.png";
+const icon_rule = "http://q.aiyongtech.com/interact/icon_rule.png";
+const heart_img = "http://q.aiyongtech.com/interact/rule_heart.png";
+const close_btn_img = "http://q.aiyongtech.com/interact/close_btn.png";
+const coupon_img = "http://q.aiyongtech.com/interact/coupon.png";
 
 const { registerCanvas, devicePixelRatio } = PIXI.miniprogram;
 

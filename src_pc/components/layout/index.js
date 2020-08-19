@@ -23,7 +23,7 @@ class Layout extends Component {
         return (
             <View className='layout-box'>
                 <View className='layout-top'>
-                    <Image className='logo' src='http://q.aiyongbao.com/interact/LOGO.png' alt='logo' />
+                    <Image className='logo' src='http://q.aiyongtech.com/interact/LOGO.png' alt='logo' />
                     <View className='layout-title'>爱用互动</View>
                     <View className='layout-desc'>由 爱用科技 提供</View>
                 </View>

@@ -70,7 +70,7 @@ class TaskCard extends Component {
                 jsx = (
                     <View className='task-card-wrapper'>
                         <View className='task-card'>
-                            <Image className='reward-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/tasks-rewardBox.png'}></Image>
+                            <Image className='reward-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/tasks-rewardBox.png'}></Image>
                             <View className='reward-content'>
                                 <Text className='reward-title'>获得奖励</Text>
                                 <Text className='reward-name'>高级版时长*1天</Text>
@@ -84,7 +84,7 @@ class TaskCard extends Component {
                             <Image
                                 className='task-card-close'
                                 onClick={() => {this.closeCard();}}
-                                src='//q.aiyongbao.com/miniapp/marketing/newuser/card-black-close.png'
+                                src='//q.aiyongtech.com/miniapp/marketing/newuser/card-black-close.png'
                             >
                             </Image>
                         </View>
@@ -94,7 +94,7 @@ class TaskCard extends Component {
                 jsx = (
                     <View className='task-card-wrapper'>
                         <View className='task-card'>
-                            <Image className='reward-img' src='//q.aiyongbao.com/miniapp/marketing/newuser/tasks-rewardBoxOpen.png'></Image>
+                            <Image className='reward-img' src='//q.aiyongtech.com/miniapp/marketing/newuser/tasks-rewardBoxOpen.png'></Image>
                             <View className='reward-content'>
                                 <Text className='reward-title'>领取成功!</Text>
                             </View>
@@ -107,7 +107,7 @@ class TaskCard extends Component {
                             <Image
                                 className='task-card-close'
                                 onClick={() => {this.closeCard();}}
-                                src='//q.aiyongbao.com/miniapp/marketing/newuser/card-black-close.png'
+                                src='//q.aiyongtech.com/miniapp/marketing/newuser/card-black-close.png'
                             >
                             </Image>
                         </View>

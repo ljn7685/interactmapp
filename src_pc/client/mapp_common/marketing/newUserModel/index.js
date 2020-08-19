@@ -110,7 +110,7 @@ class NewUserModel extends Component {
                 })
                 //跳转支付
                 my.qn.navigateToWebPage({
-                    url: `http://q.aiyongbao.com/trade/pay/payindex.html?nickName=${nick}`
+                    url: `http://q.aiyongtech.com/trade/pay/payindex.html?nickName=${nick}`
                 });
                 return;
             }

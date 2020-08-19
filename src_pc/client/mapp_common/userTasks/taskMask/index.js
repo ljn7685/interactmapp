@@ -43,7 +43,7 @@ class TaskMask extends Component {
         // )
         let jsx = (
             <View className={`banner-ad-wrapper`}>
-                <Image className='modal-ad-main' src={'//q.aiyongbao.com/trade/web/images/activity/guide/liheweikai.png'}  />
+                <Image className='modal-ad-main' src={'//q.aiyongtech.com/trade/web/images/activity/guide/liheweikai.png'}  />
                 <View className='marketing-closer banner-closer' />
             </View>
         )

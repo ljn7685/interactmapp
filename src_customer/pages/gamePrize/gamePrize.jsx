@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import GameModal from "../../components/gameModal/gameModal";
 import styles from "./gamePrize.module.scss";
 import { View, Text, Image } from "@tarojs/components";
-const coupon_img = "http://q.aiyongbao.com/interact/coupon.png";
+const coupon_img = "http://q.aiyongtech.com/interact/coupon.png";
 class GamePrize extends Component {
     constructor(props) {
         super(props);

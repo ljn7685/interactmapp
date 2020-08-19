@@ -108,8 +108,8 @@ class EnterPeer extends Component {
             <View className='enter-peer'>
                 <movable-area className='movable-area'>
                     <movable-view direction="vertical" y={this.clientY} onTouchStart={this.handleTouchstart} onTouchMove={this.handleTouchMove} onTouchEnd={this.handleTouchEnd} style={{ display: this.state.isShow ? '' : 'none' }}>
-                        <Image src='//q.aiyongbao.com/2020618/imgpc/close.png' className='close-peer' onClick={this.closePeer}></Image>
-                        <Image src='//q.aiyongbao.com/2020618/img/mb-enter.png' className='enter-img' onClick={this.goPeerPage}></Image>
+                        <Image src='//q.aiyongtech.com/2020618/imgpc/close.png' className='close-peer' onClick={this.closePeer}></Image>
+                        <Image src='//q.aiyongtech.com/2020618/img/mb-enter.png' className='enter-img' onClick={this.goPeerPage}></Image>
                     </movable-view>
                 </movable-area>
             </View>

@@ -171,7 +171,7 @@ class ModalVIP extends Component {
             if(showAutoPayDialog) {
                 jsx = (
                     <View className='modal-ad-wrapper modal-vip-wrapper auto-pay' >
-                        <Image src='//q.aiyongbao.com/trade/web/images/qap_img/pc/auto_renew_dialog.png' className='auto-pay-img' />
+                        <Image src='//q.aiyongtech.com/trade/web/images/qap_img/pc/auto_renew_dialog.png' className='auto-pay-img' />
                         <View className='btn-group'>
                             <View
                                 onClick={this.clickAutoPayBtn.bind(this, 0)}
@@ -191,7 +191,7 @@ class ModalVIP extends Component {
             } else {
                 jsx = (
                     <View className='modal-ad-wrapper modal-vip-wrapper' >
-                        <Image src='http://q.aiyongbao.com/yunying/yunying/activeimg/topshuff.png' className='swipper-banner' />
+                        <Image src='http://q.aiyongtech.com/yunying/yunying/activeimg/topshuff.png' className='swipper-banner' />
                         <Swiper
                             className='test-h'
                             indicatorColor='rgba(255,255,255,0.6)'

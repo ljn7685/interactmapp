@@ -553,7 +553,7 @@ export function navigateToQAP (pageName, redirect = true) {
  * @param query
  */
 
-export function goWebView (query, url = 'https://q.aiyongbao.com/trade/2.9.192/web/html/index.html') {
+export function goWebView (query, url = 'https://q.aiyongtech.com/trade/2.9.192/web/html/index.html') {
     my.qn.navigateToQAP({
         url,
         query,
