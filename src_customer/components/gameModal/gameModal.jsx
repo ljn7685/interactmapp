@@ -4,7 +4,7 @@ import classNames from "classnames";
 import Modal from "../modal/modal";
 import styles from "./gameModal.module.scss";
 
-const close_btn_img = "http://q.aiyongbao.com/interact/close_btn.png";
+const close_btn_img = "http://q.aiyongtech.com/interact/close_btn.png";
 class GameModal extends Component {
     constructor (props) {
         super(props);

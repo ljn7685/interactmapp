@@ -206,7 +206,7 @@ class CreatePage extends Component {
                     </View>
                 </View>
                 <View className='model-bg'>
-                    <Image className='img-bg' src='http://q.aiyongbao.com/interact/bg.png' />
+                    <Image className='img-bg' src='http://q.aiyongtech.com/interact/bg.png' />
                     <View className='second-title'>{activityData.subTitle}</View>
                 </View>
                 <View className='create-bottom'>

@@ -120,11 +120,11 @@ class LevitatedBall extends Component {
         const { ballType, hours, minutes, seconds } = this.state;
         let jsx = null;
         if(!isEmpty(checkInData) && checkInData.data && ballType) {
-            let picUrl = '//q.aiyongbao.com/miniapp/marketing/newuser/check-in-entry.png';
+            let picUrl = '//q.aiyongtech.com/miniapp/marketing/newuser/check-in-entry.png';
             let ballText = '新人有礼';
             if(ballType === 'redPack') {
                 ballText = `${hours}:${minutes}:${seconds}`;
-                picUrl = '//q.aiyongbao.com/miniapp/marketing/newuser/checkin-repack.png';
+                picUrl = '//q.aiyongtech.com/miniapp/marketing/newuser/checkin-repack.png';
             }else if(ballType === 'checkIn') {
                 ballText = '签到有奖';
             }

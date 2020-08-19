@@ -35,7 +35,7 @@ class RewardCard extends Component {
                 jsx = (
                     <View className='reward-card-wrapper'>
                         <View className='reward-card'>
-                            <Image className='bg-img' src={`//q.aiyongbao.com/miniapp/marketing/newuser/${bgPic}`}></Image>
+                            <Image className='bg-img' src={`//q.aiyongtech.com/miniapp/marketing/newuser/${bgPic}`}></Image>
                             <View className='card-content'>
                                 <View className='reward-top'>
                                     <Text className='text'>
@@ -50,7 +50,7 @@ class RewardCard extends Component {
                                 {
                                     dataForRewardCard.cardStatus == 'First-dayOne' ?
                                         <View className='reward-mid'>
-                                            <Image className='mid-icon' src='//q.aiyongbao.com/miniapp/marketing/newuser/checkinCard-dayOne.png'></Image>
+                                            <Image className='mid-icon' src='//q.aiyongtech.com/miniapp/marketing/newuser/checkinCard-dayOne.png'></Image>
                                             <View className='mid-text'>
                                                 {this.platform == 'iOS' ? '解锁插件所有功能' : '获得高级版时长'}
                                                 <Text className='vipdays'>3天</Text>
@@ -60,7 +60,7 @@ class RewardCard extends Component {
                                             </View>
                                         </View>
                                         : <View className='reward-mid'>
-                                            <Image className='mid-icon' src='//q.aiyongbao.com/miniapp/marketing/newuser/smspic-big.png'></Image>
+                                            <Image className='mid-icon' src='//q.aiyongtech.com/miniapp/marketing/newuser/smspic-big.png'></Image>
                                             <View className='mid-text'>
                                                 获得营销短信
                                                 <Text className='vipdays'>{dataForRewardCard.rewardContent}</Text>
@@ -72,13 +72,13 @@ class RewardCard extends Component {
                                 }
 
                                 <View className='reward-bottom' onClick={() => {this.getReward();}}>
-                                    <Image className='btn-img' src='//q.aiyongbao.com/miniapp/marketing/newuser/checkinCard-Btn.png.png'></Image>
+                                    <Image className='btn-img' src='//q.aiyongtech.com/miniapp/marketing/newuser/checkinCard-Btn.png.png'></Image>
                                     <View className='btn-text'>
                                         <Text className='content'>领取奖励</Text>
                                     </View>
                                 </View>
                             </View>
-                            <Image className='close-img' onClick={() => {close();}} src='//q.aiyongbao.com/miniapp/marketing/newuser/card-white-close.png'></Image>
+                            <Image className='close-img' onClick={() => {close();}} src='//q.aiyongtech.com/miniapp/marketing/newuser/card-white-close.png'></Image>
                         </View>
                     </View>
                 );
@@ -86,7 +86,7 @@ class RewardCard extends Component {
                 jsx = (
                     <View className='reward-card-wrapper'>
                         <View className='reward-card'>
-                            <Image className='bg-img' src={`//q.aiyongbao.com/miniapp/marketing/newuser/${bgPic}`}></Image>
+                            <Image className='bg-img' src={`//q.aiyongtech.com/miniapp/marketing/newuser/${bgPic}`}></Image>
                             <View className='card-content'>
                                 <View className='reward-top'>
                                     <Text className='text'>
@@ -100,7 +100,7 @@ class RewardCard extends Component {
                                 </View>
                                 <View className='reward-mid'>
                                     <View className='mid-part'>
-                                        <Image className='mid-icon2' src='//q.aiyongbao.com/miniapp/marketing/newuser/smspic-small.png'></Image>
+                                        <Image className='mid-icon2' src='//q.aiyongtech.com/miniapp/marketing/newuser/smspic-small.png'></Image>
                                         <View className='part-text'>
                                             <View className='mid-text'>
                                                 获得营销短信
@@ -110,7 +110,7 @@ class RewardCard extends Component {
                                         </View>
                                     </View>
                                     <View className='mid-part'>
-                                        <Image className='mid-icon2' src='//q.aiyongbao.com/miniapp/marketing/newuser/vip-small.png'></Image>
+                                        <Image className='mid-icon2' src='//q.aiyongtech.com/miniapp/marketing/newuser/vip-small.png'></Image>
                                         <View className='part-text'>
                                             <View className='mid-text'>
                                                 {this.platform == 'iOS' ? '解锁插件所有功能' : '获得高级版时长'}
@@ -121,13 +121,13 @@ class RewardCard extends Component {
                                     </View>
                                 </View>
                                 <View className='reward-bottom' onClick={() => {this.getReward();}}>
-                                    <Image className='btn-img' src='//q.aiyongbao.com/miniapp/marketing/newuser/checkinCard-Btn.png.png'></Image>
+                                    <Image className='btn-img' src='//q.aiyongtech.com/miniapp/marketing/newuser/checkinCard-Btn.png.png'></Image>
                                     <View className='btn-text'>
                                         <Text className='content'>领取奖励</Text>
                                     </View>
                                 </View>
                             </View>
-                            <Image className='close-img' onClick={() => {close();}} src='//q.aiyongbao.com/miniapp/marketing/newuser/card-white-close.png'></Image>
+                            <Image className='close-img' onClick={() => {close();}} src='//q.aiyongtech.com/miniapp/marketing/newuser/card-white-close.png'></Image>
                         </View>
                     </View>
                 );
@@ -135,7 +135,7 @@ class RewardCard extends Component {
                 jsx = (
                     <View className='reward-card-wrapper'>
                         <View className='reward-card endDay'>
-                            <Image className='bg-img' src={`//q.aiyongbao.com/miniapp/marketing/newuser/${bgPic}`}></Image>
+                            <Image className='bg-img' src={`//q.aiyongtech.com/miniapp/marketing/newuser/${bgPic}`}></Image>
                             <View className='card-content'>
                                 <View className='reward-top'>
                                     <Text className='text'>
@@ -144,7 +144,7 @@ class RewardCard extends Component {
                                 </View>
                                 <View className='reward-mid'>
                                     <View className='mid-part'>
-                                        <Image className='mid-icon2' src='//q.aiyongbao.com/miniapp/marketing/newuser/smspic-small.png'></Image>
+                                        <Image className='mid-icon2' src='//q.aiyongtech.com/miniapp/marketing/newuser/smspic-small.png'></Image>
                                         <View className='part-text'>
                                             <View className='mid-text'>
                                                 获得营销短信
@@ -154,7 +154,7 @@ class RewardCard extends Component {
                                         </View>
                                     </View>
                                     <View className='mid-part'>
-                                        <Image className='mid-icon2' src='//q.aiyongbao.com/miniapp/marketing/newuser/redpack2.png'></Image>
+                                        <Image className='mid-icon2' src='//q.aiyongtech.com/miniapp/marketing/newuser/redpack2.png'></Image>
                                         <View className='part-text'>
                                             <View className='mid-text'>
                                                 获得红包
@@ -169,13 +169,13 @@ class RewardCard extends Component {
                                     </View>
                                 </View>
                                 <View className='reward-bottom' onClick={() => {this.getReward();}}>
-                                    <Image className='btn-img' src='//q.aiyongbao.com/miniapp/marketing/newuser/checkinCard-Btn.png.png'></Image>
+                                    <Image className='btn-img' src='//q.aiyongtech.com/miniapp/marketing/newuser/checkinCard-Btn.png.png'></Image>
                                     <View className='btn-text'>
                                         <Text className='content'>{isIOS() ? '联系客服解锁插件奖励' : '现在升级高级版，立减20' }</Text>
                                     </View>
                                 </View>
                             </View>
-                            <Image className='close-img' onClick={() => {close();}} src='//q.aiyongbao.com/miniapp/marketing/newuser/card-white-close.png'></Image>
+                            <Image className='close-img' onClick={() => {close();}} src='//q.aiyongtech.com/miniapp/marketing/newuser/card-white-close.png'></Image>
                         </View>
                     </View>
                 );

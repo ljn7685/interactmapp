@@ -10,7 +10,7 @@ import { drawPrize } from "../../actions/game";
 import { showConfirmModal } from "../../../public/util";
 import GameButton from "../../components/gameButton";
 
-const close_btn_img = "http://q.aiyongbao.com/interact/close_btn.png";
+const close_btn_img = "http://q.aiyongtech.com/interact/close_btn.png";
 const successTip = "恭喜你!";
 const reviveTip = `天呐！运气爆棚！
 

@@ -23,10 +23,10 @@ import useShareMessage from "../../components/shareMessage";
 import HelpShare from "../../components/helpShare";
 import HelpShareResult from "../../components/helpShareResult";
 
-const titleIcon = "http://q.aiyongbao.com/interact/game_title_icon.png";
-const start_turntable = "http://q.aiyongbao.com/interact/start_turntable.png";
-const start_player = "http://q.aiyongbao.com/interact/start_player.png";
-const icon_rule = "http://q.aiyongbao.com/interact/icon_rule.png";
+const titleIcon = "http://q.aiyongtech.com/interact/game_title_icon.png";
+const start_turntable = "http://q.aiyongtech.com/interact/start_turntable.png";
+const start_player = "http://q.aiyongtech.com/interact/start_player.png";
+const icon_rule = "http://q.aiyongtech.com/interact/icon_rule.png";
 class GameIndex extends Component {
     constructor (props) {
         super(props);

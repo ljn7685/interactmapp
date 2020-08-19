@@ -103,7 +103,7 @@ class ModalVIPpc extends Component {
             // 兜底广告上！
             const userDefine = '{"body":{"service":"我要订购，52元/季度 https://tb.cn/4P2hmbw \\r\\n  138元/年 https://tb.cn/Wdwgmbw\\r\\n","re-button":"0","btn2-text":"52元/季度","btn2-url":"https://tb.cn/4P2hmbw","btn3-text":"138元/年","btn3-url":"https://tb.cn/Wdwgmbw","ad-text":"升级高级版","button-image":""}}';
             adInfo.adData = {
-                'img_path':'http://q.aiyongbao.com/trade/web/images/Intelligence.png',
+                'img_path':'http://q.aiyongtech.com/trade/web/images/Intelligence.png',
                 'creative_name':'兜底创意',
                 'img_size':'500*400',
                 'user_define':JSON.parse(userDefine),

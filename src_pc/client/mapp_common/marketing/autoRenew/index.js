@@ -71,11 +71,11 @@ class getAlipayDataPage extends Component {
         return (
             <View className='alipay-page'>
                 <View className='header-bg'>
-                    <Image className='header-img' src={'//q.aiyongbao.com/item/web/images/orders/autoVipBg.png'}></Image>
+                    <Image className='header-img' src={'//q.aiyongtech.com/item/web/images/orders/autoVipBg.png'}></Image>
                     <View className='header-text-notice'>*付款时不开启自动续费，视为默认放弃活动*</View>
                     <View className='introduct-text'>开启自动续费示例如下：</View>
                 </View>
-                <Image className='notice-gif' src={app == 'item' ? '//q.aiyongbao.com/item/web/images/orders/sp.gif' : '//q.aiyongbao.com/item/web/images/orders/jy.gif'}></Image>
+                <Image className='notice-gif' src={app == 'item' ? '//q.aiyongtech.com/item/web/images/orders/sp.gif' : '//q.aiyongtech.com/item/web/images/orders/jy.gif'}></Image>
                 <View className='introduct-text'>用户须知：</View>
                 <Text className='introduct-text'>由于服务市场付费金额限制，需先填写以下支付宝及实</Text>
                 <View>

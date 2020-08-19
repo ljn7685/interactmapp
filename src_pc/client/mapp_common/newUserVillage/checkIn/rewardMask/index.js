@@ -28,7 +28,7 @@ class TaskCard extends Component {
                         <Image
                             className='task-card-close'
                             onClick={() => {closeMask();}}
-                            src={'//q.aiyongbao.com/miniapp/marketing/newuser/card-black-close.png'}
+                            src={'//q.aiyongtech.com/miniapp/marketing/newuser/card-black-close.png'}
                         >
                         </Image>
                     </View>
