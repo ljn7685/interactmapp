@@ -47,10 +47,10 @@ class ActivityData extends Component {
         }
     }
     getDataByID = async () => {
-        const { pageNum } = this.state;
+        const { pageNum, total } = this.state;
         let data = await getDataByIdApi({ 'activeID': this.props.activityID, 'pageNo': pageNum, 'pageSize': this.pageSize });
         console.log('aaa data', data);
-        const total = data.total || 1;
+        const newTotal = (data.total && Math.ceil(data.total / this.pageSize)) || total;
         if (pageNum > 1 && isEmpty(data.data)) {
             Taro.showToast({
                 title: '已经是最后一页了',
@@ -64,7 +64,7 @@ class ActivityData extends Component {
                 isShow: true,
                 dataList: data.data,
                 dataAll: data.dataAll,
-                total,
+                total: newTotal,
             });
         }
     }
