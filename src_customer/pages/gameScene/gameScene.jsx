@@ -19,8 +19,11 @@ import ToastBox from "../../components/toast/toast";
 import guide_gif from "../../assets/images/guide.gif";
 import start_heart_gif from "../../assets/images/start_heart.gif";
 import success_angel_gif from "../../assets/images/success_angel.gif";
+import { getAudioContext } from "../../../public/util";
 
 const { registerCanvas } = PIXI.miniprogram;
+const success_result_mp3 = "http://qniyong.oss-cn-hangzhou.aliyuncs.com/interact/success_result.mp3";
+const fail_result_mp3 = "http://qniyong.oss-cn-hangzhou.aliyuncs.com/interact/fail_result.mp3";
 
 class GameScene extends Component {
     constructor (props) {
@@ -70,6 +73,8 @@ class GameScene extends Component {
      */
     onLoad () {
         this.state.game.initAudio();
+        this.failAudio =  getAudioContext(fail_result_mp3);
+        this.successAudio = getAudioContext(success_result_mp3);
     }
     /**
      * 游戏开始
@@ -157,6 +162,11 @@ class GameScene extends Component {
     onGameOver = ({ score, isSuccess }) => {
         if (score > this.props.best_score) {
             this.props.setBestScore(score);
+        }
+        if (isSuccess) {
+            this.successAudio.play();
+        } else {
+            this.failAudio.play();
         }
         this.setState({
             showGameResult: true,

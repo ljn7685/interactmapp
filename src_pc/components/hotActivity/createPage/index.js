@@ -104,7 +104,7 @@ class CreatePage extends Component {
      */
     onChangeNum = (key, value, name) => {
         if (matchNum(value, name)) {
-            this.configChange(key, value);
+            this.configChange(key, Number(value));
         }
     };
     onRandomSelect = async () => {
@@ -162,6 +162,7 @@ class CreatePage extends Component {
             gameConfig.gameTask && gameConfig.gameTask.includes("share");
         const isCheckCollect =
             gameConfig.gameTask && gameConfig.gameTask.includes("collect");
+        const duration = moment.duration(moment(activityData.endDate).diff(moment(activityData.startDate)));
         console.log("activityData", activityData, levelGroup);
         return (
             <View className='create-page'>
@@ -180,7 +181,7 @@ class CreatePage extends Component {
                     <Text className='name-num'>
                         {activityData.activeName.length}/16
                     </Text>
-                    <Text className='name-memo'>备忘用，不展示给买家</Text>
+                    <Text className='input-memo'>备忘用，不展示给买家</Text>
                 </View>
                 <View className='name-box'>
                     <Text className='warn-xing'>*</Text>
@@ -197,6 +198,7 @@ class CreatePage extends Component {
                     <Text className='name-num'>
                         {activityData.subTitle.length}/16
                     </Text>
+                    <Text className='input-memo'>副标题展现给买家</Text>
                 </View>
                 <View className='name-box'>
                     <Text className='warn-xing'>*</Text>
@@ -240,6 +242,7 @@ class CreatePage extends Component {
                             pickerShow
                         ></DatePicker>
                     )}
+                    <Text className='input-memo'>持续时间<Text className='orange'>{duration.days()}天{duration.hours()}小时</Text></Text>
                 </View>
                 <View className='name-box'>
                     <Text className='warn-xing'>*</Text>

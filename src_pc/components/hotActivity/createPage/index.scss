@@ -13,6 +13,13 @@
         font-size: 36px;
         margin-right: 4px;
     }
+    .input-memo {
+        margin-left: 32px;
+        font-style: 24px;
+    }
+    .orange {
+        color: orange;
+    }
     .name-box{
         display: flex;
         margin-top: 32px;
@@ -23,7 +30,7 @@
         .name-input{
             width: 510px;
             height: 56px;
-            margin: 0 32px;
+            margin-left: 32px;
             font-size: 28px;
             color: #333333;
         }

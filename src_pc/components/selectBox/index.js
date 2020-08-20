@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { View } from '@tarojs/components';
+import propTypes from 'prop-types';
 import './index.scss';
 
-// 下拉框的选项
-export const selectItem = ['全部', '进行中', '已结束', '未开始'];
 
 /**
  * 下拉框组件
@@ -12,10 +11,7 @@ class SelectBox extends Component {
 
     constructor (props) {
         super(props);
-        this.state = {
-            isShowSelect: false,
-            status: '全部',
-        };
+        this.state = { isShowSelect: false };
     }
     /**
      * 下拉框的样式控制
@@ -25,16 +21,15 @@ class SelectBox extends Component {
         if (value === 'pullDown') {
             this.setState({ isShowSelect: !this.state.isShowSelect });
         } else {
-            this.setState({
-                isShowSelect: !this.state.isShowSelect,
-                status: value,
-            });
+            this.setState({ isShowSelect: !this.state.isShowSelect });
             this.props.changeStatu(index);
         }
     }
 
     render () {
-        const { isShowSelect, status } = this.state;
+        const { isShowSelect } = this.state;
+        const { selectItem, selectIndex } = this.props;
+        const status = selectItem[selectIndex];
         return (
             <View className='select-box'>
                 <View className='selected' onClick={this.selectStatu.bind(this, 'pullDown')}>
@@ -59,5 +54,10 @@ class SelectBox extends Component {
         );
     }
 }
-
+SelectBox.defaultProps = { selectIndex: 0, selectItem:[], changeStatu:() => {} };
+SelectBox.propTypes = {
+    selectIndex: propTypes.number,
+    selectItem: propTypes.arrayOf(propTypes.string),
+    changeStatu: propTypes.func,
+};
 export default SelectBox;

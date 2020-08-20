@@ -26,7 +26,7 @@ class AllActivity extends Component {
         };
         this.pageNo = 1; // 初始页数
         this.pageSize = 10; // 页面条数
-        this.activeStatus = ''; // 活动状态
+        this.activeStatus = 0; // 活动状态
         this.query = '';
     }
 
@@ -42,6 +42,7 @@ class AllActivity extends Component {
         const args = { 'pageNo': this.pageNo, 'pageSize': this.pageSize, 'activeStatus': this.activeStatus };
         if(query) {
             args.query = query;
+            args.activeStatus = this.activeStatus = 0;
         }
         let data = await getActivityDataApi(args).catch(err => {
             console.log('activity err', err);
@@ -203,7 +204,7 @@ class AllActivity extends Component {
         return (
             <View className='all-box'>
                 <View className='all-top'>
-                    <SelectBox changeStatu={this.selectStatu} />
+                    <SelectBox changeStatu={this.selectStatu} selectIndex={this.activeStatus} selectItem={['全部', '进行中', '已结束', '未开始']} />
                     <SearchBox
                         className='search-box'
                         placeholder='请输入活动名称搜索'
