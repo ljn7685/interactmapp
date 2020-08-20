@@ -5,7 +5,7 @@ import styles from './index.module.scss';
 import { View, Text } from '@tarojs/components';
 
 const Pagination = (props) => {
-    const { pageNum, total, onChange } = props;
+    const { pageNum, total, onChange, className = '' } = props;
     const onChangePage = (type) => {
         if (type === "prev" && pageNum <= 1) {
             Taro.showToast({ title: "已经是第一页了" });
@@ -15,7 +15,7 @@ const Pagination = (props) => {
             onChange && onChange(type);
         }
     };
-    return (<View className={styles["page"]}>
+    return (<View className={`${styles["page"]} ${className}`}>
         <View
             className={classNames(
                 "iconfont",

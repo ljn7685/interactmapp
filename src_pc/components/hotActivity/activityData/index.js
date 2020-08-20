@@ -4,8 +4,8 @@ import './index.scss';
 import { isEmpty } from '../../utils/index';
 import Taro from '@tarojs/taro';
 import { connect } from 'react-redux';
-import TurnPage from '../../turnPage/index';
 import { getDataByIdApi, getActivityInfoIdApi } from '../../../public/bPromiseApi/index';
+import Pagination from '../../pagination';
 
 class ActivityData extends Component {
 
@@ -17,8 +17,9 @@ class ActivityData extends Component {
             dataAll: '', // 全部数据
             showCollect:false,
             showShare:false,
+            pageNum: 1, // 初始页数
+            total:1, // 总页数
         };
-        this.pageNo = 1; // 初始页数
         this.pageSize = 10; // 页面条数
     }
     componentDidMount () {
@@ -46,14 +47,16 @@ class ActivityData extends Component {
         }
     }
     getDataByID = async () => {
-        let data = await getDataByIdApi({ 'activeID': this.props.activityID, 'pageNo': this.pageNo, 'pageSize': this.pageSize });
+        const { pageNum } = this.state;
+        let data = await getDataByIdApi({ 'activeID': this.props.activityID, 'pageNo': pageNum, 'pageSize': this.pageSize });
         console.log('aaa data', data);
-        if (this.pageNo > 1 && isEmpty(data.data)) {
+        const total = data.total || 1;
+        if (pageNum > 1 && isEmpty(data.data)) {
             Taro.showToast({
                 title: '已经是最后一页了',
                 duration: 2000,
             });
-            this.pageNo -= 1;
+            pageNum -= 1;
             return;
         }
         if (!isEmpty(data.data)) {
@@ -61,6 +64,7 @@ class ActivityData extends Component {
                 isShow: true,
                 dataList: data.data,
                 dataAll: data.dataAll,
+                total,
             });
         }
     }
@@ -69,8 +73,13 @@ class ActivityData extends Component {
      * @param {*} type 
      */
 
-    turnPage = (current) => {
-        this.pageNo = current;
+    turnPage = (type) => {
+        const { pageNum } = this.state;
+        if (type === "prev") {
+            this.setState({ pageNum: pageNum - 1 });
+        } else if (type === "next") {
+            this.setState({ pageNum: pageNum + 1 });
+        }
         this.getDataByID();
     }
 
@@ -78,7 +87,7 @@ class ActivityData extends Component {
      * 数据展现组件
      */
     dataContentTip = () => {
-        const { dataList, showCollect, showShare } = this.state;
+        const { dataList, showCollect, showShare, pageNum, total } = this.state;
         return (
             <View>
                 {
@@ -97,7 +106,9 @@ class ActivityData extends Component {
                     })
                 }
                 {
-                    <TurnPage onPageNoChange={this.turnPage} pageNo={this.pageNo} />
+                    <View className='data-content-bottom'>
+                        <Pagination  pageNum={pageNum} total={total} onChange={this.turnPage} />
+                    </View>
                 }
 
             </View>
