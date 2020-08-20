@@ -13,7 +13,7 @@ function GameButton (props) {
         <View
             {...otherProps}
             className={`interact-game-button ${className}`}
-            onClick={throttle(onClick, 1000)}
+            onClick={throttle(onClick, 5000)}
         />
     );
 }

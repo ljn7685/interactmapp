@@ -12,12 +12,13 @@ class GameRule extends Component {
     }
     render () {
         const { onClose, game_rule } = this.props;
-        const start_date = moment(game_rule.start_date).format('YYYY年MM月DD日');
-        const end_date = moment(game_rule.end_date).format('YYYY年MM月DD日');
+        const start_date = moment(game_rule.start_date).format('YYYY年MM月DD日 HH:mm');
+        const end_date = moment(game_rule.end_date).format('YYYY年MM月DD日 HH:mm');
         const date = `${start_date}——${end_date}`;
         return (
             <GameModal
                 contentStyle={styles["content"]}
+                containerStyle={styles['container']}
                 visible
                 title='游戏规则'
                 onClose={onClose}

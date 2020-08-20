@@ -1,26 +1,31 @@
-.content {
-    width: 500px;
-    height: 654px;
-    .activity-time {
-        font-size: 26px;
-        color: #c96a90;
-        margin-top: 37px;
-        font-weight: bold;
-    }
-    .activity-rule {
-        display: flex;
-        flex-direction: column;
-        .title {
+.container {
+    height: auto;
+    .content {
+        width: 500px;
+        height: auto;
+        margin-bottom: 20px;
+        .activity-time {
             font-size: 26px;
-            margin-top: 26px;
+            color: #c96a90;
+            margin-top: 37px;
             font-weight: bold;
-            color: #c96a90;
         }
-        .desc {
-            margin-top: 14px;
-            font-size: 24px;
-            color: #c96a90;
-            line-height: 34px;
+        .activity-rule {
+            display: flex;
+            flex-direction: column;
+            .title {
+                font-size: 26px;
+                margin-top: 26px;
+                font-weight: bold;
+                color: #c96a90;
+            }
+            .desc {
+                margin-top: 14px;
+                font-size: 24px;
+                color: #c96a90;
+                line-height: 34px;
+            }
         }
     }
 }
+

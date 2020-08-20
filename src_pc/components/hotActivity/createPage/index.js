@@ -28,10 +28,10 @@ const taskGroup = [
     { key: "share", text: "分享" },
     { key: "collect", text: "收藏" },
 ];
-const levelConfig = {
-    "1": { level: "1" },
-    "2": { level: "2" },
-    "3": { level: "3" },
+export const levelConfig = {
+    "1": { level: "1", arrow_count: 6 },
+    "2": { level: "2", arrow_count: 8 },
+    "3": { level: "3", arrow_count: 10 },
 };
 class CreatePage extends Component {
     constructor (props) {
@@ -203,14 +203,18 @@ class CreatePage extends Component {
                     <View className='time-txt'>活动时间</View>
                     <Input
                         className='time-input'
-                        value={activityData.startDate}
+                        value={moment(activityData.startDate).format(
+                            "YYYY-MM-DD HH:mm"
+                        )}
                         onFocus={() => this.setState({ selectDate: "start" })}
                         onInput={() => this.setState({ selectDate: "start" })}
                     />
                     <Text className='time-to'>至</Text>
                     <Input
                         className='time-input'
-                        value={activityData.endDate}
+                        value={moment(activityData.endDate).format(
+                            "YYYY-MM-DD HH:mm"
+                        )}
                         onFocus={() => this.setState({ selectDate: "end" })}
                         onInput={() => this.setState({ selectDate: "end" })}
                     />
@@ -288,7 +292,7 @@ class CreatePage extends Component {
                             <View className='collect-box'>
                                 <View className='collect-input'>
                                     <Text>
-                                        收藏商品：可获得1次游戏机会，最多收藏
+                                        收藏商品：每收藏1个商品可获得1次游戏机会，最多收藏
                                     </Text>
                                     <Input
                                         type='number'
@@ -372,20 +376,30 @@ class CreatePage extends Component {
                     <View className='rules-des'>规则说明</View>
                     <View className='rules-content'>
                         <Text>
-                            活动时间：{activityData.startDate} -{" "}
-                            {activityData.endDate}
+                            活动时间：
+                            {moment(activityData.startDate).format(
+                                "YYYY-MM-DD HH:mm"
+                            )}{" "}
+                            -{" "}
+                            {moment(activityData.endDate).format(
+                                "YYYY-MM-DD HH:mm"
+                            )}
                         </Text>
                         <Text>一.活动介绍：</Text>
                         <Text>
                             1.从店铺首页或商品详情页进入丘比特之箭页面即可开始游戏；
                         </Text>
-                        <Text>2.活动期间，可通过关注店铺获取游戏次数；</Text>
+                        <Text>{`2.活动期间，可通过关注店铺获得1次游戏机会；${isCheckShare ? `
+                        每分享成功1个好友，可获得1次游戏机会，最多邀请${gameConfig.maxShareNum}个好友；` : ''}${isCheckCollect ? `
+                        每收藏成功1个商品，可获得1次游戏机会，最多收藏${gameConfig.maxCollectNum}个商品；` : ''}`}</Text>
                         <Text>二.玩法介绍：</Text>
                         <Text>
                             1.向后拉动弓箭，手指离开屏幕弓箭射出，若弓箭触碰到转盘中的其他弓箭则挑战失败；
                         </Text>
                         <Text>2.规定时间内弓箭未使用完毕，则挑战失败；</Text>
-                        <Text>3.游戏成功，即可获得奖励；</Text>
+                        <Text>
+                            3.规定时间内所有弓箭都成功射中转盘，则游戏成功可获得奖励；
+                        </Text>
                     </View>
                 </View>
                 <View className='model-bg'>

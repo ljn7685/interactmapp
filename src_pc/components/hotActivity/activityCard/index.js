@@ -7,6 +7,7 @@ import { isEmpty } from '../../utils/index';
 import { getUserInfo } from '../../../public/util/userInfoChanger';
 
 import { connect } from 'react-redux';
+import { levelConfig } from '../createPage';
 
 class ActivityCard extends Component {
     constructor (props) {
@@ -25,7 +26,7 @@ class ActivityCard extends Component {
         changeActivityDataAction({
             'activeName': '',
             'subTitle': '',
-            'startDate': moment().format("YYYY-MM-DD  HH:mm:ss"),
+            'startDate': moment().format("YYYY-MM-DD HH:mm:ss"),
             'endDate': moment().add(7, 'days').format("YYYY-MM-DD HH:mm:ss"),
             'couponData': '',
             'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${isEmpty(getUserInfo().cVersion) ? '0.0.14' : getUserInfo().cVersion}&_mp_code=tb&query=activeID%3D`,
@@ -34,6 +35,7 @@ class ActivityCard extends Component {
                 'maxShareNum':3,
                 'maxCollectNum':3,
                 'goods':[],
+                'gameLevel':levelConfig['2'],
             },
         });
     }
@@ -52,7 +54,7 @@ class ActivityCard extends Component {
                     <View className='instructions'>
                         <View className='instructions-title'>玩法说明：</View>
                         <View className='instructions-info'>1.买家通过参与游戏，胜利后获得优惠券</View>
-                        <View className='instructions-info'>2.买家通过关注店铺获取游戏机会，有效提升店铺粉丝量，方便后期深度运营</View>
+                        <View className='instructions-info'>2.买家通过关注店铺/收藏商品/分享店铺，获取游戏机会，全面提升店铺粉丝/销量，引导用户分享裂变，轻松获取精准定位</View>
                         <View className='instructions-info'>3.设置的奖品越吸引人，买家的参与度就会越高哦</View>
                     </View>
                     <View className='activity-bottom'>

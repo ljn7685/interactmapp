@@ -22,19 +22,6 @@ const initState = {
     game_rule: {
         start_date: "2020-01-01 00:00:00",
         end_date: "2020-12-31 00:00:00",
-        rules: [
-            {
-                title: "一.活动介绍：",
-                desc: `1.从店铺首页或商品详情页进入丘比特之箭页面即可开始游戏；
-                2.活动期间，可通过关注店铺获取游戏次数；`,
-            },
-            {
-                title: "二.玩法介绍：",
-                desc: `1.向后拉动弓箭，手指离开屏幕弓箭射出，若弓箭触碰到转盘中的其他弓箭则挑战失败；
-                2.规定时间内弓箭未使用完毕，则挑战失败；
-                3.游戏成功，即可获得奖励；`,
-            },
-        ],
     },
 };
 /**
@@ -68,7 +55,6 @@ export default function reducer (state = initState, action) {
             };
         case SET_USER_INFO: {
             const { userinfo } = action;
-            const { game_rule } = state;
             if (typeof userinfo.active_rewards === "string") {
                 userinfo.active_rewards = JSON.parse(userinfo.active_rewards);
             }
@@ -81,17 +67,36 @@ export default function reducer (state = initState, action) {
             if (typeof userinfo.shared_users === 'string') {
                 userinfo.shared_users = userinfo.shared_users.split(',');
             }
+            const game_config = userinfo.game_config;
+            const gameTask = game_config && game_config.gameTask;
+            const gameLevel = game_config && game_config.gameLevel;
+            const rules = [
+                {
+                    title: "一.活动介绍：",
+                    desc: `1.从店铺首页或商品详情页进入丘比特之箭页面即可开始游戏；
+                    2.活动期间，可通过关注店铺获得1次游戏机会；${gameTask && gameTask.includes("share") ? `
+                    每分享成功1个好友，可获得1次游戏机会，最多邀请${game_config.maxShareNum}个好友；` : ''}${gameTask && gameTask.includes("collect") ? `
+                    每收藏成功1个商品，可获得1次游戏机会，最多收藏${game_config.maxCollectNum}个商品；` : ''}`,
+                },
+                {
+                    title: "二.玩法介绍：",
+                    desc: `1.向后拉动弓箭，手指离开屏幕弓箭射出，若弓箭触碰到转盘中的其他弓箭则挑战失败；
+                    2.规定时间内弓箭未使用完毕，则挑战失败；
+                    3.规定时间内所有弓箭都成功射中转盘，则游戏成功可获得奖励；`,
+                },
+            ];
             userinfo.ename = userinfo.active_rewards.ename;
             // userinfo.is_follow = userinfo.is_join = 0;
             // userinfo.is_played = false;
             return {
                 ...state,
-                gametimes: userinfo.get_times - userinfo.game_number,
+                gametimes: userinfo.get_times - (userinfo.use_times || 0),
                 game_rule: {
-                    ...game_rule,
                     start_date: userinfo.start_date,
                     end_date: userinfo.end_date,
+                    rules,
                 },
+                arrow_count: gameLevel ?  gameLevel.arrow_count : state.arrow_count,
                 userinfo,
             };
         }

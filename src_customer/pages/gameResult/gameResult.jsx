@@ -11,8 +11,8 @@ import { showConfirmModal, getAudioContext } from "../../../public/util";
 import GameButton from "../../components/gameButton";
 
 const close_btn_img = "http://q.aiyongtech.com/interact/close_btn.png";
-const success_result_mp3 = "http://q.aiyongtech.com/interact/success_result.mp3";
-const fail_result_mp3 = "http://q.aiyongtech.com/interact/fail_result.mp3";
+const success_result_mp3 = "http://qniyong.oss-cn-hangzhou.aliyuncs.com/interact/success_result.mp3";
+const fail_result_mp3 = "http://qniyong.oss-cn-hangzhou.aliyuncs.com/interact/fail_result.mp3";
 const successTip = "恭喜你!";
 const reviveTip = `天呐！运气爆棚！
 

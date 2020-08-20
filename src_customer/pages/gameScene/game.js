@@ -7,8 +7,9 @@ import CountDown from "./countdown";
 import { getAudioContext } from "../../../public/util";
 
 // const arrow_flying_mp3 = 'http://download.taobaocdn.com/freedom/90053/media/Animal.mp3';
-const arrow_flying_mp3 = "http://q.aiyongtech.com/interact/arrow_flying.mp3";
+const arrow_flying_mp3 = "http://qniyong.oss-cn-hangzhou.aliyuncs.com/interact/arrow_flying.mp3";
 
+const flying_duration = 200;
 const {
     loader: { resources },
     Sprite,
@@ -262,7 +263,7 @@ class Game extends EventEmitter {
         let tween = new Tween(arrow)
             .to(
                 { y: this.bow.getFlyY(distance) },
-                300
+                flying_duration
             )
             .onUpdate((object, elapsed) => {
                 arrow.scale.x = 1 + (this.turntable.arrow_scale - 1) * elapsed;
