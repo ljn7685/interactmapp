@@ -7,6 +7,7 @@ import { Text, View, Image } from "@tarojs/components";
 import { getSaleGoodsApi } from "../../../public/bPromiseApi/index.js";
 import SearchBox from "../../searchBox";
 import Taro from "@tarojs/taro";
+import Pagination from "../../pagination/index.jsx";
 
 class SelectGoods extends Component {
     constructor (props) {
@@ -39,22 +40,14 @@ class SelectGoods extends Component {
      * 页码改变回调
      * @param {string} type 翻页类型(prev上一页，next下一页)
      */
-    onChangePageNum (type) {
-        const { pageNum, total } = this.state;
+    onChangePageNum = (type) => {
+        const { pageNum } = this.state;
         if (type === "prev") {
-            if (pageNum > 1) {
-                this.setState({ pageNum: pageNum - 1 });
-            } else {
-                Taro.showToast({ title: "已经是第一页了" });
-            }
+            this.setState({ pageNum: pageNum - 1 });
         } else if (type === "next") {
-            if (pageNum < total) {
-                this.setState({ pageNum: pageNum + 1 });
-            } else {
-                Taro.showToast({ title: "已经是最后一页了" });
-            }
+            this.setState({ pageNum: pageNum + 1 });
         }
-    }
+    };
     /**
      * 商品点击回调
      * @param {*} item 商品信息
@@ -225,7 +218,7 @@ class SelectGoods extends Component {
                         <SearchBox
                             placeholder='请输入关键字搜索'
                             onSearch={this.onClickSearch}
-                            className={styles['search-box']}
+                            className={styles["search-box"]}
                         />
                     )}
                 </View>
@@ -233,29 +226,11 @@ class SelectGoods extends Component {
                     {this.getPageContent()}
                 </View>
                 <View className={styles["content-bottom"]}>
-                    <View className={styles["page"]}>
-                        <View
-                            className={classNames(
-                                "iconfont2",
-                                styles["page-btn"]
-                            )}
-                            onClick={this.onChangePageNum.bind(this, "prev")}
-                        >
-                            &#xe63c;
-                        </View>
-                        <Text className={styles["page-num"]}>
-                            {pageNum}/{total}
-                        </Text>
-                        <View
-                            className={classNames(
-                                "iconfont2",
-                                styles["page-btn"]
-                            )}
-                            onClick={this.onChangePageNum.bind(this, "next")}
-                        >
-                            &#xe620;
-                        </View>
-                    </View>
+                    <Pagination
+                        pageNum={pageNum}
+                        total={total}
+                        onChange={this.onChangePageNum}
+                    />
                     <View
                         className={styles["confirm"]}
                         onClick={this.onConfirm}

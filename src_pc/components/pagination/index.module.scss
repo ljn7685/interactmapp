@@ -1,0 +1,29 @@
+.page {
+    width: 208px;
+    height: 56px;
+    display: flex;
+    .page-btn {
+        width: 56px;
+        height: 56px;
+        box-sizing: border-box;
+        background: #ffffff;
+        border: 1px solid #cccccc;
+        border-radius: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    .page-btn.next {
+        transform: scaleX(-1);
+    }
+    .page-text {
+        line-height: 56px;
+        margin: 0 16px;
+        text-align: center;
+        color: #333333;
+        .page-num {
+            color:#0863FF
+        }
+    }
+}
