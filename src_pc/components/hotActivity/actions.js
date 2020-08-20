@@ -1,7 +1,7 @@
 import { getActivityInfoIdApi, createActivityApi, benefitQueryApi } from '../../public/bPromiseApi/index';
 import Taro from '@tarojs/taro';
 import moment from 'moment';
-import { isEmpty, matchTime } from '../utils/index';
+import { isEmpty } from '../utils/index';
 
 export const TITLE = "TITLE"; // 顶部的标题
 export const SET_DATA = "SET_DATA"; // 通过id保存游戏配置数据
@@ -175,31 +175,29 @@ export const creacteActivityAction = (operationType) => {
         newArgs.activeUrl = encodeURIComponent(newArgs.activeUrl);// 活动地址
         newArgs.activeID = getState().hotReducer.activityID;
         console.log('newArgs:', newArgs);
-        if (matchTime([newArgs.startDate, newArgs.endDate])) {
-            let data = await createActivityApi({ ...newArgs });
-            if (data.code === 200) {
-                if (operationType === 2) {
-                    // 修改成功后，就回活动管理了
-                    dispatch({
-                        type: TITLE,
-                        title: '活动管理',
-                        titleType: 'management#allActivity',
-                    });
-                } else {
-                    let newActiveUrl = decodeURIComponent(newArgs.activeUrl) + data.activityId;
-                    dispatch({
-                        type: TITLE,
-                        title: '活动创建成功',
-                        titleType: 'hotActivity#success',
-                        activityUrl: newActiveUrl,
-                    });
-                }
+        let data = await createActivityApi({ ...newArgs });
+        if (data.code === 200) {
+            if (operationType === 2) {
+                // 修改成功后，就回活动管理了
+                dispatch({
+                    type: TITLE,
+                    title: '活动管理',
+                    titleType: 'management#allActivity',
+                });
             } else {
-                Taro.showToast({
-                    title: '参数不对，失败了',
-                    duration: 2000,
+                let newActiveUrl = decodeURIComponent(newArgs.activeUrl) + data.activityId;
+                dispatch({
+                    type: TITLE,
+                    title: '活动创建成功',
+                    titleType: 'hotActivity#success',
+                    activityUrl: newActiveUrl,
                 });
             }
+        } else {
+            Taro.showToast({
+                title: '参数不对，失败了',
+                duration: 2000,
+            });
         }
     };
 };

@@ -161,7 +161,7 @@ class AllActivity extends Component {
                                 <View className='content-status col-status'>{item.status}</View>
                                 <View className='content-time-box col-time'>
                                     <View className='time-start'>起：{item.start_date}</View>
-                                    <View className='time-end'>止：{item.end_date.substring(0, 10) + ' 23:59:59'}</View>
+                                    <View className='time-end'>止：{item.end_date}</View>
                                 </View>
                                 <View className='content-url col-url' onClick={this.copyUrl.bind(this, item.active_url, item.id)}>复制链接</View>
                                 <View className='oper-box col-oper'>

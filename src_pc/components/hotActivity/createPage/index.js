@@ -149,7 +149,7 @@ class CreatePage extends Component {
     };
     onSelectDate = (type, value) => {
         this.setState({ selectDate: "" });
-        this.props.inputChangeAction(type, value.dateStr);
+        this.props.inputChangeAction(type, value.dateTimeStr);
     };
     render () {
         const {
