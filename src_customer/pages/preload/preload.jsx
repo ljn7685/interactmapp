@@ -101,7 +101,7 @@ class Preload extends Component {
      * 初始化获取用户信息
      */
     async init (params) {
-        const { setActivityEnded, setUserInfoAction, addGametimes } = this.props;
+        const { setActivityEnded, setUserInfoAction } = this.props;
         await this.getLaunchParams(params);
         userInfoInit(() => {
             const userinfo = getUserInfo();
@@ -125,9 +125,6 @@ class Preload extends Component {
                 setActivityEnded(false);
             }
             setUserInfoAction(userinfo);
-            if (userinfo.is_follow && !userinfo.is_join) {
-                addGametimes();
-            }
             this.setState({ inited:true });
             this.onComplete();
         });

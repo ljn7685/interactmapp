@@ -9,3 +9,7 @@
     align-items: center;
     justify-content: center;
 }
+.interact-game-button.disabled {
+    filter: grayscale(100%);
+    pointer-events: none;
+}

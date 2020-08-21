@@ -1,19 +1,24 @@
 import React from "react";
 import { View } from "@tarojs/components";
-import "./index.scss";
+import classNames from 'classnames';
 import { throttle } from "underscore";
+import "./index.scss";
 
+const empty = () => {};
 /**
  * 按钮组件
  * @param {*} props 
  */
 function GameButton (props) {
-    const { className, onClick, ...otherProps } = props;
+    const { className, onClick, disabled, ...otherProps } = props;
     return (
         <View
             {...otherProps}
-            className={`interact-game-button ${className}`}
-            onClick={throttle(onClick, 5000)}
+            className={classNames('interact-game-button', {
+                [className]:className,
+                'disabled':disabled,
+            })}
+            onClick={disabled ? empty : throttle(onClick, 5000)}
         />
     );
 }

@@ -12,6 +12,7 @@ import AdRadioGroup from "../../radio/group.jsx";
 import AdCheckGroup from "../../checkbox/group.jsx";
 import DatePicker from "../../datePicker";
 import { getMainUserName } from "../../../public/util/userinfo";
+import { showConfirmModal } from "../../../public/util";
 
 const collectLimit = 20;
 const pageSize = 20;
@@ -149,7 +150,34 @@ class CreatePage extends Component {
     };
     onSelectDate = (type, value) => {
         this.setState({ selectDate: "" });
-        this.props.inputChangeAction(type, value.dateTimeStr);
+        const date = value.dateTimeStr;
+        if (value) {
+            const { deadline } = this.state;
+            const { activityData: { startDate, endDate } } = this.props;
+            if(type === 'startDate' && !moment(date).isBefore(endDate) || type === 'endDate' && !moment(startDate).isBefore(date)) {
+                Taro.showToast({ title:'开始日期须在结束日期之前' });
+            }
+            if (moment(date).isAfter(moment(deadline)) && type === 'endDate') {
+                showConfirmModal({
+                    title: "温馨提示",
+                    content:`活动结束时间需在服务到期日${deadline}之前，如需延长活动时间，可续费后再次操作`,
+                    confirmText: "修改时间",
+                    cancelText: "立即续费",
+                    showCancel:true,
+                    onConfirm:() => {
+                        if(type === 'startDate') {
+                            this.setState({ selectDate:'start' });
+                        } else if(type === 'endDate') {
+                            this.setState({ selectDate:'end' });
+                        }
+                    },
+                    onCancel: () => {
+                        my.qn.navigateToWebPage({ url: "https://c.tb.cn/Y4.YRwkP" });
+                    },
+                });
+            }
+            this.props.inputChangeAction(type, date);
+        }
     };
     render () {
         const {
@@ -157,12 +185,14 @@ class CreatePage extends Component {
             activityData: { gameConfig },
             activityData,
         } = this.props;
-        const { showSelectGoods, selectDate, deadline, current } = this.state;
+        const { showSelectGoods, selectDate, current } = this.state;
         const isCheckShare =
             gameConfig.gameTask && gameConfig.gameTask.includes("share");
         const isCheckCollect =
             gameConfig.gameTask && gameConfig.gameTask.includes("collect");
-        const duration = moment.duration(moment(activityData.endDate).diff(moment(activityData.startDate)));
+        const duration = moment.duration(
+            moment(activityData.endDate).diff(moment(activityData.startDate))
+        );
         console.log("activityData", activityData, levelGroup);
         return (
             <View className='create-page'>
@@ -224,7 +254,6 @@ class CreatePage extends Component {
                         <DatePicker
                             date={activityData.startDate}
                             rangeStart={current}
-                            rangeEnd={deadline}
                             onSelect={(value) =>
                                 this.onSelectDate("startDate", value)
                             }
@@ -233,16 +262,27 @@ class CreatePage extends Component {
                     )}
                     {selectDate === "end" && (
                         <DatePicker
-                            date={activityData.endDate}
+                            date={
+                                moment(activityData.endDate).isBefore(
+                                    moment(activityData.startDate)
+                                )
+                                    ? activityData.startDate
+                                    : activityData.endDate
+                            }
                             rangeStart={activityData.startDate}
-                            rangeEnd={deadline}
                             onSelect={(value) =>
                                 this.onSelectDate("endDate", value)
                             }
                             pickerShow
                         ></DatePicker>
                     )}
-                    <Text className='input-memo'>持续时间<Text className='orange'>{duration.days()}天{duration.hours()}小时</Text></Text>
+                    <Text className='input-memo'>
+                        持续时间
+                        <Text className='orange'>
+                            {duration.days()}天{duration.hours()}小时
+                            {duration.minutes()}分钟
+                        </Text>
+                    </Text>
                 </View>
                 <View className='name-box'>
                     <Text className='warn-xing'>*</Text>

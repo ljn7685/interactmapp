@@ -27,7 +27,7 @@ class HelpShareResult extends Component {
                         : `你已达到活动期间总助力次数上限啦
                     赶紧和好友一起参与游戏吧～`}
                 </Text>
-                <GameButton className={styles.btn} onClick={this.onClose}>
+                <GameButton className={styles.btn} onClick={onClose}>
                     立即参与
                 </GameButton>
             </GameModal>

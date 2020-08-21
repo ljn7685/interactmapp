@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { throttle } from "underscore";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
 import classNames from "classnames";
@@ -45,7 +44,6 @@ class GameIndex extends Component {
     }
     componentDidMount () {
         let {
-            no_enough_times,
             successfully_received,
             gameover,
             showTask,
@@ -57,9 +55,7 @@ class GameIndex extends Component {
         if (showTask) {
             this.setState({ showTask: true });
         }
-        if (no_enough_times) {
-            this.showNoEnoughTimes();
-        } else if (successfully_received) {
+        if (successfully_received) {
             this.setState({ jumpIcon: true });
             setTimeout(() => {
                 this.setState({ jumpIcon: false });
@@ -78,12 +74,6 @@ class GameIndex extends Component {
         if (userinfo.fromNick) {
             this.setState({ showHelpShare: true });
         }
-    }
-    /**
-     * 游戏次数不足的提示
-     */
-    showNoEnoughTimes () {
-        this.toast.info("已经参与过该游戏咯～", 2000);
     }
     /**
      * 开始游戏
@@ -143,7 +133,7 @@ class GameIndex extends Component {
         } = this.state;
         const {
             activity_ended,
-            userinfo: { is_follow, sub_title, fromNick },
+            userinfo: { is_follow, sub_title, fromNick, is_played },
             gametimes,
         } = this.props;
         return (
@@ -183,11 +173,12 @@ class GameIndex extends Component {
                 <View className={styles["game-button-group"]}>
                     <GameButton
                         className={styles["start-game"]}
-                        onClick={throttle(this.onClickBtn, 1000)}
+                        onClick={this.onClickBtn}
+                        disabled={gametimes <= 0}
                     >
                         {activity_ended
                             ? "活动已经结束"
-                            : is_follow
+                            : (is_follow || is_played)
                                 ? "开始游戏 赢好礼"
                                 : "关注店铺 获取游戏次数"}
                     </GameButton>

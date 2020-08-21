@@ -329,7 +329,6 @@ export function helpShareUserAction (fromNick, gameConfig, callback) {
         try {
             await shareHelpApi(fromNick, gameConfig);
             dispatch(helpShareUser());
-            dispatch(addGametimes());
             callback && callback(true);
         } catch (error) {
             Taro.showToast({

@@ -150,13 +150,16 @@ export const creacteActivityAction = (operationType) => {
                 } else if (!regPos.test(gameConfig.maxCollectNum)) {
                     toastTitle = '最大收藏次数须是非负整数';
                 } else if(gameConfig.maxCollectNum > gameConfig.goods.length) {
-                    toastTitle = '最大收藏次数要小于商品数量';
+                    toastTitle = '推荐商品数量不得少于收藏次数';
                 }
             } else if(gameConfig.gameTask.includes('share')) {
                 if (!regPos.test(gameConfig.maxShareNum)) {
                     toastTitle = '最大分享次数须是非负整数';
                 }
             }
+        }
+        if (!moment(newArgs.startDate).isBefore(newArgs.endDate)) {
+            toastTitle = '开始日期须在结束日期之前';
         }
         // 判断必填项
         if (isEmpty(newArgs.activeName) || isEmpty(newArgs.subTitle) || isEmpty(newArgs.startDate) || isEmpty(newArgs.endDate) || isEmpty(newArgs.couponData) || isEmpty(gameConfig.gameLevel)) {

@@ -90,7 +90,7 @@ export default function reducer (state = initState, action) {
             // userinfo.is_played = false;
             return {
                 ...state,
-                gametimes: userinfo.get_times - (userinfo.use_times || 0),
+                gametimes: userinfo.get_times - userinfo.use_times + (userinfo.is_follow  ? 1 : 0),
                 game_rule: {
                     start_date: userinfo.start_date,
                     end_date: userinfo.end_date,

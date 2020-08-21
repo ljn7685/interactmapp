@@ -45,7 +45,7 @@ class GameScene extends Component {
         const { revive } = getCurrentInstance().router.params;
         const { userinfo } = this.props;
         if (this.props.gametimes <= 0 && !revive) {
-            Taro.redirectTo({ url: "/pages/gameIndex/gameIndex?no_enough_times=true" });
+            Taro.redirectTo({ url: "/pages/gameIndex/gameIndex" });
         } else {
             if (revive) {
                 this.setState({ showTip: false });
