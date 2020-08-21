@@ -108,7 +108,9 @@ export const favorShop = (userinfo, cb) => {
                     callback: async (res) => {
                         console.log("~~~~~~~~~~~~~~~~~~~~", res);
                         dispatch(setFavorShop());
-                        if (!userinfo.is_played) {
+                        if (userinfo.is_follow) {
+                            Taro.showToast({ title:'已经关注过店铺咯~' });
+                        } else {
                             dispatch(addGametimes());
                         }
                         cb && cb();

@@ -21,6 +21,7 @@ import guide_gif from "../../assets/images/guide.gif";
 import start_heart_gif from "../../assets/images/start_heart.gif";
 import success_angel_gif from "../../assets/images/success_angel.gif";
 import result_bg from "../../assets/images/result_bg.png";
+import { checkShopFavoredStatus } from "../../../public/cPromiseApi";
 
 
 const start_player = "http://q.aiyongtech.com//interact/start_player.png";
@@ -103,7 +104,7 @@ class Preload extends Component {
     async init (params) {
         const { setActivityEnded, setUserInfoAction } = this.props;
         await this.getLaunchParams(params);
-        userInfoInit(() => {
+        userInfoInit(async () => {
             const userinfo = getUserInfo();
             if (
                 (userinfo.code === 500 && userinfo.msg === "活动已经结束") ||
@@ -124,6 +125,8 @@ class Preload extends Component {
                 }
                 setActivityEnded(false);
             }
+            const res = await checkShopFavoredStatus(userinfo.seller_id);
+            userinfo.check_favored = res.isFavor ? 1 : 0;
             setUserInfoAction(userinfo);
             this.setState({ inited:true });
             this.onComplete();
@@ -135,8 +138,8 @@ class Preload extends Component {
     getLaunchParams (params) {
         return new Promise((resolve) => {
             let options = Taro.getLaunchOptionsSync();
-            // options = { ...options, query:{ ...options.query, activeID:252, ...params }  };
-            options = { ...options, query:{ ...options.query, ...params }  };
+            options = { ...options, query:{ ...options.query, activeID:260, ...params }  };
+            // options = { ...options, query:{ ...options.query, ...params }  };
             if (!(options && options.query && options.query.activeID)) {
                 console.log("options", options);
                 setUserInfo({ active_id: 182 });

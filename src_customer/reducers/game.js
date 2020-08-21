@@ -46,7 +46,7 @@ export default function reducer (state = initState, action) {
         case SET_FAVOR_SHOP:
             return {
                 ...state,
-                userinfo: { ...state.userinfo, is_follow: 1 },
+                userinfo: { ...state.userinfo, is_follow: 1, check_favored: 1 },
             };
         case SET_RECEIVE_REWARDS:
             return {

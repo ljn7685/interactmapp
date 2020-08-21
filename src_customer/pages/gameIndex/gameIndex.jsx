@@ -103,11 +103,7 @@ class GameIndex extends Component {
      */
     onFavorShop = () => {
         const { userinfo } = this.props;
-        this.props.favorShop(userinfo, () => {
-            if (userinfo.is_played) {
-                this.toast.info("已经参与过该游戏咯～");
-            }
-        });
+        this.props.favorShop(userinfo);
     };
     onToggleModal = (name) => {
         this.setState({ [name]: !this.state[name] });
@@ -115,10 +111,10 @@ class GameIndex extends Component {
     onClickBtn = () => {
         const {
             activity_ended,
-            userinfo: { is_follow },
+            userinfo: { check_favored },
         } = this.props;
-        !activity_ended && is_follow && this.onGameStart();
-        !activity_ended && !is_follow && this.onFavorShop();
+        !activity_ended && check_favored && this.onGameStart();
+        !activity_ended && !check_favored && this.onFavorShop();
     };
     render () {
         const {
@@ -133,7 +129,7 @@ class GameIndex extends Component {
         } = this.state;
         const {
             activity_ended,
-            userinfo: { is_follow, sub_title, fromNick, is_played },
+            userinfo: { sub_title, fromNick, check_favored },
             gametimes,
         } = this.props;
         return (
@@ -174,11 +170,11 @@ class GameIndex extends Component {
                     <GameButton
                         className={styles["start-game"]}
                         onClick={this.onClickBtn}
-                        disabled={gametimes <= 0}
+                        disabled={gametimes <= 0 && check_favored && !activity_ended || activity_ended}
                     >
                         {activity_ended
                             ? "活动已经结束"
-                            : (is_follow || is_played)
+                            : check_favored
                                 ? "开始游戏 赢好礼"
                                 : "关注店铺 获取游戏次数"}
                     </GameButton>
@@ -242,7 +238,7 @@ class GameIndex extends Component {
                     <GameTask
                         onClose={this.onToggleModal.bind(this, "showTask")}
                         openCollect={() => {
-                            this.onToggleModal("showTask"); 
+                            this.onToggleModal("showTask");
                             this.onToggleModal("showCollect");
                         }}
                         openShare={() => {

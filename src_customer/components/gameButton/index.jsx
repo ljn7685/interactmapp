@@ -14,10 +14,12 @@ function GameButton (props) {
     return (
         <View
             {...otherProps}
-            className={classNames('interact-game-button', {
-                [className]:className,
-                'disabled':disabled,
-            })}
+            className={classNames('interact-game-button', { [className]:className })}
+            style={disabled ? {
+                backgroundColor: '#cbcbcb',
+                color: '#ffffff',
+                pointerEvents: 'none',
+            } : {}}
             onClick={disabled ? empty : throttle(onClick, 5000)}
         />
     );

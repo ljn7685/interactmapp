@@ -48,7 +48,7 @@ class GameTask extends Component {
             onClose,
             userinfo: {
                 game_config,
-                is_follow,
+                check_favored,
                 collect_goods = [],
                 shared_users = [],
             },
@@ -56,17 +56,18 @@ class GameTask extends Component {
             openShare,
             onFavorShop,
         } = this.props;
-        const taskList = [
-            {
-                current: is_follow,
+        const taskList = [];
+        if (!check_favored) {
+            taskList.push({
+                current: check_favored,
                 total: 1,
                 name: "关注店铺",
                 btnText: "立即关注",
                 disabledText: "已关注",
-                disabled: is_follow === 1,
+                disabled: check_favored,
                 onClick: onFavorShop,
-            },
-        ];
+            });
+        }
         if (game_config && game_config.gameTask) {
             if (game_config.gameTask.includes("share")) {
                 const share_num = Array.isArray(shared_users)  ? shared_users.length : 0;

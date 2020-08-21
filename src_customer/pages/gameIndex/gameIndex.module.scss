@@ -31,12 +31,11 @@
     .game-preview {
         text-align: center;
         position: relative;
-        transform: scale(0.8);
         margin: 40px auto;
         .preview-turntable {
-            margin-left: 37px;
-            transform-origin: 335px 327px;
-            width: 708px;
+            margin-left: calc(37px * 0.8);
+            transform-origin: calc(335px * 0.8) calc(327px * 0.8);
+            width: calc(708px * 0.8);
         }
         .preview-rotate {
             animation: rotate360 2s linear infinite;
@@ -49,10 +48,10 @@
             transform: translate(-50%, -50%);
         }
         .preview-content.player {
-            width: 310px;
+            width: calc(310px * 0.8);
         }
         .preview-content.heart {
-            width: 750px;
+            width: calc(750px * 0.8);
         }
     }
     .button {
