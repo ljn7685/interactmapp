@@ -23,11 +23,11 @@ class AllActivity extends Component {
         this.state = {
             isShow: false,
             dataList: '',
+            query:'',
         };
         this.pageNo = 1; // 初始页数
         this.pageSize = 10; // 页面条数
         this.activeStatus = 0; // 活动状态
-        this.query = '';
     }
 
     componentDidMount () {
@@ -38,7 +38,7 @@ class AllActivity extends Component {
      * 获取用户创建的游戏
      */
     getActivityData = async () => {
-        const { query } = this;
+        const { query } = this.state;
         const args = { 'pageNo': this.pageNo, 'pageSize': this.pageSize, 'activeStatus': this.activeStatus };
         if(query) {
             args.query = query;
@@ -97,7 +97,11 @@ class AllActivity extends Component {
     selectStatu = (value) => {
         this.activeStatus = value;
         this.pageNo = 1;
-        this.getActivityData();
+        if (value !== 0) {
+            this.setState({ query:'' }, () => {
+                this.getActivityData();
+            });
+        }
     }
     /**
      * 翻页
@@ -195,8 +199,9 @@ class AllActivity extends Component {
     onClickSearch = (query) => {
         console.log('onClickSearch');
         this.pageNo = 1;
-        this.query = query;
-        this.getActivityData();
+        this.setState({ query }, () => {
+            this.getActivityData();
+        });
     }
 
     render () {
@@ -209,6 +214,7 @@ class AllActivity extends Component {
                         className='search-box'
                         placeholder='请输入活动名称搜索'
                         onSearch={this.onClickSearch}
+                        value={this.query}
                     />
                 </View>
                 {

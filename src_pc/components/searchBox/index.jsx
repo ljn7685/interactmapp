@@ -8,7 +8,7 @@ import classNames from "classnames";
  * @param {function} onSearch 搜索按钮点击回调
  */
 const SearchBox = (props) => {
-    const { placeholder = "请输入关键字搜索", onSearch, className = '' } = props;
+    const { placeholder = "请输入关键字搜索", onSearch, className = '', value } = props;
     const [searchInput, setInput] = useState("");
     const handleClick = () => {
         onSearch && onSearch(searchInput);
@@ -20,9 +20,11 @@ const SearchBox = (props) => {
             <Input
                 placeholder={placeholder}
                 className={styles["search-input"]}
+                value={value}
                 onInput={(e) => {
                     setInput(e.target.value);
                 }}
+                onConfirm={handleClick}
             />
             <View className={styles["search-btn"]} onClick={handleClick}>
                 <Text

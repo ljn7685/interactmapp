@@ -46,58 +46,9 @@ class GameTask extends Component {
     render () {
         const {
             onClose,
-            userinfo: {
-                game_config,
-                check_favored,
-                collect_goods = [],
-                shared_users = [],
-            },
-            openCollect,
-            openShare,
-            onFavorShop,
+            taskList,
         } = this.props;
-        const taskList = [];
-        if (!check_favored) {
-            taskList.push({
-                current: check_favored,
-                total: 1,
-                name: "关注店铺",
-                btnText: "立即关注",
-                disabledText: "已关注",
-                disabled: check_favored,
-                onClick: onFavorShop,
-            });
-        }
-        if (game_config && game_config.gameTask) {
-            if (game_config.gameTask.includes("share")) {
-                const share_num = Array.isArray(shared_users)  ? shared_users.length : 0;
-                const share_total = game_config.maxShareNum;
-                taskList.push({
-                    current: share_num,
-                    total: share_total,
-                    name: "邀请好友",
-                    btnText: "立即邀请",
-                    disabledText: "已完成",
-                    disabled: share_num >= share_total,
-                    onClick: openShare,
-                });
-            }
-            if (game_config.gameTask.includes("collect")) {
-                const collect_num = Array.isArray(collect_goods)  ? collect_goods.length : 0;
-                const collect_total = game_config.maxCollectNum;
-                taskList.push({
-                    current: collect_num,
-                    total: collect_total,
-                    name: "收藏宝贝",
-                    btnText: "去收藏",
-                    disabledText: "已完成",
-                    disabled: collect_num >= collect_total,
-                    onClick: openCollect,
-                });
-            }
-        }
         return (
-           
             <GameModal
                 containerStyle={styles.container}
                 contentStyle={styles.content}

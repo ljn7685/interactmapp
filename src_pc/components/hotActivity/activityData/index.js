@@ -142,7 +142,7 @@ class ActivityData extends Component {
                             <View className='col-join'>参与人数</View>
                             <View className='col-follw'>关注店铺人数</View>
                             <View className='col-reward'>领取奖励人数</View>
-                            {showShare && <View className='col-follw'>分享活动人数</View>}
+                            {showShare && <View className='col-follw'>分享进入人数</View>}
                             {showCollect && <View className='col-follw'>收藏宝贝人数</View>}
                         </View>
                         <View className='data-content'>

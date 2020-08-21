@@ -30,9 +30,9 @@ const taskGroup = [
     { key: "collect", text: "收藏" },
 ];
 export const levelConfig = {
-    "1": { level: "1", arrow_count: 6 },
-    "2": { level: "2", arrow_count: 8 },
-    "3": { level: "3", arrow_count: 10 },
+    "1": { level: "1", arrow_count: 8 },
+    "2": { level: "2", arrow_count: 10 },
+    "3": { level: "3", arrow_count: 12 },
 };
 class CreatePage extends Component {
     constructor (props) {

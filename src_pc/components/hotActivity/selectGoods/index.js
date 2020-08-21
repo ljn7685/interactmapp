@@ -173,7 +173,7 @@ class SelectGoods extends Component {
         this.props.onClose();
     };
     render () {
-        const { selectGoods, pageNum, total, showType } = this.state;
+        const { selectGoods, pageNum, total, showType, query } = this.state;
         const { onClose, goodsLimit } = this.props;
         const header = [
             <Text>选择商品</Text>,
@@ -209,6 +209,7 @@ class SelectGoods extends Component {
                                 showType: "select",
                                 pageNum: 1,
                                 total: 1,
+                                query: '',
                             });
                         }}
                     >
@@ -219,6 +220,7 @@ class SelectGoods extends Component {
                             placeholder='请输入关键字搜索'
                             onSearch={this.onClickSearch}
                             className={styles["search-box"]}
+                            value={query}
                         />
                     )}
                 </View>

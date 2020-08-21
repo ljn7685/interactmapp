@@ -116,6 +116,73 @@ class GameIndex extends Component {
         !activity_ended && check_favored && this.onGameStart();
         !activity_ended && !check_favored && this.onFavorShop();
     };
+    /**
+     * 获得游戏任务
+     */
+    getTaskList () {
+        const {
+            userinfo: {
+                game_config,
+                check_favored,
+                collect_goods = [],
+                shared_users = [],
+            },
+        } = this.props;
+        const openCollect = () => {
+            this.onToggleModal("showTask");
+            this.onToggleModal("showCollect");
+        };
+        const openShare = () => {
+            this.onToggleModal("showTask");
+            this.onToggleModal("showShare");
+        };
+        const onFavorShop = this.onFavorShop;
+        const taskList = [];
+        if (!check_favored) {
+            taskList.push({
+                current: check_favored,
+                total: 1,
+                name: "关注店铺",
+                btnText: "立即关注",
+                disabledText: "已关注",
+                disabled: check_favored,
+                onClick: onFavorShop,
+            });
+        }
+        if (game_config && game_config.gameTask) {
+            if (game_config.gameTask.includes("share")) {
+                const share_num = Array.isArray(shared_users)
+                    ? shared_users.length
+                    : 0;
+                const share_total = game_config.maxShareNum;
+                taskList.push({
+                    current: share_num,
+                    total: share_total,
+                    name: "邀请好友",
+                    btnText: "立即邀请",
+                    disabledText: "已完成",
+                    disabled: share_num >= share_total,
+                    onClick: openShare,
+                });
+            }
+            if (game_config.gameTask.includes("collect")) {
+                const collect_num = Array.isArray(collect_goods)
+                    ? collect_goods.length
+                    : 0;
+                const collect_total = game_config.maxCollectNum;
+                taskList.push({
+                    current: collect_num,
+                    total: collect_total,
+                    name: "收藏宝贝",
+                    btnText: "去收藏",
+                    disabledText: "已完成",
+                    disabled: collect_num >= collect_total,
+                    onClick: openCollect,
+                });
+            }
+        }
+        return taskList;
+    }
     render () {
         const {
             showRule,
@@ -132,6 +199,7 @@ class GameIndex extends Component {
             userinfo: { sub_title, fromNick, check_favored },
             gametimes,
         } = this.props;
+        const taskList = this.getTaskList();
         return (
             <View className={styles["bg"]} ref={(ref) => (this.root = ref)}>
                 <View className={styles["title"]}>
@@ -234,18 +302,10 @@ class GameIndex extends Component {
                         }}
                     ></GamePrize>
                 ) : null}
-                {showTask ? (
+                {showTask && taskList.length > 0 ? (
                     <GameTask
                         onClose={this.onToggleModal.bind(this, "showTask")}
-                        openCollect={() => {
-                            this.onToggleModal("showTask");
-                            this.onToggleModal("showCollect");
-                        }}
-                        openShare={() => {
-                            this.onToggleModal("showTask");
-                            this.onToggleModal("showShare");
-                        }}
-                        onFavorShop={this.onFavorShop}
+                        taskList={taskList}
                     />
                 ) : null}
                 {showCollect ? (
