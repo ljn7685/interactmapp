@@ -10,6 +10,7 @@
     justify-content: center;
 }
 .interact-game-button.disabled {
-    filter: grayscale(100%);
+    background-color: #cbcbcb;
+    color: #ffffff;
     pointer-events: none;
 }
