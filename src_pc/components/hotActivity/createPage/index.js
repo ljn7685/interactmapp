@@ -172,7 +172,7 @@ class CreatePage extends Component {
                         }
                     },
                     onCancel: () => {
-                        my.qn.navigateToWebPage({ url: "https://c.tb.cn/Y4.YRwkP" });
+                        my.qn.navigateToWebPage({ url: "https://fuwu.taobao.com/ser/confirmOrder1.htm?commonParams=activityCode%3AACT_877021141_200821115641%3BagentId%3Afuwu.taobao.com%7Cmarketing-Order-0%3BmarketKey%3AFWSPP_MARKETING_URL%3BpromIds%3A%5B1005997520%5D&subParams=cycleNum%3A6%2CcycleUnit%3A2%2CitemCode%3AFW_GOODS-1001100789-1&sign=804E282659EC1BC6C3D08DC94F822C34&spm=a313p.266.ei5lud.1166464084109&short_name=Y4.YRwkP&app=chrome" });
                     },
                 });
             }
