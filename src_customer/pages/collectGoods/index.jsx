@@ -54,25 +54,34 @@ class CollectGoods extends Component {
             }
         }
     }
+    /**
+     * 收藏点击回调
+     * @param {*} item 
+     */
+    onCollect =  (item) => {
+        const { userinfo: { game_config, collect_goods }, collectGoodAction } = this.props;
+        const collect_total = game_config.maxCollectNum;
+        const collect_ids = Array.isArray(collect_goods) ? collect_goods : [];
+        if (collect_ids.length < collect_total) {
+            collectGoodAction(item, game_config);
+        } else {
+            Taro.showToast({ title:"已达到最大收藏次数" });
+        }
+    };
     render () { 
-        const { onClose,  userinfo: { game_config, collect_goods }, collectGoodAction } = this.props;
+        const { onClose,  userinfo: { game_config, collect_goods } } = this.props;
+        // 实际是否收藏商品
         const { check_collected } = this.state;
         const collect_total = game_config.maxCollectNum;
         const goods = game_config.goods;
         const title = `每收藏1个产品，获得1次游戏机会最多${collect_total}次`;
+        // 服务端保存的已收藏列表
         const collect_ids = Array.isArray(collect_goods) ? collect_goods : [];
-        const onCollect =  (item) => {
-            if(collect_ids.length < collect_total) {
-                collectGoodAction(item, game_config);
-            } else {
-                Taro.showToast({ title:"已达到最大收藏次数" });
-            }
-        };
         return (<GameModal visible title={title} onClose={onClose} contentStyle={styles['content']} headerStyle={styles['header']} titleStyle={styles['title']} containerStyle={styles['container']}>
             {goods && goods.map(item => {
                 const isCollect = collect_ids.filter(good => Number(good) === item.num_iid).length > 0 || check_collected.filter(good => Number(good) === item.num_iid).length > 0;
                 return (
-                    <GoodItem key={item.num_iid} data={item} isCollect={isCollect} onCollect={onCollect.bind(this, item)} />
+                    <GoodItem key={item.num_iid} data={item} isCollect={isCollect} onCollect={this.onCollect.bind(this, item)} />
                 );})}
         </GameModal>);
     }

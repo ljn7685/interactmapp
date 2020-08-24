@@ -92,9 +92,7 @@ class GameIndex extends Component {
      * 跳转到游戏页面
      */
     redirectToGame = () => {
-        if (this.props.gametimes <= 0) {
-            this.showNoEnoughTimes();
-        } else {
+        if (this.props.gametimes > 0) {
             Taro.redirectTo({ url: "/pages/gameScene/gameScene" });
         }
     };
