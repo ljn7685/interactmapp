@@ -1,4 +1,1 @@
-export default {
-  navigationBarTitleText: '首吧页',
-
-}
+export default { navigationBarTitleText: '首页' };

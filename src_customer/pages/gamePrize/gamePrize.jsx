@@ -2,30 +2,35 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import GameModal from "../../components/gameModal/gameModal";
 import styles from "./gamePrize.module.scss";
-import coupon_img from "../../assets/images/coupon.png";
 import { View, Text, Image } from "@tarojs/components";
+
+const coupon_img = "http://q.aiyongtech.com/interact/coupon.png";
 class GamePrize extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
     }
-    render() {
-        const { onClose, prizes, userinfo } = this.props;
+    render () {
+        const {
+            onClose,
+            userinfo: {
+                is_receive_rewards,
+                active_rewards: { datas },
+            },
+        } = this.props;
+        const prizes =
+            is_receive_rewards && datas && datas.length > 0 ? [datas[0]] : [];
         return (
             <GameModal
-                visible={true}
+                visible
                 onClose={onClose}
                 containerStyle={styles.container}
                 headerStyle={styles.header}
                 contentStyle={styles.content}
-                title="我的奖品"
+                title='我的奖品'
             >
                 {prizes.length === 0 ? (
-                    <Text className={styles["prize-msg"]}>
-                        {userinfo.played
-                            ? "请到“我的-红包卡券”中查看奖品！"
-                            : "暂无中奖"}
-                    </Text>
-                ) : prizes instanceof Array ? (
+                    <Text className={styles["prize-msg"]}>暂无中奖</Text>
+                ) : (
                     prizes.map((item, index) => (
                         <View className={styles["prize-item"]} key={index}>
                             <Text className={styles["prize-desc"]}>
@@ -44,23 +49,18 @@ class GamePrize extends Component {
                                 <Image
                                     className={styles["prize-img"]}
                                     src={coupon_img}
-                                    mode="widthFix"
+                                    mode='widthFix'
                                 ></Image>
                             </View>
                         </View>
                     ))
-                ) : (
-                    <Text className={styles["prize-msg"]}>{prizes.msg}</Text>
                 )}
             </GameModal>
         );
     }
 }
 const mapStateToProps = ({ game }) => {
-    return {
-        prizes: game.prizes,
-        userinfo: game.userinfo,
-    };
+    return { userinfo: game.userinfo };
 };
 const wrapper = connect(mapStateToProps, null)(GamePrize);
 export default wrapper;

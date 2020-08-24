@@ -1,320 +1,510 @@
-import React, { Component } from 'react';
-import { Text, View, Input, Image } from '@tarojs/components';
-import './index.scss';
-import moment from 'moment';
-import { changeTitleAction, setActivityUrlAction } from '../actions';
-import { isEmpty } from '../../utils/index';
-import Taro from '@tarojs/taro';
-import { api } from '../../../public/util/api';
-import { connect } from 'react-redux';
-//c端版本号
-export const version = '0.0.9';
+import React, { Component } from "react";
+import Taro from "@tarojs/taro";
+import { Text, View, Input, Image } from "@tarojs/components";
+import moment from "moment";
+import "./index.scss";
+import * as action from "../actions";
+import { isEmpty, matchNum } from "../../utils/index";
+import { connect } from "react-redux";
+import SelectGoods from "../selectGoods";
+import { getSaleGoodsApi, getSubscribeAPI } from "../../../public/bPromiseApi";
+import AdRadioGroup from "../../radio/group.jsx";
+import AdCheckGroup from "../../checkbox/group.jsx";
+import DatePicker from "../../datePicker";
+import { getMainUserName } from "../../../public/util/userinfo";
+import { showConfirmModal } from "../../../public/util";
 
-var plugin = requirePlugin("myPlugin");
-let eName;
-let poolid;
-//这个bridge用于和插件进行数据通信 
-const bridge = {
-    bizCode: "3000000012505562",//c
-    // bizCode: "3000000025552964",//b
-    //此处输入想配置的业务身份（消费者端appid）  
-    //这个方法用于获取插件中用户选择的奖池ID  
-    getCheckBenefitID({ ename, poolID }) {
-        eName = ename;
-        poolid = poolID;
-        console.log(ename, poolID)
-    }
-}
-
+const collectLimit = 20;
+const pageSize = 20;
+const levelGroup = [
+    { key: "1", text: "简单" },
+    { key: "2", text: "普通" },
+    { key: "3", text: "困难" },
+];
+const collectTypeGroup = [
+    { key: "random", text: "随机推荐" },
+    { key: "appoint", text: "指定商品" },
+];
+const taskGroup = [
+    { key: "share", text: "分享" },
+    { key: "collect", text: "收藏" },
+];
+export const levelConfig = {
+    "1": { level: "1", arrow_count: 8 },
+    "2": { level: "2", arrow_count: 10 },
+    "3": { level: "3", arrow_count: 12 },
+};
 class CreatePage extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {
-            args: {
-                startDate: moment().format("YYYY-MM-DD"),
-                endDate: moment().add(7, 'days').format("YYYY-MM-DD"),
-                gameNumber: 0,
-                activeName: '',
-                subTitle: '',
+            showSelectGoods: false,
+            selectDate: "",
+            current: moment().format("YYYY-MM-DD HH:mm:ss"),
+            deadline: moment().add(1, "years").format("YYYY-MM-DD HH:mm:ss"),
+        };
+    }
+    componentDidMount () {
+        var plugin = requirePlugin("myPlugin");
+        // 这个bridge用于和插件进行数据通信
+        let self = this;
+        const bridge = {
+            // bizCode: "3000000012505562",//c
+            bizCode: "3000000025552964", // b
+            // 此处输入想配置的业务身份（消费者端appid）
+            // 这个方法用于获取插件中用户选择的奖池ID
+            getCheckBenefitID ({ ename, poolID }) {
+                console.log(ename, poolID);
+                // self.props.inputChangeAction('activeRewards', { 'ename': ename, 'poolID': poolID })
+                self.props.getBenefitQueryAction(ename, poolID);
+                self.props.inputChangeAction("couponData", poolID);
             },
-            couponData: [],//优惠券信息
-        }
-        this.cupon = {}; //优惠卷
-        this.activeUrl = `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${version}&nbsource=debug&nbsn=TRIAL&_mp_code=tb&query=activeID%3D`; //活动创建成功后的地址
-        this.isEdit = false; //是否是编辑页面
-    }
-    componentWillMount() {
-        const { activityData, operType } = this.props
-        //如果是修改或者复制活动的。为了让input框检测到从reducer里获取到的值
-        if (!isEmpty(operType)) {
-            let newArgs = Object.assign({}, this.state.args);
-            newArgs.activeName = activityData[0].active_name;
-            newArgs.subTitle = activityData[0].sub_title;
-            newArgs.gameNumber = activityData[0].game_number;
-            //是修改的话，就需要时间和优惠券信息
-            if (operType == '修改') {
-                newArgs.startDate = activityData[0].start_date.substring(0, 10);
-                newArgs.endDate = activityData[0].end_date.substring(0, 10);
-                this.cupon = JSON.parse(activityData[0].active_rewards);
-                this.activeUrl = activityData[0].active_url;
-                this.setState({
-                    args: newArgs,
-                    couponData: JSON.parse(activityData[0].active_rewards).poolID
-                })
-            } else {
-                //复制活动的就不需要时间和优惠券信息
-                this.setState({
-                    args: newArgs
-                })
-            }
-        }
-    }
-    componentDidMount() {
-        //获取优惠券信息的重要一步
+        };
+        // 获取优惠券信息的重要一步
         plugin.setBridge(bridge);
+        this.getDeadline();
+    }
+    /**
+     * 获取订购截止日期
+     */
+    async getDeadline () {
+        const res = await getSubscribeAPI({
+            nick: getMainUserName(),
+            article_code: "FW_GOODS-1001100789",
+        });
+        this.setState({ deadline: res.article_user_subscribes[0].deadline });
     }
     /**
      * 获取输入框的值
-     * @param {*} type 
-     * @param {*} e 
+     * @param {*} type
+     * @param {*} e
      */
     inputChange = (type, e) => {
-        let newArgs = Object.assign({}, this.state.args);
-        newArgs[type] = e.target.value;
-        this.setState({
-            args: newArgs
-        })
-    }
+        this.props.inputChangeAction(type, e.target.value);
+    };
+    configChange = (key, value) => {
+        this.props.configChangeAction(key, value);
+    };
+    /**
+     * 收藏类型改变回调
+     * @param {*} value
+     */
+    onChangeCollectType = (value) => {
+        this.configChange("collectType", value);
+        if (value === "random") {
+            this.onRandomSelect();
+        } else if (value === "appoint") {
+            this.configChange("goods", []);
+        }
+    };
+    /**
+     * 输入数字改变的时候
+     * @param {*} key
+     * @param {*} value
+     * @param {*} name
+     */
+    onChangeNum = (key, value, name) => {
+        if (matchNum(value, name)) {
+            this.configChange(key, Number(value));
+        }
+    };
+    onRandomSelect = async () => {
+        try {
+            const goods = await getSaleGoodsApi({
+                fields: "num_iid,title,price,pic_url",
+                page_no: 1,
+                page_size: collectLimit,
+            });
+            if (goods.items) {
+                this.props.configChangeAction("goods", goods.items);
+            }
+        } catch (err) {
+            Taro.showToast({ title: "随机推荐失败" });
+        }
+    };
     /**
      * 跳转优惠券配置页面
-     * @param {*} type 
+     * @param {*} type
      */
     navigateToPlugin = () => {
-        my.navigateTo({
-            url:
-                'plugin://myPlugin/orightindex-page',
-        });
-    }
+        my.navigateTo({ url: "plugin://myPlugin/orightindex-page" });
+    };
     /**
      * 点击确定按钮
      */
-    createActivity = async (type) => {
-        const { activityID, changeTitleAction, setActivityUrlAction } = this.props;
+    createActivity = (type) => {
+        const { creacteActivityAction } = this.props;
         let operationType = 2;
-        if (type == 'sure') {
-            //operationType  1-添加新的活动   2-修改活动
+        if (type === "sure") {
+            // operationType  1-添加新的活动   2-修改活动
             operationType = 1;
         }
-        let newArgs = Object.assign({}, this.state.args);
-        if (isEmpty(newArgs.activeName) || isEmpty(newArgs.subTitle) || isEmpty(newArgs.startDate) || isEmpty(newArgs.endDate) || isEmpty(this.state.couponData)) {
-            Taro.showToast({
-                title: '必填项不能为空',
-                duration: 2000
-            })
-            return;
-        }
-        //添加参数
-        newArgs.activeRewards = JSON.stringify(this.cupon); //优惠卷
-        newArgs.operationType = operationType;//操作类型
-        newArgs.activeUrl = encodeURIComponent(this.activeUrl);//活动地址
-        newArgs.activeID = activityID;
-        if (this.matchTime([newArgs.startDate, newArgs.endDate]) && this.matchNum(newArgs.gameNumber)) {
-            let data = await this.createActivityApi(newArgs);
-            if (data.code == 200) {
-                if (operationType == 2) {
-                    //修改成功后，就回活动管理了
-                    changeTitleAction('活动管理', 'management');
-                } else {
-                    let activeUrl = this.activeUrl + data.activityId;
-                    changeTitleAction('活动创建成功', 'success');
-                    //存一个链接，成功页面要拿到的
-                    setActivityUrlAction(activeUrl);
-                }
-            }
-        }
-    }
+        creacteActivityAction(operationType);
+    };
     /**
      * 放弃修改，回到活动管理
-     *  
+     *
      */
     giveUpEdit = () => {
-        this.props.changeTitleAction('活动管理', 'management');
-    }
-    /**
-     * 获取优惠券的详细信息
-     * @param {*} type 
-     */
-    getCouponData = () => {
-        this.cupon = { 'ename': eName, 'poolID': poolid }
-        this.setState({
-            couponData: poolid
-        })
-    }
-    /**
-     * 校验时间是否正确
-     * @param {*} type 
-     */
-    matchTime = (type) => {
-        for (let i = 0; i < type.length; i++) {
-            let res = type[i].match(/^(\d{4})(-)(\d{2})(-)(\d{2})$/);
-            if (res == null) {
-                Taro.showModal({
-                    title: '请输入正确的时间格式，如2020-01-01',
-                    showCancel: false,
-                    confirmText: '确定'
-                })
-                return false;
+        this.props.changeTitleAction("活动管理", "management#allActivity");
+    };
+    onSelectDate = (type, value) => {
+        this.setState({ selectDate: "" });
+        const date = value.dateTimeStr;
+        if (value) {
+            const { deadline } = this.state;
+            const { activityData: { startDate, endDate } } = this.props;
+            if(type === 'startDate' && !moment(date).isBefore(endDate) || type === 'endDate' && !moment(startDate).isBefore(date)) {
+                Taro.showToast({ title:'开始日期须在结束日期之前' });
             }
-            let time = new Date(res[0]);//转成时间戳
-            let result = (time.getFullYear() == res[1] && (time.getMonth() + 1) == res[3] && time.getDate() == res[5]);
-            if (!result) {
-                Taro.showModal({
-                    title: '请输入正确的时间',
-                    showCancel: false,
-                    confirmText: '确定'
-                })
-                return false;
+            if (moment(date).isAfter(moment(deadline)) && type === 'endDate') {
+                showConfirmModal({
+                    title: "温馨提示",
+                    content:`活动结束时间需在服务到期日${deadline}之前，如需延长活动时间，可续费后再次操作`,
+                    confirmText: "修改时间",
+                    cancelText: "立即续费",
+                    showCancel:true,
+                    onConfirm:() => {
+                        if(type === 'startDate') {
+                            this.setState({ selectDate:'start' });
+                        } else if(type === 'endDate') {
+                            this.setState({ selectDate:'end' });
+                        }
+                    },
+                    onCancel: () => {
+                        my.qn.navigateToWebPage({ url: "https://fuwu.taobao.com/ser/confirmOrder1.htm?commonParams=activityCode%3AACT_877021141_200821115641%3BagentId%3Afuwu.taobao.com%7Cmarketing-Order-0%3BmarketKey%3AFWSPP_MARKETING_URL%3BpromIds%3A%5B1005997520%5D&subParams=cycleNum%3A6%2CcycleUnit%3A2%2CitemCode%3AFW_GOODS-1001100789-1&sign=804E282659EC1BC6C3D08DC94F822C34&spm=a313p.266.ei5lud.1166464084109&short_name=Y4.YRwkP&app=chrome" });
+                    },
+                });
             }
+            this.props.inputChangeAction(type, date);
         }
-        if (moment(type[1]).unix() < moment(type[0]).unix()) {
-            Taro.showToast({
-                title: '开始时间不能大于结束时间',
-                duration: 2000
-            })
-            return
-        }
-        return true;
-    }
-    /**
-     * 校验是不是非负整数
-     * @param {*} value 
-     */
-
-    matchNum = (value) => {
-        var regPos = /^\d+$/; // 非负整数
-        if (regPos.test(value)) {
-            return true
-        } else {
-            Taro.showToast({
-                title: '活动次数为非负整数',
-                duration: 2000
-            })
-            return false;
-        }
-    }
-    /**
-     *创建活动，修改活动
-     * @param {*} args 
-     */
-    createActivityApi = (args) => {
-        return new Promise((resolve, reject) => {
-            api({
-                apiName: 'aiyong.interactb.activity.create',
-                method: '/interactive/creatInteract',
-                args: args,
-                callback: res => {
-                    resolve(res);
-
-                },
-                errCallback: err => {
-                    reject(err)
-                }
-            })
-        })
-    }
-    render() {
-        const { args, couponData } = this.state;
-        const { title } = this.props;
+    };
+    render () {
+        const {
+            title,
+            activityData: { gameConfig },
+            activityData,
+        } = this.props;
+        const { showSelectGoods, selectDate, current } = this.state;
+        const isCheckShare =
+            gameConfig.gameTask && gameConfig.gameTask.includes("share");
+        const isCheckCollect =
+            gameConfig.gameTask && gameConfig.gameTask.includes("collect");
+        const duration = moment.duration(
+            moment(activityData.endDate).diff(moment(activityData.startDate))
+        );
+        console.log("activityData", activityData, levelGroup);
         return (
             <View className='create-page'>
                 <View className='name-box'>
                     <Text className='warn-xing'>*</Text>
                     <Text className='name-text'>活动名称</Text>
-                    <Input className='name-input' type='text' maxlength='16' value={args.activeName} onInput={(e) => { this.inputChange('activeName', e) }} />
-                    <Text className='name-num'>{args.activeName.length}/16</Text>
-                    <Text className='name-memo'>备忘用，不展示给买家</Text>
+                    <Input
+                        className='name-input'
+                        type='text'
+                        maxlength='16'
+                        value={activityData.activeName}
+                        onInput={(e) => {
+                            this.inputChange("activeName", e);
+                        }}
+                    />
+                    <Text className='name-num'>
+                        {activityData.activeName.length}/16
+                    </Text>
+                    <Text className='input-memo'>备忘用，不展示给买家</Text>
                 </View>
                 <View className='name-box'>
                     <Text className='warn-xing'>*</Text>
                     <View className='name-text'>&emsp;副标题</View>
-                    <Input className='name-input' type='text' maxlength='16' value={args.subTitle} onInput={(e) => { this.inputChange('subTitle', e) }} />
-                    <Text className='name-num'>{args.subTitle.length}/16</Text>
+                    <Input
+                        className='name-input'
+                        type='text'
+                        maxlength='16'
+                        value={activityData.subTitle}
+                        onInput={(e) => {
+                            this.inputChange("subTitle", e);
+                        }}
+                    />
+                    <Text className='name-num'>
+                        {activityData.subTitle.length}/16
+                    </Text>
+                    <Text className='input-memo'>副标题展现给买家</Text>
                 </View>
                 <View className='name-box'>
                     <Text className='warn-xing'>*</Text>
                     <View className='time-txt'>活动时间</View>
-                    <Input className='time-input' value={args.startDate} onInput={(e) => { this.inputChange('startDate', e) }} />
+                    <Input
+                        className='time-input'
+                        value={moment(activityData.startDate).format(
+                            "YYYY-MM-DD HH:mm"
+                        )}
+                        onFocus={() => this.setState({ selectDate: "start" })}
+                        onInput={() => this.setState({ selectDate: "start" })}
+                    />
                     <Text className='time-to'>至</Text>
-                    <Input className='time-input' value={args.endDate} onInput={(e) => { this.inputChange('endDate', e) }} />
+                    <Input
+                        className='time-input'
+                        value={moment(activityData.endDate).format(
+                            "YYYY-MM-DD HH:mm"
+                        )}
+                        onFocus={() => this.setState({ selectDate: "end" })}
+                        onInput={() => this.setState({ selectDate: "end" })}
+                    />
+                    {selectDate === "start" && (
+                        <DatePicker
+                            date={activityData.startDate}
+                            rangeStart={current}
+                            onSelect={(value) =>
+                                this.onSelectDate("startDate", value)
+                            }
+                            pickerShow
+                        ></DatePicker>
+                    )}
+                    {selectDate === "end" && (
+                        <DatePicker
+                            date={
+                                moment(activityData.endDate).isBefore(
+                                    moment(activityData.startDate)
+                                )
+                                    ? activityData.startDate
+                                    : activityData.endDate
+                            }
+                            rangeStart={activityData.startDate}
+                            onSelect={(value) =>
+                                this.onSelectDate("endDate", value)
+                            }
+                            pickerShow
+                        ></DatePicker>
+                    )}
+                    <Text className='input-memo'>
+                        持续时间
+                        <Text className='orange'>
+                            {duration.days()}天{duration.hours()}小时
+                            {duration.minutes()}分钟
+                        </Text>
+                    </Text>
                 </View>
                 <View className='name-box'>
-                    <Text className='res-text'>&emsp;复活次数</Text>
-                    <Input type='number' className='res-input' value={args.gameNumber} onInput={(e) => { this.inputChange('gameNumber', e) }} />
-                    <Text className='unit'>次</Text>
-                    <Text className='res-memo'>买家关注店铺后，游戏失败可重新挑战次数</Text>
+                    <Text className='warn-xing'>*</Text>
+                    <View className='time-txt'>游戏难度</View>
+                    <AdRadioGroup
+                        groupList={levelGroup}
+                        itemClassName='level-radio'
+                        checkedKey={
+                            gameConfig.gameLevel && gameConfig.gameLevel.level
+                        }
+                        onChange={(value) =>
+                            this.configChange("gameLevel", levelConfig[value])
+                        }
+                    />
+                </View>
+                <View className='task-box'>
+                    <Text className='warn-xing'>*</Text>
+                    <View className='task-txt'>复活任务</View>
+                    <View className='task-content'>
+                        <AdCheckGroup
+                            groupList={taskGroup}
+                            itemClassName='task-check'
+                            checkedArr={gameConfig.gameTask || []}
+                            onChange={(value) =>
+                                this.configChange("gameTask", value)
+                            }
+                        ></AdCheckGroup>
+                        {isCheckShare && (
+                            <View className='share-box'>
+                                <Text className='share-left'>
+                                    分享活动：每分享给1个好友，可获得1次游戏机会，最多邀请
+                                </Text>
+                                <Input
+                                    type='number'
+                                    className='num-input'
+                                    maxlength='2'
+                                    value={gameConfig.maxShareNum}
+                                    onInput={(e) => {
+                                        this.onChangeNum(
+                                            "maxShareNum",
+                                            e.detail.value,
+                                            "活动最大次数"
+                                        );
+                                    }}
+                                />
+                                <Text>好友</Text>
+                            </View>
+                        )}
+                        {isCheckCollect && (
+                            <View className='collect-box'>
+                                <View className='collect-input'>
+                                    <Text>
+                                        收藏商品：每收藏1个商品可获得1次游戏机会，最多收藏
+                                    </Text>
+                                    <Input
+                                        type='number'
+                                        className='num-input'
+                                        maxlength='2'
+                                        value={gameConfig.maxCollectNum}
+                                        onInput={(e) => {
+                                            this.onChangeNum(
+                                                "maxCollectNum",
+                                                e.detail.value,
+                                                "最大收藏次数"
+                                            );
+                                        }}
+                                    />
+                                    <Text>个商品</Text>
+                                </View>
+                                <View className='collect-select'>
+                                    <AdRadioGroup
+                                        groupList={collectTypeGroup}
+                                        itemClassName='collect-radio'
+                                        checkedKey={gameConfig.collectType}
+                                        onChange={(value) =>
+                                            this.onChangeCollectType(value)
+                                        }
+                                    />
+                                    {gameConfig.collectType === "appoint" && (
+                                        <View
+                                            className='select-btn'
+                                            onClick={() => {
+                                                this.setState({ showSelectGoods: true });
+                                            }}
+                                        >
+                                            选择
+                                        </View>
+                                    )}
+                                    {gameConfig.collectType === "appoint" && (
+                                        <Text className='select-info'>
+                                            已选
+                                            <Text className='select-num'>
+                                                {gameConfig.goods
+                                                    ? gameConfig.goods.length
+                                                    : 0}
+                                                /{collectLimit}
+                                            </Text>
+                                            件商品
+                                        </Text>
+                                    )}
+                                </View>
+                            </View>
+                        )}
+                    </View>
                 </View>
                 <View className='coupon-box'>
                     <View className='coupon-top'>
                         <Text className='warn-xing'>*</Text>
                         <View className='coupon-title'>活动奖励</View>
-                        {isEmpty(couponData) && <View className='coupon' onClick={this.navigateToPlugin}>创建奖池</View>}
-                        { !isEmpty(couponData) && <View className='coupon' onClick={this.navigateToPlugin}>查看奖池</View>}
-                        <View className='refresh' onClick={this.getCouponData}>刷新</View>
-                        {
-                            !isEmpty(couponData) && <View className='prize-num'>已选奖池编号：{couponData}</View>
-                        }
-                    </View>
-                    <View className='warn-bar'>
-                        <View className='warn-icno iconfont'>&#xe607;</View>
-                        <View className='warn-txt'>优惠券为游戏胜利时发放，设置总中奖率不得低于99.99%</View>
+                        {isEmpty(activityData.couponData) && (
+                            <View
+                                className='coupon'
+                                onClick={this.navigateToPlugin}
+                            >
+                                创建奖池
+                            </View>
+                        )}
+                        {!isEmpty(activityData.couponData) && (
+                            <View
+                                className='coupon'
+                                onClick={this.navigateToPlugin}
+                            >
+                                查看奖池
+                            </View>
+                        )}
+                        {!isEmpty(activityData.couponData) && (
+                            <View className='prize-num'>
+                                已选奖池编号：{activityData.couponData}
+                            </View>
+                        )}
                     </View>
                 </View>
                 <View className='rules-box'>
                     <View className='rules-des'>规则说明</View>
                     <View className='rules-content'>
-                        <Text>活动时间：{args.startDate} - {args.endDate}</Text>
+                        <Text>
+                            活动时间：
+                            {moment(activityData.startDate).format(
+                                "YYYY-MM-DD HH:mm"
+                            )}{" "}
+                            -{" "}
+                            {moment(activityData.endDate).format(
+                                "YYYY-MM-DD HH:mm"
+                            )}
+                        </Text>
                         <Text>一.活动介绍：</Text>
-                        <Text>1.从店铺首页或商品详情页进入丘比特之箭页面即可开始游戏；</Text>
-                        <Text>2.活动期间，可通过关注店铺获取游戏次数；</Text>
+                        <Text>
+                            1.从店铺首页或商品详情页进入丘比特之箭页面即可开始游戏；
+                        </Text>
+                        <Text>{`2.活动期间，可通过关注店铺获得1次游戏机会；${isCheckShare ? `
+                        每分享成功1个好友，可获得1次游戏机会，最多邀请${gameConfig.maxShareNum}个好友；` : ''}${isCheckCollect ? `
+                        每收藏成功1个商品，可获得1次游戏机会，最多收藏${gameConfig.maxCollectNum}个商品；` : ''}`}</Text>
                         <Text>二.玩法介绍：</Text>
-                        <Text>1.向后拉动弓箭，手指离开屏幕弓箭射出，若弓箭触碰到转盘中的其他弓箭则挑战失败；</Text>
+                        <Text>
+                            1.向后拉动弓箭，手指离开屏幕弓箭射出，若弓箭触碰到转盘中的其他弓箭则挑战失败；
+                        </Text>
                         <Text>2.规定时间内弓箭未使用完毕，则挑战失败；</Text>
-                        <Text>3.游戏成功，即可获得奖励；</Text>
+                        <Text>
+                            3.规定时间内所有弓箭都成功射中转盘，则游戏成功可获得奖励；
+                        </Text>
                     </View>
                 </View>
                 <View className='model-bg'>
-                    <Image className='img-bg' src='http://q.aiyongbao.com/interact/bg.png' />
-                    <View className='second-title'>{args.subTitle}</View>
+                    <Image
+                        className='img-bg'
+                        src='http://q.aiyongtech.com/interact/bg.png'
+                    />
+                    <View className='second-title'>
+                        {activityData.subTitle}
+                    </View>
                 </View>
                 <View className='create-bottom'>
-                    {
-                        title == '创建丘比特之箭活动' && <View className='sure-btu' onClick={this.createActivity.bind(this, 'sure')}>确认创建活动</View>
-                    }
-                    {
-                        title == '修改丘比特之箭活动' && <View className='edit-box'>
-                            <View className='sure-btu' onClick={this.createActivity.bind(this, 'edit')}>确认修改活动</View>
-                            <View className='give-up' onClick={this.giveUpEdit}>放弃修改</View>
+                    {title === "创建丘比特之箭活动" && (
+                        <View
+                            className='sure-btu'
+                            onClick={this.createActivity.bind(this, "sure")}
+                        >
+                            确认创建活动
                         </View>
-                    }
-
+                    )}
+                    {title === "修改丘比特之箭活动" && (
+                        <View className='edit-box'>
+                            <View
+                                className='sure-btu'
+                                onClick={this.createActivity.bind(this, "edit")}
+                            >
+                                确认修改活动
+                            </View>
+                            <View className='give-up' onClick={this.giveUpEdit}>
+                                放弃修改
+                            </View>
+                        </View>
+                    )}
                 </View>
-
+                {showSelectGoods && (
+                    <SelectGoods
+                        onClose={() => {
+                            this.setState({ showSelectGoods: false });
+                        }}
+                        onSetGoods={(value) =>
+                            this.configChange("goods", value)
+                        }
+                        goods={gameConfig.goods}
+                        goodsLimit={collectLimit}
+                        pageSize={pageSize}
+                    ></SelectGoods>
+                )}
             </View>
         );
     }
 }
 
-//将store里面的值映射为props
+// 将store里面的值映射为props
 const mapStateToProps = ({ hotReducer }) => {
     return {
         activityData: hotReducer.activityData,
         title: hotReducer.title,
         operType: hotReducer.operType,
-        activityID: hotReducer.activityID
-    }
-}
-const mapDispatchToProps = {
-    changeTitleAction,
-    setActivityUrlAction
-}
+        activityID: hotReducer.activityID,
+        initActivityData: hotReducer.initActivityData,
+    };
+};
+const mapDispatchToProps = action;
+
 export default connect(mapStateToProps, mapDispatchToProps)(CreatePage);

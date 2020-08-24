@@ -60,7 +60,7 @@ class TaskItem extends Component {
             }
             jsx = (
                 <View className='task-item'>
-                    <Image src={`//q.aiyongbao.com/miniapp/marketing/newuser/${task.img}`} className='task-img' />
+                    <Image src={`//q.aiyongtech.com/miniapp/marketing/newuser/${task.img}`} className='task-img' />
                     <View className='task-text'>
                         <Text className='task-name'>{task.desc}</Text>
                         <View className='task-reward'>
@@ -70,7 +70,7 @@ class TaskItem extends Component {
                     </View>
                     <View className={taskBtn} onClick={() => {this.taskBtnFun(task.id, task.btn_type, task.message, task.status, task.page);}}>
                         {
-                            task.status == 1 ? <Image src='//q.aiyongbao.com/miniapp/marketing/newuser/reward-box.png' className='task-btn-img'></Image> : null
+                            task.status == 1 ? <Image src='//q.aiyongtech.com/miniapp/marketing/newuser/reward-box.png' className='task-btn-img'></Image> : null
                         }
                         <Text className='task-btn-text'>{task.btnText}</Text>
                     </View>

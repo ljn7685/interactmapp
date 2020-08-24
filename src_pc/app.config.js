@@ -1,8 +1,6 @@
 export default {
   pages: [
-   
     'pages/index/index',
-    'pages/datePicker/index',
   ],
   window: {
     backgroundTextStyle: 'light',

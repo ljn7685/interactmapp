@@ -8,22 +8,22 @@ const INTERACTIVE = [
     {
         title: '互动小游戏',
         content: '通过小游戏引导用户，全面提升店铺粉丝数/加购量，针对店铺自定义设置，多种玩法随意组合，大促必备',
-        pic: '//q.aiyongbao.com/miniapp/interactive/hdxyx.png'
+        pic: '//q.aiyongtech.com/miniapp/interactive/hdxyx.png'
     },
     {
         title: '关注有礼',
         content: '关注店铺赠送优惠券/红包/实物宝贝引导用户关注店铺，促进转化，方便后期深度运营',
-        pic: '//q.aiyongbao.com/miniapp/interactive/gzyl.png'
+        pic: '//q.aiyongtech.com/miniapp/interactive/gzyl.png'
     },
     {
         title: '分享领券',
         content: '无线引流新方式，一键设置活动内容简单方便，增加店铺曝光，挖掘精准新客户，优惠券提升店铺转化率',
-        pic: '//q.aiyongbao.com/miniapp/interactive/fxlq.png'
+        pic: '//q.aiyongtech.com/miniapp/interactive/fxlq.png'
     },
     {
         title: '收藏/加购有礼',
         content: '收藏/加购赠礼，提升宝贝转化的同时提升商品搜索排',
-        pic: '//q.aiyongbao.com/miniapp/interactive/scjgyl.png'
+        pic: '//q.aiyongtech.com/miniapp/interactive/scjgyl.png'
     }
 ]
 class InterActiveTest extends Component {

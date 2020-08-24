@@ -6,6 +6,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
   .arrow {
     height: 141px;
     width: 205px;
@@ -50,5 +51,12 @@
   }
   .canvas {
     height: 2px;
+  }
+  .bottom-tip {
+    position: absolute;
+    bottom: 24px;
+    font-size: 26px;
+    color: #ffffff;
+    margin: 0 auto;
   }
 }

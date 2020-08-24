@@ -6,22 +6,21 @@ import HotActivity from '../../components/hotActivity/index';
 
 
 class Index extends Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount(){
+    constructor (props) {
+        super(props);
+    }
+    componentDidMount () {
 
-  }
-
-  render() {
-    return (
-      <View className='interactmapp'>
-        <Layout />
-        <HotActivity />
-      </View>
-    )
-  }
+    }
+    render () {
+        return (
+            <View className='interactmapp'>
+                <Layout />
+                <HotActivity />
+            </View>
+        );
+    }
 }
 
-export default Index
+export default Index;
 

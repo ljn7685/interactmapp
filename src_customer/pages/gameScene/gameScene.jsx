@@ -1,35 +1,32 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image, Text, Canvas } from "@tarojs/components";
+import { View, Image, Canvas, Text } from "@tarojs/components";
 import * as PIXI from "@tbminiapp/pixi-miniprogram-engine";
 
 import Game from "./game";
-import {
-    minusGametimes,
-    resetReviveTimes,
-    userRevive,
-    setBestScore,
-} from "../../actions/game";
+import { minusGametimes,
+    addGameNumberAction,
+    setBestScore, } from "../../actions/game";
 
-import "./gameScene.scss";
+import styles from "./gameScene.module.scss";
 import "../../styles/common.scss";
-import icon_rule from "../../assets/images/icon_rule.png";
+import GameResult from "../gameResult/gameResult";
+import Taro, { getCurrentInstance } from "@tarojs/taro";
+import Bump from "bump.js";
+import GameTip from "./components/gameTip";
+import ToastBox from "../../components/toast/toast";
 import guide_gif from "../../assets/images/guide.gif";
 import start_heart_gif from "../../assets/images/start_heart.gif";
 import success_angel_gif from "../../assets/images/success_angel.gif";
-import GameResult from "../gameResult/gameResult";
-import useImgLoader from "../../components/imgLoader/useImgLoader";
-import Taro, { getCurrentInstance } from "@tarojs/taro";
-import GameRule from "../gameRule/gameRule";
-import ToastBox from "../../components/toast/toast";
-import Bump from "bump.js";
-import GameTip from "./components/gameTip";
+import { getAudioContext } from "../../../public/util";
 
 const { registerCanvas } = PIXI.miniprogram;
+const success_result_mp3 = "http://qniyong.oss-cn-hangzhou.aliyuncs.com/interact/success_result.mp3";
+const fail_result_mp3 = "http://qniyong.oss-cn-hangzhou.aliyuncs.com/interact/fail_result.mp3";
 
 class GameScene extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {
             showGuide: false,
@@ -39,33 +36,29 @@ class GameScene extends Component {
             showTip: true,
             isSuccess: false,
             score: 0,
+            arrow_count: 0,
+            countdown: { value: "00:00", scale: 1 },
             game: new Game(),
         };
     }
-
-    componentDidMount() {
-        console.log("didmount");
+    componentDidMount () {
         const { revive } = getCurrentInstance().router.params;
         const { userinfo } = this.props;
         if (this.props.gametimes <= 0 && !revive) {
-            Taro.redirectTo({
-                url: "/pages/gameIndex/gameIndex?no_enough_times=true",
-            });
+            Taro.redirectTo({ url: "/pages/gameIndex/gameIndex" });
         } else {
             if (revive) {
                 this.setState({ showTip: false });
-                this.props.userRevive(userinfo, () => {
-                    this.onCanvasReady();
-                    this.gameStart();
-                });
-            } else {
-                this.props.resetReviveTimes();
-                this.props.minusGametimes();
-                this.onCanvasReady();
             }
+            this.props.addGameNumberAction(userinfo, () => {
+                this.onCanvasReady();
+                if (revive) {
+                    this.gameStart();
+                }
+            });
         }
     }
-    componentWillUnmount() {
+    componentWillUnmount () {
         if (this.timer) {
             clearTimeout(this.timer);
             this.timer = null;
@@ -75,7 +68,18 @@ class GameScene extends Component {
             game.destroy();
         }
     }
-    gameStart() {
+    /**
+     * onLoad
+     */
+    onLoad () {
+        this.state.game.initAudio();
+        this.failAudio =  getAudioContext(fail_result_mp3);
+        this.successAudio = getAudioContext(success_result_mp3);
+    }
+    /**
+     * 游戏开始
+     */
+    gameStart () {
         console.log("gameStart");
         const { game } = this.state;
         game.gameReady();
@@ -84,7 +88,10 @@ class GameScene extends Component {
             this.changeState("showGuide", false);
         }, 1150 * 3);
     }
-    onCanvasReady() {
+    /**
+     * 设置canvas
+     */
+    onCanvasReady () {
         console.log("onCanvasReady");
         const { game } = this.state;
         game.bump = new Bump(PIXI);
@@ -104,10 +111,10 @@ class GameScene extends Component {
                 canvas.width = clientWidth;
                 canvas.height = clientHeight;
                 this.pixiCanvas = canvas;
-                //为pixi引擎注册当前的canvas
+                // 为pixi引擎注册当前的canvas
                 registerCanvas(canvas);
-                //初始化PIXI.Application
-                //计算application的宽高
+                // 初始化PIXI.Application
+                // 计算application的宽高
                 const size = {
                     width: 750,
                     height: (clientHeight / clientWidth) * 750,
@@ -128,11 +135,6 @@ class GameScene extends Component {
                 });
                 game.width = size.width;
                 game.height = size.height;
-                game.init(this.application, {
-                    arrow_count: this.props.arrow_count,
-                    game_duration: this.props.game_duration,
-                    arrow_score: this.props.arrow_score,
-                });
                 game.on("pointstart", () => {
                     this.changeState("showGuide", false);
                 });
@@ -143,12 +145,28 @@ class GameScene extends Component {
                     this.changeState("showSuccessAngel", visible);
                 });
                 game.on("gameover", this.onGameOver);
+                game.on("arrow_count", (arrow_count) => {
+                    this.setState({ arrow_count: arrow_count });
+                });
+                game.on("countdown", (countdown) => {
+                    this.setState({ countdown });
+                });
+                game.init(this.application, {
+                    arrow_count: this.props.arrow_count,
+                    game_duration: this.props.game_duration,
+                    arrow_score: this.props.arrow_score,
+                });
             },
         });
     }
     onGameOver = ({ score, isSuccess }) => {
         if (score > this.props.best_score) {
             this.props.setBestScore(score);
+        }
+        if (isSuccess) {
+            this.successAudio.play();
+        } else {
+            this.failAudio.play();
         }
         this.setState({
             showGameResult: true,
@@ -160,27 +178,21 @@ class GameScene extends Component {
     };
     onRestart = () => {
         const { isSuccess } = this.state;
-        const { gametimes, revive_times } = this.props;
-        console.log("onRestart", gametimes, revive_times, isSuccess);
-        if (revive_times === 0 && gametimes === 0) {
+        const { gametimes } = this.props;
+        console.log("onRestart", gametimes, isSuccess);
+        if (gametimes === 0) {
             this.toast.info("暂无游戏次数", 2000);
             return;
         }
-        if (isSuccess || revive_times === 0) {
-            Taro.redirectTo({ url: "/pages/gameScene/gameScene?revive=false" });
-        } else {
-            Taro.redirectTo({ url: "/pages/gameScene/gameScene?revive=true" });
-        }
+        Taro.redirectTo({ url: "/pages/gameScene/gameScene?revive=true" });
     };
     changeState = (name, value) => {
-        this.setState({
-            [name]: value,
-        });
+        this.setState({ [name]: value });
     };
     onClickModal = (name) => {
         this.setState({ [name]: !this.state[name] });
     };
-    render() {
+    render () {
         const {
             showGuide,
             showHeart,
@@ -190,52 +202,65 @@ class GameScene extends Component {
             isSuccess,
             score,
             game,
+            arrow_count,
+            countdown,
         } = this.state;
-        const { imgList, revive_times } = this.props;
         const ratio = game.getRatio();
         return (
             <View
-                id="gameroot"
+                id='gameroot'
                 ref={(ref) => (this.root = ref)}
                 onTouchStart={game.onPointStart}
                 onTouchMove={game.onPointMove}
                 onTouchEnd={game.onPointEnd}
                 onTouchCancel={game.onPointEnd}
-                className="canvas"
+                className={styles["canvas"]}
                 style={showGameResult ? { pointerEvents: "none" } : {}}
             >
-                <Canvas id="canvas" type="webgl" className="canvas"></Canvas>
-                {showGuide && imgList[0].loaded ? (
+                <Canvas
+                    id='canvas'
+                    type='webgl'
+                    className={styles["canvas"]}
+                ></Canvas>
+                <Text
+                    className={styles["countdown"]}
+                    style={{
+                        transform: `translate(-50%,-50%) scale(${
+                            ratio * countdown.scale
+                        })`,
+                    }}
+                >{`倒计时 ${countdown.value}`}</Text>
+                <Text
+                    style={{ transform: `translate(-50%,-50%) scale(${ratio})` }}
+                    className={styles["arrow-count"]}
+                >
+                    {`X${arrow_count}`}
+                </Text>
+                {showGuide ? (
                     <Image
                         src={guide_gif}
-                        alt=""
-                        className="guide"
-                        mode="widthFix"
-                        style={{
-                            transform: `translateX(-23.913%) scale(${ratio})`,
-                        }}
+                        alt=''
+                        className={styles["guide"]}
+                        mode='widthFix'
+                        style={{ transform: `translateX(-23.913%) scale(${ratio})` }}
                     />
                 ) : null}
-                {showHeart && imgList[1].loaded ? (
+                {showHeart ? (
                     <Image
                         src={start_heart_gif}
-                        alt=""
-                        className="heart"
-                        mode="widthFix"
-                        style={{
-                            transform: `translateX(-50%) scale(${ratio})`,
-                        }}
+                        alt=''
+                        className={styles["heart"]}
+                        mode='widthFix'
+                        style={{ transform: `translate(-50%,-50%) scale(${ratio})` }}
                     />
                 ) : null}
-                {showSuccessAngel && imgList[2].loaded ? (
+                {showSuccessAngel ? (
                     <Image
                         src={success_angel_gif}
-                        alt=""
-                        className="success-angel"
-                        mode="widthFix"
-                        style={{
-                            transform: `translateX(-50%) scale(${ratio})`,
-                        }}
+                        alt=''
+                        className={styles["success-angel"]}
+                        mode='widthFix'
+                        style={{ transform: `translate(-50%,-50%) scale(${ratio})` }}
                     />
                 ) : null}
                 {showGameResult ? (
@@ -243,7 +268,6 @@ class GameScene extends Component {
                         isSuccess={isSuccess}
                         score={score}
                         onRestart={this.onRestart}
-                        revive_times={revive_times}
                     ></GameResult>
                 ) : null}
                 {showTip ? (
@@ -266,24 +290,14 @@ const mapStateToProps = ({ game }) => {
         best_score: game.best_score,
         gametimes: game.gametimes,
         game_duration: game.game_duration,
-        max_fail_times: game.max_fail_times,
-        revive_times: game.revive_times,
         userinfo: game.userinfo,
     };
 };
 const mapDispatchToProps = {
     minusGametimes,
-    resetReviveTimes,
-    userRevive,
+    addGameNumberAction,
     setBestScore,
 };
 
-const wrapper = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(
-    useImgLoader(GameScene, [guide_gif, start_heart_gif, success_angel_gif], {
-        height: "100vh",
-    })
-);
+const wrapper = connect(mapStateToProps, mapDispatchToProps)(GameScene);
 export default wrapper;

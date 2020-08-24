@@ -22,7 +22,7 @@ export const showBeacon = (type) => {
 /**
  * 图片定义
  */
-export const imgUrl = '//q.aiyongbao.com/2020618/img/';
+export const imgUrl = '//q.aiyongtech.com/2020618/img/';
 //商品数据
 const itemList = [
     [{ src: `${imgUrl}watermark.png`, title: '主图水印', content: '提升大促期间宝贝点击率', srced: `${imgUrl}watermark_grey.png`, type: 'watermark' },

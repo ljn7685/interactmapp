@@ -16,7 +16,7 @@ const default_arrows = [
  * 转盘
  */
 class TurnTable extends Container {
-    constructor(properties) {
+    constructor (properties) {
         super();
         this.assets = properties.assets;
         this.game = properties.game;
@@ -27,34 +27,37 @@ class TurnTable extends Container {
     table = null;
     speed = 72;
     arrow_height = 0;
-    get arrow_scale() {
+    /**
+     * 获得弓箭插在转盘后的缩放率
+     */
+    get arrow_scale () {
         return arrow_scale;
     }
     /**
      * 设置成功天使的显示
      * @param {boolean} visible 是否可见
      */
-    setSuccessAngel(visible) {
+    setSuccessAngel (visible) {
         this.success_angel.visible = visible;
     }
-     /**
+    /**
      * 设置失败天使的显示
      * @param {boolean} visible 是否可见
      */
-    setFailAngel(visible) {
+    setFailAngel (visible) {
         this.fail_angel.visible = visible;
     }
-     /**
+    /**
      * 设置正常天使的显示
      * @param {boolean} visible 是否可见
      */
-    setNormalAngel(visible) {
+    setNormalAngel (visible) {
         this.normal_angel.visible = visible;
     }
     /**
      * 初始化转盘上默认的箭头
      */
-    initArrows() {
+    initArrows () {
         this.arrows = [];
         for (let arrowItem of default_arrows) {
             this.addArrow(arrowItem.rotation);
@@ -63,7 +66,7 @@ class TurnTable extends Container {
     /**
      * 移除所有箭头
      */
-    removeAllArrow() {
+    removeAllArrow () {
         for (let arrowItem of this.arrows) {
             if (arrowItem.arrow) {
                 this.conatiner.removeChild(arrowItem.arrow);
@@ -71,7 +74,10 @@ class TurnTable extends Container {
         }
         this.arrows = [];
     }
-    reset() {
+    /**
+     * 重置
+     */
+    reset () {
         this.speed = 72;
         this.startRotate();
         this.setFailAngel(false);
@@ -82,7 +88,7 @@ class TurnTable extends Container {
     /**
      * 停止所有动画
      */
-    stop() {
+    stop () {
         if (this.tween) {
             this.tween.stop();
         }
@@ -90,7 +96,7 @@ class TurnTable extends Container {
     /**
      * 是否射击成功
      */
-    isShootSuccess() {
+    isShootSuccess () {
         let rotation = (this.conatiner.rotation / (2 * Math.PI)) * 360;
         return this.arrows.every((item) => {
             return Math.abs(item.rotation - rotation) > 6;
@@ -100,7 +106,7 @@ class TurnTable extends Container {
      * 是否碰上其他箭头
      * @param {*} arrow 
      */
-    isHitArrow(arrow) {
+    isHitArrow () {
         let rotation = (this.conatiner.rotation / (2 * Math.PI)) * 360;
         return this.arrows.some((item) => {
             // return this.game.bump.hit(item.arrow, arrow, false, false, true);
@@ -110,7 +116,7 @@ class TurnTable extends Container {
     /**
      * 获得转盘射击边缘
      */
-    getHitBottom() {
+    getHitBottom () {
         return (
             this.y +
             (this.table.y + this.table.height - arrow_head_height) *
@@ -120,7 +126,7 @@ class TurnTable extends Container {
     /**
      * 获得转盘底部位置
      */
-    getBottom() {
+    getBottom () {
         return (
             this.y +
             (this.table.y +
@@ -134,7 +140,7 @@ class TurnTable extends Container {
      * 添加箭头
      * @param {number} rotation 角度
      */
-    addArrow(rotation) {
+    addArrow (rotation) {
         if (rotation === undefined) {
             rotation = (this.conatiner.rotation / (2 * Math.PI)) * 360;
         }
@@ -158,17 +164,19 @@ class TurnTable extends Container {
     /**
      * 加快转盘旋转速度
      */
-    addSpeed() {
+    addSpeed () {
         this.speed *= 1.06;
         if (this.tween) {
             TWEEN.remove(this.tween);
         }
-        console.log(this.speed);
         this.game.nextTick(() => {
             this.startRotate();
         });
     }
-    addImages() {
+    /**
+     * 添加图片
+     */
+    addImages () {
         let container = (this.conatiner = new Container());
         this.addChild(container);
         this.conatiner.x = this.conatiner.pivot.x = center_x;
@@ -177,7 +185,6 @@ class TurnTable extends Container {
         const line = new Sprite(line_img);
         this.width = line.width;
         this.height = line.height;
-        console.log("turntable height", line.height);
         container.addChild(line);
         const table_img = this.assets.get("turntable");
         let table = (this.table = new Sprite(table_img));
@@ -202,7 +209,7 @@ class TurnTable extends Container {
     /**
      * 开始旋转
      */
-    startRotate() {
+    startRotate () {
         if (this.conatiner.rotation === 2 * Math.PI) {
             this.conatiner.rotation = 0;
         }
@@ -211,9 +218,7 @@ class TurnTable extends Container {
             1000;
         this.tween = new TWEEN.Tween(this.conatiner)
             .to(
-                {
-                    rotation: 2 * Math.PI,
-                },
+                { rotation: 2 * Math.PI },
                 duration
             )
             .onComplete(() => {

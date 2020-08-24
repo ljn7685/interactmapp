@@ -1,0 +1,195 @@
+.container {
+    background: #ffffff;
+    width: 1324px;
+    height: 932px;
+    .header {
+        height: 100px;
+        padding: 0 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f4f4f4;
+        .close {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            cursor: pointer;
+        }
+    }
+    .content {
+        .content-top {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            .top-bar {
+                width: 200px;
+                height: 100px;
+                box-sizing: border-box;
+                text-align: center;
+                line-height: 100px;
+                color: #333333;
+                font-size: 28px;
+                cursor: pointer;
+            }
+            .top-bar.select {
+                color: #0863ff;
+                border-bottom: 1px solid #0863ff;
+            }
+            .search-box {
+                margin-left: 342px;
+            }
+        }
+        .content-middle {
+            height: 576px;
+            box-sizing: border-box;
+            border-bottom: 1px solid #f4f4f4;
+            padding: 32px 12px 0px;
+            .no-goods {
+                padding: 106px 0 0;
+                text-align: center;
+                font-size: 32px;
+                color: #767676;
+                .sad {
+                    font-size: 48px;
+                    margin-right: 16px;
+                }
+            }
+            .scroll {
+                height: 544px;
+                overflow-y: auto;
+                .scroll-content {
+                    width: 100%;
+                    display: flex;
+                    flex-wrap: wrap;
+                    .good-item {
+                        width: 220px;
+                        height: 292px;
+                        background: #ffffff;
+                        border: 2px solid #f4f4f4;
+                        border-radius: 2px;
+                        margin: 0 32px 32px 0;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        position: relative;
+                        overflow: hidden;
+                        .pic {
+                            background: #f4f4f4;
+                            width: 180px;
+                            height: 180px;
+                        }
+                        .title {
+                            width: 180px;
+                            font-size: 20px;
+                            color: #333333;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            margin-top: 4px;
+                            margin-bottom: 8px;
+                        }
+                        .price {
+                            width: 180px;
+                            font-size: 20px;
+                            color: #333333;
+                        }
+                    }
+                    .good-item:nth-child(5n) {
+                        margin-right: 0;
+                    }
+                    .good-item.select {
+                        border: 2px solid #0863ff;
+                    }
+                }
+            }
+        }
+        .content-bottom {
+            width: 1324px;
+            height: 152px;
+            padding: 0 40px;
+            display: flex;
+            font-size: 24px;
+            color: #333333;
+            text-align: center;
+            align-items: center;
+            .page {
+                width: 208px;
+                height: 56px;
+                display: flex;
+                .page-btn {
+                    width: 56px;
+                    height: 56px;
+                    box-sizing: border-box;
+                    background: #ffffff;
+                    border: 1px solid #cccccc;
+                    border-radius: 2px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                }
+                .page-num {
+                    line-height: 56px;
+                    margin: 0 16px;
+                    text-align: center;
+                }
+            }
+            .confirm {
+                background: #0863ff;
+                border: 1px solid #0863ff;
+                color: #ffffff;
+                border-radius: 3px;
+                width: 160px;
+                height: 56px;
+                line-height: 56px;
+                margin-left: 676px;
+                cursor: pointer;
+            }
+            .cancel {
+                background: #ffffff;
+                border: 1px solid #999999;
+                border-radius: 3px;
+                width: 160px;
+                height: 56px;
+                line-height: 56px;
+                margin-left: 24px;
+                cursor: pointer;
+            }
+        }
+    }
+}
+/**
+ *   Flag component
+ */
+.flag {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+/**
+ * The traingle shape of the flag.
+ * 1. The size of the triangle.
+ */
+.flag:before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    border-style: solid;
+    border-width: 40px; /* [1] */
+    border-color: transparent transparent transparent #0863ff;
+    transform: rotate(-45deg);
+}
+// /*
+//  * Rotate the text and position it.
+//  * 1. Put on the GPU to ensure the text is rendered correctly
+//  */
+.flag-text {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    color: #ffffff;
+}

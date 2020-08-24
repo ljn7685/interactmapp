@@ -92,7 +92,7 @@ class MidCard extends Component {
                         <View className='xufei-head-info head-userInfo'>
                             <Text className='userInfo-txt'>
                                 <View className='userInfo-nick'>{getUserInfo().userNick}</View>
-                                <Image className='crown' src='https://q.aiyongbao.com/item/web/images/crown-VIP.png' />
+                                <Image className='crown' src='https://q.aiyongtech.com/item/web/images/crown-VIP.png' />
                             </Text>
                             <Text
                                 className='userInfo-txt userInfo-desc'

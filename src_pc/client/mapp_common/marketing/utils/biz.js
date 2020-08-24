@@ -130,7 +130,7 @@ export const goPage = (url) => {
     // 交易由于放了q.aiyongbao的白名单,所以提供一个中转页面后可以想跳哪跳哪
     // 如果跳转外链出问题了,那八成也是这里的问题,优先检查这里哦
     // 如果商品通过了q.aiyongbao域名,那这里也可以放开啦~
-    const webUrl = isTrade ? `https://q.aiyongbao.com/redirect.html?url=${url}` : url;
+    const webUrl = isTrade ? `https://q.aiyongtech.com/redirect.html?url=${url}` : url;
     my.qn.navigateToWebPage({ url:webUrl });
 };
 

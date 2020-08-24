@@ -405,7 +405,7 @@ class CheckIn extends Component {
                         已连续签到<Text>{currentSeries}</Text>天
                     </View>
                     <View className='top-rules' onClick={() => {this.showTipsMask.bind(this, 'rules');}}>
-                        <Image className='rules-icon' src='//q.aiyongbao.com/miniapp/marketing/newuser/rules.png'></Image>
+                        <Image className='rules-icon' src='//q.aiyongtech.com/miniapp/marketing/newuser/rules.png'></Image>
                         规则
                     </View>
                 </View>
@@ -465,56 +465,56 @@ class CheckIn extends Component {
                     <View className='progress-wrapper'>
                         {
                             checkInRound == 'second' ?
-                                <Image className='progress-img' src='//q.aiyongbao.com/miniapp/marketing/newuser/dayMid2.png'></Image>
-                                : <Image className='progress-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/dayOne.png'}></Image>
+                                <Image className='progress-img' src='//q.aiyongtech.com/miniapp/marketing/newuser/dayMid2.png'></Image>
+                                : <Image className='progress-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/dayOne.png'}></Image>
                         }
                         <Text className='progress-text'>1天</Text>
                     </View>
                     <View className='progress-wrapper'>
                         {
                             currentSeries >= 2 ?
-                                <Image className='progress-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/dayMid2.png'}></Image>
-                                : <Image className='progress-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/dayMid.png'}></Image>
+                                <Image className='progress-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/dayMid2.png'}></Image>
+                                : <Image className='progress-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/dayMid.png'}></Image>
                         }
                         <Text className='progress-text'>2天</Text>
                     </View>
                     <View className='progress-wrapper'>
                         {
                             currentSeries >= 3 ?
-                                <Image className='progress-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/dayMid2.png'}></Image>
-                                : <Image className='progress-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/dayMid.png'}></Image>
+                                <Image className='progress-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/dayMid2.png'}></Image>
+                                : <Image className='progress-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/dayMid.png'}></Image>
                         }
                         <Text className='progress-text'>3天</Text>
                     </View>
                     <View className='progress-wrapper'>
                         {
                             currentSeries >= 4 ?
-                                <Image className='progress-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/dayMid2.png'}></Image>
-                                : <Image className='progress-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/dayMid.png'}></Image>
+                                <Image className='progress-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/dayMid2.png'}></Image>
+                                : <Image className='progress-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/dayMid.png'}></Image>
                         }
                         <Text className={'progress-text'}>4天</Text>
                     </View>
                     <View className='progress-wrapper'>
                         {
                             currentSeries >= 5 ?
-                                <Image className='progress-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/dayMid2.png'}></Image>
-                                : <Image className='progress-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/dayMid.png'}></Image>
+                                <Image className='progress-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/dayMid2.png'}></Image>
+                                : <Image className='progress-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/dayMid.png'}></Image>
                         }
                         <Text className={'progress-text'}>5天</Text>
                     </View>
                     <View className='progress-wrapper'>
                         {
                             currentSeries >= 6 ?
-                                <Image className='progress-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/dayMid2.png'}></Image>
-                                : <Image className='progress-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/dayMid.png'}></Image>
+                                <Image className='progress-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/dayMid2.png'}></Image>
+                                : <Image className='progress-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/dayMid.png'}></Image>
                         }
                         <Text className={'progress-text'}>6天</Text>
                     </View>
                     <View className='progress-wrapper'>
                         {
                             currentSeries >= 7 ?
-                                <Image className='progress-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/dayEnd2.png'}></Image>
-                                : <Image className='progress-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/dayEnd.png'}></Image>
+                                <Image className='progress-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/dayEnd2.png'}></Image>
+                                : <Image className='progress-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/dayEnd.png'}></Image>
                         }
                         <Text className={'progress-text'}>7天</Text>
                     </View>
@@ -572,7 +572,7 @@ class CheckIn extends Component {
         return (
             <View className='newuser'>
                 <View className='header-bg'>
-                    <Image className='header-img' src={'//q.aiyongbao.com/miniapp/marketing/newuser/header-bg.png'}></Image>
+                    <Image className='header-img' src={'//q.aiyongtech.com/miniapp/marketing/newuser/header-bg.png'}></Image>
                 </View>
                 <View className='newuser-body'>
                     <View className='newuser-checkin'>

@@ -4,12 +4,15 @@ import TWEEN from "@tweenjs/tween.js";
 import TurnTable from "./turntable";
 import Bow from "./bow";
 import CountDown from "./countdown";
+import { getAudioContext } from "../../../public/util";
 
+// const arrow_flying_mp3 = 'http://download.taobaocdn.com/freedom/90053/media/Animal.mp3';
+const arrow_flying_mp3 = "http://qniyong.oss-cn-hangzhou.aliyuncs.com/interact/arrow_flying.mp3";
+
+const flying_duration = 200;
 const {
     loader: { resources },
     Sprite,
-    Text,
-    TextStyle,
 } = PIXI;
 const { Tween } = TWEEN;
 class Game extends EventEmitter {
@@ -34,12 +37,22 @@ class Game extends EventEmitter {
 
     isFlying = false;
     /**
+     * 初始化音频
+     */
+    initAudio () {
+        this.audioContext = getAudioContext(arrow_flying_mp3);
+        const audioContext = this.audioContext;
+        audioContext.onEnded(() => {
+            audioContext.destroy();
+        });
+    }
+    /**
      *
      * @param {PIXI.Application} app
      * @param {*} assets
      * @param {*} config
      */
-    init(app, config) {
+    init (app, config) {
         this.app = app;
         this.ticker = app.ticker;
         this.stage = app.stage;
@@ -56,7 +69,7 @@ class Game extends EventEmitter {
     /**
      * 根据屏幕大小，调整游戏场景
      */
-    onSceneResize() {
+    onSceneResize () {
         let bgImg = this.assets.get("loading_bg");
         const scaleX = this.width / bgImg.width;
         const scaleY = this.height / bgImg.height;
@@ -78,16 +91,19 @@ class Game extends EventEmitter {
             }
         }
     }
-
-    getRatio(){
+    /**
+     * 获得垂直方向相比设计分辨率的缩放
+     */
+    getRatio () {
         return this.height / this.designHeight;
     }
-
-    initStage() {
-        console.log(this.width, this.height);
+    /**
+     * 初始化舞台
+     */
+    initStage () {
         this.ticker.add(this.onUpdate.bind(this));
 
-        //初始化
+        // 初始化
         this.initBackground();
         this.initTurnTable();
         this.initBow();
@@ -99,7 +115,7 @@ class Game extends EventEmitter {
     /**
      * 初始化背景图
      */
-    initBackground() {
+    initBackground () {
         let bgImg = this.assets.get("loading_bg");
         const scaleX = this.width / bgImg.width;
         const scaleY = this.height / bgImg.height;
@@ -112,27 +128,27 @@ class Game extends EventEmitter {
      * 添加下一帧执行的函数
      * @param {*} fn 
      */
-    nextTick(fn) {
+    nextTick (fn) {
         setTimeout(fn, 0);
     }
     /**
      * 添加每一帧执行的函数
      * @param {*} obj 
      */
-    addTick(obj) {
+    addTick (obj) {
         this.ticker.add(obj);
     }
     /**
      * 移除每一帧执行的函数
      * @param {*} obj 
      */
-    removeTick(obj) {
+    removeTick (obj) {
         this.ticker.remove(obj);
     }
     /**
      * 初始化转盘
      */
-    initTurnTable() {
+    initTurnTable () {
         let turntable = (this.turntable = new TurnTable({
             assets: this.assets,
             game: this,
@@ -146,14 +162,14 @@ class Game extends EventEmitter {
      * 设置在屏幕中水平居中
      * @param {*} obj 
      */
-    setHorizontalCenter(obj) {
+    setHorizontalCenter (obj) {
         obj.pivot.x = obj.width / 2;
         obj.x = this.width / 2;
     }
     /**
      * 初始化弓箭
      */
-    initBow() {
+    initBow () {
         let bow = (this.bow = new Bow({ assets: this.assets }));
         bow.x = 196;
         bow.y = 1253;
@@ -163,35 +179,23 @@ class Game extends EventEmitter {
     /**
      * 初始化弓箭数量文本
      */
-    initArrowTotal() {
-        //当前分数
-        let style = new TextStyle({
-            fontFamily: "Arial",
-            fontSize: 48,
-            fill: "white",
-        });
-        this.arrowTotal = new Text(`X${this.arrow_count}`, style);
-        this.stage.addChild(this.arrowTotal);
-        //设置当前分数的位置
-        this.arrowTotal.x = 93;
-        this.arrowTotal.y = 1183;
-        this.onSceneResize();
+    initArrowTotal () {
+        this.emit('arrow_count', this.arrow_count);
     }
     /**
      * 更新弓箭数量
      * @param {*} count 
      */
-    setArrowCount(count) {
+    setArrowCount (count) {
         if (count >= 0 && count <= this.config.arrow_count) {
             this.arrow_count = count;
-            this.removeArrowTotal();
-            this.initArrowTotal();
+            this.emit('arrow_count', this.arrow_count);
         }
     }
     /**
      * 移除弓箭数量文本
      */
-    removeArrowTotal() {
+    removeArrowTotal () {
         if (this.arrowTotal) {
             this.stage.removeChild(this.arrowTotal);
             this.arrowTotal = null;
@@ -200,14 +204,11 @@ class Game extends EventEmitter {
     /**
      * 初始化倒计时
      */
-    initCountdown() {
-        let countdown = (this.countdown = new CountDown({
+    initCountdown () {
+        this.countdown = new CountDown({
             game: this,
             time: this.duration / 1000,
-        }));
-        this.stage.addChild(countdown);
-        countdown.y = 219;
-        countdown.x = this.width / 2;
+        });
     }
     /**
      * 触摸开始
@@ -219,7 +220,6 @@ class Game extends EventEmitter {
         this.pulling = false;
         this.pull_pos = [e.touches[0].clientX, e.touches[0].clientY];
         this.emit("pointstart");
-        console.log("touchstart");
     };
     /**
      * 触摸移动
@@ -260,15 +260,15 @@ class Game extends EventEmitter {
      * 箭头飞行动画
      * @param {Arrow} arrow 箭头对象
      */
-    arrowFlying(arrow) {
+    arrowFlying (arrow) {
         this.isFlying = true;
+        this.initAudio();
+        this.audioContext.play();
         let distance = this.bow.getArrowY() - this.turntable.getHitBottom();
         let tween = new Tween(arrow)
             .to(
-                {
-                    y: this.bow.getFlyY(distance),
-                },
-                300
+                { y: this.bow.getFlyY(distance) },
+                flying_duration
             )
             .onUpdate((object, elapsed) => {
                 arrow.scale.x = 1 + (this.turntable.arrow_scale - 1) * elapsed;
@@ -298,7 +298,7 @@ class Game extends EventEmitter {
     /**
      * 弓箭射击失败回调
      */
-    onShootFail() {
+    onShootFail () {
         console.log("onShootFail");
         if (this.state === 1) return;
         this.setArrowCount(this.arrow_count - 1);
@@ -311,7 +311,7 @@ class Game extends EventEmitter {
     /**
      * 弓箭射击成功回调
      */
-    onShootSuccess() {
+    onShootSuccess () {
         console.log("onShootSuccess");
         if (this.state === 1) return;
         this.setArrowCount(this.arrow_count - 1);
@@ -335,7 +335,7 @@ class Game extends EventEmitter {
      * 延迟一段时间显示普通状态下的天使
      * @param {*} callback 
      */
-    delayShowNormalAngel(callback) {
+    delayShowNormalAngel (callback) {
         if (this.angelTimer) {
             clearTimeout(this.angelTimer);
             this.angelTimer = null;
@@ -352,13 +352,13 @@ class Game extends EventEmitter {
     /**
      * 每一帧执行的函数
      */
-    onUpdate() {
+    onUpdate () {
         TWEEN.update();
     }
     /**
      * 游戏停止回调，游戏结束事调用
      */
-    stop() {
+    stop () {
         if (this.angelTimer) {
             clearTimeout(this.angelTimer);
             this.angelTimer = null;
@@ -374,11 +374,16 @@ class Game extends EventEmitter {
         }
         TWEEN.removeAll();
     }
-    destroy() {}
+    /**
+     * 游戏销毁，清理资源
+     */
+    destroy () {
+        console.log('destory');
+    }
     /**
      * 游戏准备就绪回调
      */
-    gameReady() {
+    gameReady () {
         this.bow.addArrow();
         this.countdown.start();
         this.turntable.startRotate();
@@ -386,7 +391,7 @@ class Game extends EventEmitter {
     /**
      * 游戏结束回调
      */
-    gameOver() {
+    gameOver () {
         this.state = 1;
         this.nextTick(() => {
             this.stop();
@@ -400,9 +405,5 @@ class Game extends EventEmitter {
             }
         });
     }
-
-    calcScore() {}
-
-    saveBestScore() {}
 }
 export default Game;

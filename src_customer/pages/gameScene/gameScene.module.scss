@@ -1,0 +1,57 @@
+#gameroot {
+  height: 100vh;
+  position: relative;
+}
+.guide {
+  z-index: 1;
+  position: absolute;
+  width: 18.4%;
+  top: 64.347vh;
+  left: 50%;
+  transform: translateX(-23.913%);
+  transform-origin:50% 0;
+  pointer-events: none;
+}
+.heart {
+  z-index: 2;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 41.995vh;
+  transform-origin:50% 50%;
+  height: 100%;
+}
+.success-angel {
+  z-index: 1;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 41.995vh;
+  transform-origin:50% 50%;
+  width: 46.666%;
+}
+.arrow-count {
+  z-index: 1;
+  position: absolute;
+  left: 18%;
+  transform: translate(-50%, -50%);
+  top: 74vh;
+  transform-origin:50% 50%;
+  font-size: 48px;
+  color: #ffffff;
+  width: 150px;
+}
+.countdown {
+  z-index: 1;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 14.5vh;
+  transform-origin:50% 50%;
+  font-size: 48px;
+  color: #ffffff;
+}
+.canvas {
+  width: 100vw;
+  height: 100vh;
+}

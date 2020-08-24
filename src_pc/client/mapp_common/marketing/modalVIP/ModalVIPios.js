@@ -55,7 +55,7 @@ class ModalVIPios extends Component {
         } else {
             adBody = this.adBody;
         }
-        const adIntroSrc = ENV.app === 'trade' ? '//q.aiyongbao.com/trade/web/images/qap_img/mobile/GuideIosTrade.png' : '//q.aiyongbao.com/miniapp/item/img/mobile/marketing-guide-ios.png' ;
+        const adIntroSrc = ENV.app === 'trade' ? '//q.aiyongtech.com/trade/web/images/qap_img/mobile/GuideIosTrade.png' : '//q.aiyongtech.com/miniapp/item/img/mobile/marketing-guide-ios.png' ;
         return (
             <View className='modal-vip-ios-page'>
                 <Image className='ad-img' src={adBody.img_path}></Image>

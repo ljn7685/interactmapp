@@ -16,36 +16,47 @@
             color: #0863FF;
         }
     }
+    .col-date{
+        width: 240px;
+        text-align: center;
+    }
+    .col-num{
+        width: 256px;
+        text-align: center;
+    }
+    .col-join{
+        width: 128px;
+        text-align: center;
+    }
+    .col-follw{
+        width: 192px;
+        text-align: center;
+    }
+    .col-reward {
+        width: 192px;
+        text-align: center;
+    }
     .data-top{
         display: flex;
         align-items: center;
+        justify-content: space-around;
         height: 96px;
         background: #E6E6E6;
         border-radius: 8px 8px 0px 0px;
-        .data-date{
-            margin-left: 144px;
-            margin-right: 260px;
-        }
-        .join{
-            margin-left: 252px;
-            margin-right: 220px;
-        }
-        .reward{
-            margin-left: 220px;
-        }
+        padding-right: 20px;
     }
     .data-content{
         background: #fff;
         padding-bottom: 28px;
         height: 72vh;
-        overflow-y: scroll;
+        overflow-y: auto;
         border-radius: 16px;
         .total-box{
             background: #FFF7DB;
             display: flex;
             height: 120px;
-            padding-left: 148px;
             align-items: center;
+            justify-content: space-around;
             position: relative;
             &::after{
                 position: absolute;
@@ -55,27 +66,15 @@
                 background: #E6E6E6;
                 bottom: 0;
                 left: 2%;
-            }
-            .total-num{
-                margin-left: 260px;
-                width: 256px;
-            }
-            .total-join{
-                margin-left: 260px;
-                width: 128px;
-            }
-            .total-follw{
-                width: 192px;
-                margin: 0 220px;
             }
         }
         .data-content-tip{
             background: #fff;
             position: relative;
-            padding-left: 148px;
             display: flex;
             height: 120px;
             align-items: center;
+            justify-content: space-around;
             &::after{
                 position: absolute;
                 content: '';
@@ -85,39 +84,12 @@
                 bottom: 0;
                 left: 2%;
             }
-            .tip-date{
-                width: 240px;
-            }
-            .tip-num{
-                margin-left: 84px;
-                width: 256px;
-            }
-            .tip-join{
-                margin-left: 260px;
-                width: 128px;
-            }
-            .tip-follw{
-                width: 192px;
-                margin: 0 220px;
-            }
         }
         .data-content-bottom{
             display: flex;
             justify-content: flex-end;
-            font-size: 28px;
-            color: #333333;
             margin-top: 40px;
-            .pre-page{
-                cursor: pointer;
-            }
-            .next-page{
-                margin-right: 100px;
-                margin-left: 40px;
-                cursor: pointer;
-            }
-            .end-page{
-                color: #767676;
-            }
+            padding: 0 48px;
         }
     }
 }
