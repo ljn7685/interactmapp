@@ -334,11 +334,7 @@ export function helpShareUserAction (fromNick, gameConfig, callback) {
             dispatch(helpShareUser());
             callback && callback({ result:true, msg:res.msg || '' });
         } catch (error) {
-            Taro.showToast({
-                title: error.msg || "分享助力失败",
-                icon: "fail",
-                duration: 2000,
-            });
+            dispatch(helpShareUser());
             callback && callback({ result:false, msg:error.msg || '' });
         }
     };

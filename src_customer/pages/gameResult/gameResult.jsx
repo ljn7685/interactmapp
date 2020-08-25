@@ -20,9 +20,7 @@ const reviveTip = `天呐！运气爆棚！
 const failTip = `啊哦～差一点点就过关咯! 
 
 多加练习，再来挑战～～`;
-const receiveTip = `
-
-已经领取过这张优惠券啦～
+const receiveTip = `已经领取过这张优惠券啦～
 
 赶紧去店铺逛逛
 `;
@@ -58,12 +56,13 @@ class GameResult extends Component {
             isSuccess,
             onRestart,
             gametimes,
-            userinfo: { active_rewards: { datas }, is_receive_rewards },
+            userinfo: { active_rewards: { datas } },
         } = this.props;
         let headerStyle = classNames(styles["header"], {
             [styles["win-header"]]: isSuccess,
             [styles["lose-header"]]: !isSuccess,
         });
+        const is_receive_rewards = Boolean(this.props.userinfo.is_receive_rewards);
         const footer = !isSuccess && gametimes > 0 && (
             <Image
                 src={close_btn_img}
@@ -82,7 +81,7 @@ class GameResult extends Component {
         );
         const tipStyle = isSuccess ? styles["success-tip"] : styles["fail-tip"];
         const status = isSuccess ? 0 : gametimes > 0 ? 1 : 2;
-        const tipText = [is_receive_rewards ? receiveTip : successTip, reviveTip, failTip];
+        const tipText = [is_receive_rewards ? '' : successTip, reviveTip, failTip];
         const onClickBtn = [
             is_receive_rewards ? this.onClickClose : this.exchangePrize,
             onRestart,
@@ -104,10 +103,19 @@ class GameResult extends Component {
                 containerStyle={styles["container"]}
             >
                 <Text className={tipStyle}>{tipText[status]}</Text>
-                {isSuccess && !is_receive_rewards && (
+                {isSuccess && is_receive_rewards && (
                     <Text className={styles["prize-desc"]}>
-                        {prizes.length > 0 && ['获得', <Text key='prizenum' className={styles['prize-num']}>{prizes[0].amount / 100}</Text>, '元优惠券']}
-                        {prizes.length === 0 && '获得店铺优惠券'}
+                        { receiveTip}
+                    </Text>
+                )}
+                {isSuccess && !is_receive_rewards && prizes.length > 0 && (
+                    <Text className={styles["prize-desc"]}>
+                       获得 <Text key='prizenum' className={styles['prize-num']}>{prizes[0].amount / 100}</Text>元优惠券
+                    </Text>
+                )}
+                {isSuccess && !is_receive_rewards && prizes.length === 0 && (
+                    <Text className={styles["prize-desc"]}>
+                        获得店铺优惠券
                     </Text>
                 )}
                 <View className={styles["button-group"]}>
