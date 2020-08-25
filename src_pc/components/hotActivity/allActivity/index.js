@@ -174,7 +174,9 @@ class AllActivity extends Component {
                                 item = { ...item, active_status : 2 };
                             }
                         }
-                        if(item.status === undefined || item.status !== status_config[item.active_status]) {
+                        if (this.activeStatus !== 0) {
+                            item.status = status_config[this.activeStatus];
+                        } else if(item.status === undefined || item.status !== status_config[item.active_status]) {
                             item.status = status_config[item.active_status];
                         }
                         return (
