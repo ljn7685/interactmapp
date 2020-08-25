@@ -7,8 +7,8 @@ import { descReplace } from '../util';
 export const getActivityDataApi = (args) => {
     return new Promise((resolve, reject) => {
         api({
-            apiName: 'aiyong.interactb.user.createact.get',
-            method: '/interactive/getUserCreateInterActData',
+            apiName: 'aiyong.item.interactb.user.createact.get',
+            method: '/interactive/newGetUserCreateInterActData',
             args: args,
             callback: res => {
                 resolve(res);
