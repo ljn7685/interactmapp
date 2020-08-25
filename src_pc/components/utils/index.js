@@ -24,11 +24,11 @@ export const isEmpty = (value) => {
  */
 export const matchNum = (value, name = "活动次数") => {
     var regPos = /^\d+$/; // 非负整数
-    if (regPos.test(value)) {
+    if (regPos.test(value) && Number(value) > 0) {
         return true;
     } else {
         Taro.showToast({
-            title: name + '为非负整数',
+            title: name + '为正整数',
             duration: 2000,
         });
         return false;

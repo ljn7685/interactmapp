@@ -332,7 +332,7 @@ class GameIndex extends Component {
                             this,
                             "showShareResult"
                         )}
-                        isSuccess={this.state.shareResult}
+                        shareResult={this.state.shareResult}
                     />
                 ) : null}
                 <ToastBox ref={(ref) => (this.toast = ref)}></ToastBox>

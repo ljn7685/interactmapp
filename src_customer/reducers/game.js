@@ -8,7 +8,7 @@ import { ADD_GAMETIMES,
     SET_JOIN_GAME,
     SET_RECEIVE_REWARDS, 
     COLLECT_GOOD_ITEM,
-    HELP_SHARE_USER } from "../constants/game";
+    HELP_SHARE_USER } from "../actions/game";
 
 const initState = {
     gametimes: 0,

@@ -330,16 +330,16 @@ export function shareHelpApi (fromNick, gameConfig) {
 export function helpShareUserAction (fromNick, gameConfig, callback) {
     return async (dispatch) => {
         try {
-            await shareHelpApi(fromNick, gameConfig);
+            const res = await shareHelpApi(fromNick, gameConfig);
             dispatch(helpShareUser());
-            callback && callback(true);
+            callback && callback({ result:true, msg:res.msg || '' });
         } catch (error) {
             Taro.showToast({
                 title: error.msg || "分享助力失败",
                 icon: "fail",
                 duration: 2000,
             });
-            callback && callback(false);
+            callback && callback({ result:false, msg:error.msg || '' });
         }
     };
 }

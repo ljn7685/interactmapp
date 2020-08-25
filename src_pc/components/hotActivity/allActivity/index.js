@@ -150,13 +150,15 @@ class AllActivity extends Component {
             <View>
                 {
                     dataList.map((item, index) => {
-                        if(moment(item.start_date).isBefore(new Date()) && item.active_status === 3) {
-                            console.warn('活动自动开始', { ...item });
-                            item.active_status = 1;
-                        }
-                        if(moment(item.end_date).isBefore(new Date()) && item.active_status === 1) {
-                            console.warn('活动自动结束', { ...item });
-                            item.active_status = 2;
+                        if (this.activeStatus === 0) {
+                            if(moment(item.start_date).isBefore(new Date()) && item.active_status === 3) {
+                                console.warn('活动自动开始', { ...item });
+                                item = { ...item, active_status : 1 };
+                            }
+                            if(moment(item.end_date).isBefore(new Date()) && item.active_status === 1) {
+                                console.warn('活动自动结束', { ...item });
+                                item = { ...item, active_status : 2 };
+                            }
                         }
                         if(item.status === undefined || item.status !== status_config[item.active_status]) {
                             item.status = status_config[item.active_status];

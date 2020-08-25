@@ -20,6 +20,12 @@ const reviveTip = `天呐！运气爆棚！
 const failTip = `啊哦～差一点点就过关咯! 
 
 多加练习，再来挑战～～`;
+const receiveTip = `
+
+已经领取过这张优惠券啦～
+
+赶紧去店铺逛逛
+`;
 @connect(
     ({ game }) => {
         return { userinfo: game.userinfo, gametimes:game.gametimes };
@@ -52,7 +58,7 @@ class GameResult extends Component {
             isSuccess,
             onRestart,
             gametimes,
-            userinfo: { active_rewards: { datas } },
+            userinfo: { active_rewards: { datas }, is_receive_rewards },
         } = this.props;
         let headerStyle = classNames(styles["header"], {
             [styles["win-header"]]: isSuccess,
@@ -76,9 +82,9 @@ class GameResult extends Component {
         );
         const tipStyle = isSuccess ? styles["success-tip"] : styles["fail-tip"];
         const status = isSuccess ? 0 : gametimes > 0 ? 1 : 2;
-        const tipText = [successTip, reviveTip, failTip];
+        const tipText = [is_receive_rewards ? receiveTip : successTip, reviveTip, failTip];
         const onClickBtn = [
-            this.exchangePrize,
+            is_receive_rewards ? this.onClickClose : this.exchangePrize,
             onRestart,
             this.onClickGametimes,
         ];
@@ -87,7 +93,7 @@ class GameResult extends Component {
             styles.again,
             classNames(styles.gametimes, styles.big),
         ];
-        const btnText = ["立即领取", "再战一次", "获取游戏次数"];
+        const btnText = [is_receive_rewards ? "我知道了" : "立即领取", "再战一次", "获取游戏次数"];
         const prizes = datas && datas.length > 0 ? [datas[0]] : [];
         return (
             <Modal
@@ -98,11 +104,10 @@ class GameResult extends Component {
                 containerStyle={styles["container"]}
             >
                 <Text className={tipStyle}>{tipText[status]}</Text>
-                {isSuccess && (
+                {isSuccess && !is_receive_rewards && (
                     <Text className={styles["prize-desc"]}>
-                        {prizes.length > 0
-                            ? `获得${prizes[0].amount / 100}元优惠券`
-                            : "获得店铺优惠券"}
+                        {prizes.length > 0 && ['获得', <Text key='prizenum' className={styles['prize-num']}>{prizes[0].amount / 100}</Text>, '元优惠券']}
+                        {prizes.length === 0 && '获得店铺优惠券'}
                     </Text>
                 )}
                 <View className={styles["button-group"]}>
