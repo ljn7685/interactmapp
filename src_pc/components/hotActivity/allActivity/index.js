@@ -25,15 +25,31 @@ class AllActivity extends Component {
             dataList: '',
             query:'',
             total: 1,
+            showSearch:true,
         };
         this.pageNo = 1; // 初始页数
         this.pageSize = 10; // 页面条数
         this.activeStatus = 0; // 活动状态
     }
-
     componentDidMount () {
         // 初始化信息
         this.getActivityData();
+    }
+    componentDidUpdate (prevProps, prevState) {
+        const { query } = this.state;
+        if(prevState.query !== query) {
+            if(query === '') {
+                this.clearSearch();
+            }
+        }
+    }
+    /**
+     * 清空搜索框
+     */
+    clearSearch () {
+        this.setState({ showSearch:false }, () => {
+            this.setState({ showSearch:true });
+        });
     }
     /**
      * 获取用户创建的游戏
@@ -56,7 +72,7 @@ class AllActivity extends Component {
             this.setState({
                 dataList: data,
                 isShow: true,
-                total: query ? 1 : newTotal,
+                total: newTotal,
             });
         } else {
             this.setState({ isShow: false });
@@ -94,11 +110,9 @@ class AllActivity extends Component {
     selectStatu = (value) => {
         this.activeStatus = value;
         this.pageNo = 1;
-        if (value !== 0) {
-            this.setState({ query:'' }, () => {
-                this.getActivityData();
-            });
-        }
+        this.setState({ query:'' }, () => {
+            this.getActivityData();
+        });
     }
     /**
      * 翻页
@@ -211,17 +225,17 @@ class AllActivity extends Component {
     }
 
     render () {
-        const { isShow } = this.state;
+        const { isShow, showSearch, query } = this.state;
         return (
             <View className='all-box'>
                 <View className='all-top'>
                     <SelectBox changeStatu={this.selectStatu} selectIndex={this.activeStatus} selectItem={['全部', '进行中', '已结束', '未开始']} />
-                    <SearchBox
+                    {showSearch && <SearchBox
                         className='search-box'
                         placeholder='请输入活动名称搜索'
                         onSearch={this.onClickSearch}
-                        value={this.query}
-                    />
+                        value={query}
+                    />}
                 </View>
                 {
                     !isShow && this.emptyPage()
