@@ -13,6 +13,7 @@ export const SET_RECEIVE_REWARDS = 'SET_RECEIVE_REWARDS';
 export const SET_JOIN_GAME = 'SET_JOIN_GAME';
 export const COLLECT_GOOD_ITEM = 'COLLECT_GOOD_ITEM';
 export const HELP_SHARE_USER = 'HELP_SHARE_USER';
+export const TOGGLE_MUSIC_ENABLE = 'TOGGLE_MUSIC_ENABLE';
 
 export const addGametimes = () => {
     return { type: ADD_GAMETIMES };
@@ -56,6 +57,10 @@ export const collectGoodItem = (item) => {
 
 export const helpShareUser = () => {
     return { type: HELP_SHARE_USER };
+};
+
+export const toggleMusicEnable = () => {
+    return { type: TOGGLE_MUSIC_ENABLE };
 };
 
 /**

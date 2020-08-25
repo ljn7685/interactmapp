@@ -12,7 +12,8 @@ import ToastBox from "../../components/toast/toast";
 import { setActivityEnded,
     setUserInfo,
     favorShop,
-    joinGame, } from "../../actions/game";
+    joinGame,
+    toggleMusicEnable } from "../../actions/game";
 import icon_gift from "../../assets/images/icon_gift.png";
 import GameButton from "../../components/gameButton";
 import GameTask from "../gameTask";
@@ -21,6 +22,8 @@ import GameShare from "../gameShare";
 import useShareMessage from "../../components/shareMessage";
 import HelpShare from "../../components/helpShare";
 import HelpShareResult from "../../components/helpShareResult";
+import icon_music_png from "../../assets/images/icon_music.png";
+import icon_music_close_png from "../../assets/images/icon_music_close.png";
 
 const titleIcon = "http://q.aiyongtech.com/interact/game_title_icon.png";
 const start_turntable = "http://q.aiyongtech.com/interact/start_turntable.png";
@@ -194,6 +197,8 @@ class GameIndex extends Component {
             activity_ended,
             userinfo: { sub_title, fromNick, check_favored },
             gametimes,
+            toggleMusicEnable,
+            music_enable,
         } = this.props;
         const taskList = this.getTaskList();
         return (
@@ -253,6 +258,19 @@ class GameIndex extends Component {
                     连续参与游戏成功率更高哦
                 </Text>
                 <View className='sidebar'>
+                    <View
+                        className='side-btn'
+                        onClick={toggleMusicEnable}
+                        key='music'
+                    >
+                        <Image
+                            src={music_enable ? icon_music_png : icon_music_close_png}
+                            alt=''
+                            className='side-img'
+                            mode='widthFix'
+                        ></Image>
+                        {!music_enable ? <Text className='side-btn-tip'>开启音效，游戏体验更佳</Text> : null}
+                    </View>
                     <View
                         className='side-btn'
                         onClick={this.onToggleModal.bind(this, "showRule")}
@@ -343,6 +361,7 @@ const mapStateToProps = ({ game }) => {
         gametimes: game.gametimes,
         activity_ended: game.activity_ended,
         userinfo: game.userinfo,
+        music_enable: game.music_enable,
     };
 };
 const mapDispatchToProps = {
@@ -350,6 +369,7 @@ const mapDispatchToProps = {
     setUserInfo,
     favorShop,
     joinGame,
+    toggleMusicEnable,
 };
 const wrapper = useShareMessage(
     connect(mapStateToProps, mapDispatchToProps)(GameIndex)

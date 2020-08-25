@@ -263,7 +263,9 @@ class Game extends EventEmitter {
     arrowFlying (arrow) {
         this.isFlying = true;
         this.initAudio();
-        this.audioContext.play();
+        if(this.config.music_enable) {
+            this.audioContext.play();
+        }
         let distance = this.bow.getArrowY() - this.turntable.getHitBottom();
         let tween = new Tween(arrow)
             .to(

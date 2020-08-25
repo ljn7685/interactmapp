@@ -155,6 +155,7 @@ class GameScene extends Component {
                     arrow_count: this.props.arrow_count,
                     game_duration: this.props.game_duration,
                     arrow_score: this.props.arrow_score,
+                    music_enable: this.props.music_enable,
                 });
             },
         });
@@ -163,10 +164,12 @@ class GameScene extends Component {
         if (score > this.props.best_score) {
             this.props.setBestScore(score);
         }
-        if (isSuccess) {
-            this.successAudio.play();
-        } else {
-            this.failAudio.play();
+        if(this.props.music_enable) {
+            if (isSuccess) {
+                this.successAudio.play();
+            } else {
+                this.failAudio.play();
+            }
         }
         this.setState({
             showGameResult: true,
@@ -291,6 +294,7 @@ const mapStateToProps = ({ game }) => {
         gametimes: game.gametimes,
         game_duration: game.game_duration,
         userinfo: game.userinfo,
+        music_enable: game.music_enable,
     };
 };
 const mapDispatchToProps = {
