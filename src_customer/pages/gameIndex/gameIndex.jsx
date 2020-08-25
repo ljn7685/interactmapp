@@ -136,17 +136,15 @@ class GameIndex extends Component {
         };
         const onFavorShop = this.onFavorShop;
         const taskList = [];
-        if (!check_favored) {
-            taskList.push({
-                current: check_favored,
-                total: 1,
-                name: "关注店铺",
-                btnText: "立即关注",
-                disabledText: "已关注",
-                disabled: check_favored,
-                onClick: onFavorShop,
-            });
-        }
+        taskList.push({
+            current: check_favored,
+            total: 1,
+            name: "关注店铺",
+            btnText: "立即关注",
+            disabledText: "已关注",
+            disabled: check_favored,
+            onClick: onFavorShop,
+        });
         if (game_config && game_config.gameTask) {
             if (game_config.gameTask.includes("share")) {
                 const share_num = Array.isArray(shared_users)
@@ -244,12 +242,12 @@ class GameIndex extends Component {
                                 ? "开始游戏 赢好礼"
                                 : "关注店铺 获取游戏次数"}
                     </GameButton>
-                    <GameButton
+                    { taskList.length > 1 ? <GameButton
                         className={styles["game-times"]}
                         onClick={this.onToggleModal.bind(this, "showTask")}
                     >
                         获取更多游戏次数
-                    </GameButton>
+                    </GameButton> : null}
                 </View>
                 <Text className={styles["game-desc"]}>
                     连续参与游戏成功率更高哦
@@ -300,7 +298,7 @@ class GameIndex extends Component {
                         }}
                     ></GamePrize>
                 ) : null}
-                {showTask && taskList.length > 0 ? (
+                {showTask && taskList.length > 1 ? (
                     <GameTask
                         onClose={this.onToggleModal.bind(this, "showTask")}
                         taskList={taskList}
