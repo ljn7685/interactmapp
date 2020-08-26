@@ -105,7 +105,7 @@ export const favorShop = (userinfo, cb) => {
             .then((res) => {
                 console.log("关注店铺成功", res);
                 api({
-                    apiName: "aiyong.interactc.user.data.update",
+                    apiName: "aiyong.item.interactc.user.data.update",
                     method: "/interactive/updateInterActCData",
                     args: {
                         game_stage: 1,
@@ -143,7 +143,7 @@ export const favorShop = (userinfo, cb) => {
 export const joinGame = (userinfo, cb) => {
     return (dispatch) => {
         api({
-            apiName: "aiyong.interactc.user.data.update",
+            apiName: "aiyong.item.interactc.user.data.update",
             method: "/interactive/updateInterActCData",
             args: {
                 game_stage: 2,
@@ -167,7 +167,7 @@ export const joinGame = (userinfo, cb) => {
 export const updateGameNumberApi = (userinfo) => {
     return new Promise((resolve, reject) => {
         api({
-            apiName: "aiyong.interactc.user.data.update",
+            apiName: "aiyong.item.interactc.user.data.update",
             method: "/interactive/updateInterActCData",
             args: {
                 revive: true,
@@ -229,7 +229,7 @@ const draw = (userinfo) => {
 const receiveRewardsApi = (userinfo) => {
     return new Promise((resolve, reject) => {
         api({
-            apiName: "aiyong.interactc.user.data.update",
+            apiName: "aiyong.item.interactc.user.data.update",
             method: "/interactive/updateInterActCData",
             args: {
                 game_stage: 3,
@@ -277,7 +277,7 @@ export const drawPrize = (userinfo, cb) => {
 export function collectGoodApi (item, gameConfig) {
     return new Promise((resolve, reject) => {
         api({
-            apiName: "aiyong.interactc.user.data.update",
+            apiName: "aiyong.item.interactc.user.data.update",
             method: "/interactive/updateInterActCData",
             args: {
                 operType: 1,
@@ -306,7 +306,7 @@ export function collectGoodApi (item, gameConfig) {
 export function shareHelpApi (fromNick, gameConfig) {
     return new Promise((resolve, reject) => {
         api({
-            apiName: "aiyong.interactc.user.data.update",
+            apiName: "aiyong.item.interactc.user.data.update",
             method: "/interactive/updateInterActCData",
             args: {
                 operType: 2,

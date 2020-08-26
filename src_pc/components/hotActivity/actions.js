@@ -8,6 +8,7 @@ export const SET_DATA = "SET_DATA"; // 通过id保存游戏配置数据
 export const SET_URL = "SET_URL";// 保存创建成功后的活动url
 export const SET_VALUE = "SET_VALUE"; // input框的输入值变化
 export const SET_CONFIG = "SET_CONFIG"; // 游戏配置的变化
+export const INIT_ACTIVITY_DATA = "INIT_ACTIVITY_DATA"; // 初始化活动数据
 /**
  * 改变顶部标题
  * @param {*} values 
@@ -64,6 +65,12 @@ export const setActivityUrlAction = (activityUrl) => {
         type: TITLE,
         activityUrl: activityUrl,
     };
+};
+/**
+ * 初始化活动数据
+ */
+export const initActivityDataAction = () => {
+    return { type:INIT_ACTIVITY_DATA };
 };
 export const getBenefitQueryAction = (ename, poolID) => {
     return async (dispatch) => {
