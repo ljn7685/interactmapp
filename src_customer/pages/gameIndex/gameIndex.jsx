@@ -41,6 +41,7 @@ class GameIndex extends Component {
             showShare: false,
             showHelpShare: false,
             showShareResult: false,
+            showMusicTip: true,
             shareResult: false,
             jumpIcon: false,
         };
@@ -77,6 +78,12 @@ class GameIndex extends Component {
         if (userinfo.fromNick) {
             this.setState({ showHelpShare: true });
         }
+        this.tipTimer = setTimeout(() => {
+            this.setState({ showMusicTip:false });
+        }, 5000);
+    }
+    componentWillUnmount () {
+        clearTimeout(this.tipTimer);
     }
     /**
      * 开始游戏
@@ -192,6 +199,7 @@ class GameIndex extends Component {
             showShare,
             showHelpShare,
             showShareResult,
+            showMusicTip,
         } = this.state;
         const {
             activity_ended,
@@ -269,7 +277,7 @@ class GameIndex extends Component {
                             className='side-img'
                             mode='widthFix'
                         ></Image>
-                        {!music_enable ? <Text className='side-btn-tip'>开启音效，游戏体验更佳</Text> : null}
+                        {showMusicTip && !music_enable ? <Text className='side-btn-tip'>开启音效，游戏体验更佳</Text> : null}
                     </View>
                     <View
                         className='side-btn'

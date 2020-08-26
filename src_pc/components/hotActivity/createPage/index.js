@@ -30,9 +30,9 @@ const taskGroup = [
     { key: "collect", text: "收藏" },
 ];
 export const levelConfig = {
-    "1": { level: "1", arrow_count: 8 },
-    "2": { level: "2", arrow_count: 10 },
-    "3": { level: "3", arrow_count: 12 },
+    "1": { level: "1", arrow_count: 8, probability:'80%', text: "简单" },
+    "2": { level: "2", arrow_count: 10, probability:'60%', text: "普通" },
+    "3": { level: "3", arrow_count: 12, probability:'30%', text: "困难" },
 };
 class CreatePage extends Component {
     constructor (props) {
@@ -179,6 +179,17 @@ class CreatePage extends Component {
             this.props.inputChangeAction(type, date);
         }
     };
+    /**
+     * 获取难度提示
+     */
+    getLevelTip () {
+        let tip = '';
+        for(let key in levelConfig) {
+            const config = levelConfig[key];
+            tip += `${config.text}${config.arrow_count}支箭成功率${config.probability}；`;
+        }
+        return tip;
+    }
     render () {
         const {
             title,
@@ -193,6 +204,7 @@ class CreatePage extends Component {
         const duration = moment.duration(
             moment(activityData.endDate).diff(moment(activityData.startDate))
         );
+        const level = gameConfig.gameLevel && gameConfig.gameLevel.level ? gameConfig.gameLevel.level : 0;
         console.log("activityData", activityData, levelGroup);
         return (
             <View className='create-page'>
@@ -290,13 +302,15 @@ class CreatePage extends Component {
                     <AdRadioGroup
                         groupList={levelGroup}
                         itemClassName='level-radio'
-                        checkedKey={
-                            gameConfig.gameLevel && gameConfig.gameLevel.level
-                        }
+                        checkedKey={level}
                         onChange={(value) =>
                             this.configChange("gameLevel", levelConfig[value])
                         }
                     />
+                </View>
+                <View className='warn-bar'>
+                    <View className='warn-icon iconfont'>&#xe6b5;</View>
+                    <View className='warn-txt'>{this.getLevelTip()}</View>
                 </View>
                 <View className='task-box'>
                     <Text className='warn-xing'>*</Text>

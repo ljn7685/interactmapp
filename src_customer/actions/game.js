@@ -193,10 +193,15 @@ export const updateGameNumberApi = (userinfo) => {
  */
 export const addGameNumberAction = (userinfo, cb) => {
     return async (dispatch) => {
-        const res = await updateGameNumberApi(userinfo);
-        console.log("~~~~~~~~~~~~~~~~~~~~", res);
-        dispatch(minusGametimes());
-        cb && cb();
+        try{
+            const res = await updateGameNumberApi(userinfo);
+            console.log("~~~~~~~~~~~~~~~~~~~~", res);
+            dispatch(minusGametimes());
+            cb && cb();
+        } catch (err) {
+            console.log('addGameNumberAction', err);
+            Taro.showToast({ title:'更新游戏次数失败' });
+        }
     };
 };
 const draw = (userinfo) => {

@@ -38,7 +38,7 @@ export default (state = defaultState, action) => {
                     'endDate': moment().add(7, 'days').format("YYYY-MM-DD HH:mm:ss"),
                     'couponData': '',
                     // 'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${isEmpty(getUserInfo().cVersion) ? '0.0.14' : getUserInfo().cVersion}&_mp_code=tb&query=activeID%3D`,
-                    'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=0.0.24&nbsource=debug&nbsn=TRIAL&_mp_code=tb&query=activeID%3D`,
+                    'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=0.0.25&nbsource=debug&nbsn=TRIAL&_mp_code=tb&query=activeID%3D`,
                     'activeRewards': '',
                     'gameConfig':{
                         'maxShareNum':3,

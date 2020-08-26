@@ -51,10 +51,7 @@ class GameScene extends Component {
                 this.setState({ showTip: false });
             }
             this.props.addGameNumberAction(userinfo, () => {
-                this.onCanvasReady();
-                if (revive) {
-                    this.gameStart();
-                }
+                this.onCanvasReady(revive);
             });
         }
     }
@@ -91,7 +88,7 @@ class GameScene extends Component {
     /**
      * 设置canvas
      */
-    onCanvasReady () {
+    onCanvasReady (revive) {
         console.log("onCanvasReady");
         const { game } = this.state;
         game.bump = new Bump(PIXI);
@@ -157,6 +154,9 @@ class GameScene extends Component {
                     arrow_score: this.props.arrow_score,
                     music_enable: this.props.music_enable,
                 });
+                if (revive) {
+                    this.gameStart();
+                }
             },
         });
     }
