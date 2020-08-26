@@ -162,7 +162,7 @@ class GameIndex extends Component {
                     : 0;
                 const share_total = game_config.maxShareNum;
                 taskList.push({
-                    current: share_num,
+                    current: share_num >= share_total ? share_total : share_num,
                     total: share_total,
                     name: "邀请好友",
                     btnText: "立即邀请",

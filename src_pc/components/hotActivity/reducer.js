@@ -1,6 +1,6 @@
 import moment from "moment";
-// import { isEmpty } from '../../utils/index';
-// import { getUserInfo } from '../../../public/util/userInfoChanger';
+import { isEmpty } from '../utils/index';
+import { getUserInfo } from '../../public/util/userInfoChanger';
 import { TITLE, SET_VALUE, SET_CONFIG, INIT_ACTIVITY_DATA } from './actions';
 import { levelConfig } from "./createPage";
 
@@ -37,8 +37,7 @@ export default (state = defaultState, action) => {
                     'startDate': moment().format("YYYY-MM-DD HH:mm:ss"),
                     'endDate': moment().add(7, 'days').format("YYYY-MM-DD HH:mm:ss"),
                     'couponData': '',
-                    // 'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${isEmpty(getUserInfo().cVersion) ? '0.0.14' : getUserInfo().cVersion}&_mp_code=tb&query=activeID%3D`,
-                    'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=0.0.25&nbsource=debug&nbsn=TRIAL&_mp_code=tb&query=activeID%3D`,
+                    'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${isEmpty(getUserInfo().cVersion) ? '0.0.14' : getUserInfo().cVersion}&_mp_code=tb&query=activeID%3D`,
                     'activeRewards': '',
                     'gameConfig':{
                         'maxShareNum':3,

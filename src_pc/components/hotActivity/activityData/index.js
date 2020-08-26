@@ -87,7 +87,7 @@ class ActivityData extends Component {
      * 数据展现组件
      */
     dataContentTip = () => {
-        const { dataList, showCollect, showShare, pageNum, total } = this.state;
+        const { dataList, showCollect, showShare, pageNum, total, dataAll } = this.state;
         return (
             <View>
                 {
@@ -99,8 +99,8 @@ class ActivityData extends Component {
                                 <View className='col-join'>{item.joinNum ? item.joinNum : 0}</View>
                                 <View className='col-follw'>{item.follow ? item.follow : 0}</View>
                                 <View className='col-reward'>{item.reward ? item.reward : 0}</View>
-                                {showShare && <View className='col-follw'>{item.share ? item.share : 0}</View>}
-                                {showCollect && <View className='col-follw'>{item.collect ? item.collect : 0}</View>}
+                                {(showShare || dataAll.total_share) ? <View className='col-follw'>{item.share ? item.share : 0}</View> : null}
+                                {(showCollect || dataAll.total_collect) ? <View className='col-follw'>{item.collect ? item.collect : 0}</View> : null}
                             </View>
                         );
                     })
@@ -142,8 +142,8 @@ class ActivityData extends Component {
                             <View className='col-join'>参与人数</View>
                             <View className='col-follw'>关注店铺人数</View>
                             <View className='col-reward'>领取奖励人数</View>
-                            {showShare && <View className='col-follw'>分享进入人数</View>}
-                            {showCollect && <View className='col-follw'>收藏宝贝人数</View>}
+                            {(showShare || dataAll.total_share) ?  <View className='col-follw'>分享进入人数</View> : null}
+                            {(showCollect || dataAll.total_collect) ? <View className='col-follw'>收藏宝贝人数</View> : null}
                         </View>
                         <View className='data-content'>
                             {
@@ -153,8 +153,8 @@ class ActivityData extends Component {
                                     <View className='col-join'>{dataAll.total_join ? dataAll.total_join : 0}</View>
                                     <View className='col-follw'>{dataAll.total_follow ? dataAll.total_follow : 0}</View>
                                     <View className='col-reward'>{dataAll.total_reward ? dataAll.total_reward : 0}</View>
-                                    {showShare && <View className='col-follw'>{dataAll.total_share ? dataAll.total_share : 0}</View>}
-                                    {showCollect && <View className='col-follw'>{dataAll.total_collect ? dataAll.total_collect : 0}</View>}
+                                    {(showShare || dataAll.total_share) ? <View className='col-follw'>{dataAll.total_share ? dataAll.total_share : 0}</View> : null}
+                                    {(showCollect || dataAll.total_collect) ? <View className='col-follw'>{dataAll.total_collect ? dataAll.total_collect : 0}</View> : null}
                                 </View>
                             }
                             {
