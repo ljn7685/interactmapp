@@ -4,6 +4,12 @@ import PickerView from "../pickerView";
 import propTypes from 'prop-types';
 import "./index.scss";
 
+const timeData = [
+    [{ "value":0, "label":"0时" }, { "value":1, "label":"1时" }, { "value":2, "label":"2时" }, { "value":3, "label":"3时" }, { "value":4, "label":"4时" }, { "value":5, "label":"5时" }, { "value":6, "label":"6时" }, { "value":7, "label":"7时" }, { "value":8, "label":"8时" }, { "value":9, "label":"9时" }, { "value":10, "label":"10时" }, { "value":11, "label":"11时" }, { "value":12, "label":"12时" }, { "value":13, "label":"13时" }, { "value":14, "label":"14时" }, { "value":15, "label":"15时" }, { "value":16, "label":"16时" }, { "value":17, "label":"17时" }, { "value":18, "label":"18时" }, { "value":19, "label":"19时" }, { "value":20, "label":"20时" }, { "value":21, "label":"21时" }, { "value":22, "label":"22时" }, { "value":23, "label":"23时" }],
+    [{ "value":0, "label":"0分" }, { "value":1, "label":"1分" }, { "value":2, "label":"2分" }, { "value":3, "label":"3分" }, { "value":4, "label":"4分" }, { "value":5, "label":"5分" }, { "value":6, "label":"6分" }, { "value":7, "label":"7分" }, { "value":8, "label":"8分" }, { "value":9, "label":"9分" }, { "value":10, "label":"10分" }, { "value":11, "label":"11分" }, { "value":12, "label":"12分" }, { "value":13, "label":"13分" }, { "value":14, "label":"14分" }, { "value":15, "label":"15分" }, { "value":16, "label":"16分" }, { "value":17, "label":"17分" }, { "value":18, "label":"18分" }, { "value":19, "label":"19分" }, { "value":20, "label":"20分" }, { "value":21, "label":"21分" }, { "value":22, "label":"22分" }, { "value":23, "label":"23分" }, { "value":24, "label":"24分" }, { "value":25, "label":"25分" }, { "value":26, "label":"26分" }, { "value":27, "label":"27分" }, { "value":28, "label":"28分" }, { "value":29, "label":"29分" }, { "value":30, "label":"30分" }, { "value":31, "label":"31分" }, { "value":32, "label":"32分" }, { "value":33, "label":"33分" }, { "value":34, "label":"34分" }, { "value":35, "label":"35分" }, { "value":36, "label":"36分" }, { "value":37, "label":"37分" }, { "value":38, "label":"38分" }, { "value":39, "label":"39分" }, { "value":40, "label":"40分" }, { "value":41, "label":"41分" }, { "value":42, "label":"42分" }, { "value":43, "label":"43分" }, { "value":44, "label":"44分" }, { "value":45, "label":"45分" }, { "value":46, "label":"46分" }, { "value":47, "label":"47分" }, { "value":48, "label":"48分" }, { "value":49, "label":"49分" }, { "value":50, "label":"50分" }, { "value":51, "label":"51分" }, { "value":52, "label":"52分" }, { "value":53, "label":"53分" }, { "value":54, "label":"54分" }, { "value":55, "label":"55分" }, { "value":56, "label":"56分" }, { "value":57, "label":"57分" }, { "value":58, "label":"58分" }, { "value":59, "label":"59分" }], 
+    [{ "value":0, "label":"0秒" }, { "value":1, "label":"1秒" }, { "value":2, "label":"2秒" }, { "value":3, "label":"3秒" }, { "value":4, "label":"4秒" }, { "value":5, "label":"5秒" }, { "value":6, "label":"6秒" }, { "value":7, "label":"7秒" }, { "value":8, "label":"8秒" }, { "value":9, "label":"9秒" }, { "value":10, "label":"10秒" }, { "value":11, "label":"11秒" }, { "value":12, "label":"12秒" }, { "value":13, "label":"13秒" }, { "value":14, "label":"14秒" }, { "value":15, "label":"15秒" }, { "value":16, "label":"16秒" }, { "value":17, "label":"17秒" }, { "value":18, "label":"18秒" }, { "value":19, "label":"19秒" }, { "value":20, "label":"20秒" }, { "value":21, "label":"21秒" }, { "value":22, "label":"22秒" }, { "value":23, "label":"23秒" }, { "value":24, "label":"24秒" }, { "value":25, "label":"25秒" }, { "value":26, "label":"26秒" }, { "value":27, "label":"27秒" }, { "value":28, "label":"28秒" }, { "value":29, "label":"29秒" }, { "value":30, "label":"30秒" }, { "value":31, "label":"31秒" }, { "value":32, "label":"32秒" }, { "value":33, "label":"33秒" }, { "value":34, "label":"34秒" }, { "value":35, "label":"35秒" }, { "value":36, "label":"36秒" }, { "value":37, "label":"37秒" }, { "value":38, "label":"38秒" }, { "value":39, "label":"39秒" }, { "value":40, "label":"40秒" }, { "value":41, "label":"41秒" }, { "value":42, "label":"42秒" }, { "value":43, "label":"43秒" }, { "value":44, "label":"44秒" }, { "value":45, "label":"45秒" }, { "value":46, "label":"46秒" }, { "value":47, "label":"47秒" }, { "value":48, "label":"48秒" }, { "value":49, "label":"49秒" }, { "value":50, "label":"50秒" }, { "value":51, "label":"51秒" }, { "value":52, "label":"52秒" }, { "value":53, "label":"53秒" }, { "value":54, "label":"54秒" }, { "value":55, "label":"55秒" }, { "value":56, "label":"56秒" }, { "value":57, "label":"57秒" }, { "value":58, "label":"58秒" }, { "value":59, "label":"59秒" }],
+];
+
 class DatePicker extends Component {
     constructor (props) {
         super(props);
@@ -17,9 +23,6 @@ class DatePicker extends Component {
             selectedDateStr: null, // 选中日期字符格式,用于和dayStr比较
             selectedDateShow: null, // 选中日期显示 2018-12-12
             currentData: null, // 当前渲染数据
-            hours: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
-            minutes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 26, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59],
-            seconds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 26, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59],
             initTimeValue: [0, 0, 0], // 初始化选中时间的时,分,秒
             timeValue: [0, 0, 0], // 选中时间的时,分,秒，
         };
@@ -52,7 +55,6 @@ class DatePicker extends Component {
 	 */
     bindChange (values) {
         // const values = e.detail.value;
-        console.log('new timevalue', values);
         this.setState({ timeValue: values });
     }
     /**
@@ -136,7 +138,6 @@ class DatePicker extends Component {
     setMonthData () {
 
         const currentDate = this.state.currentDate;
-        console.log('setMonthData', currentDate);
         let year = currentDate.getFullYear(), month = currentDate.getMonth();
 
         // 当月所有天数的数据结构
@@ -177,7 +178,6 @@ class DatePicker extends Component {
         }
 
         currentData.push(firstCol);
-        console.log('currentData', currentData);
         // 第2～4行
         for (let i = 0; i < 3; i++) {
             let col = [];
@@ -262,7 +262,6 @@ class DatePicker extends Component {
         currentData.push(lastCol2);
 
         this.setState({ currentData: currentData });
-        console.log('currentData', currentData);
     }
     /**
 	 * 改变日期
@@ -271,7 +270,6 @@ class DatePicker extends Component {
     changeDate (type) {
         let currentDate = this.state.currentDate;
         let year = currentDate.getFullYear(), month = currentDate.getMonth();
-        console.log('changeDate type', type);
         switch (type) {
             case 'year-':
                 currentDate.setFullYear(year - 1);
@@ -328,7 +326,6 @@ class DatePicker extends Component {
             const year = date.getFullYear();
             const month = date.getMonth() + 1;
             const dateStr = [year, month].map(this.fixZero).join('-');
-            console.log('currentDate', date);
             this.setState({
                 currentDate: new Date(date.getTime()),
                 currentDateStr: dateStr,
@@ -386,19 +383,12 @@ class DatePicker extends Component {
     initDate (value) {
         let date = value ? new Date(value) : new Date();
         let year = date.getFullYear(), month = date.getMonth(), day = date.getDate();
-        console.log('initDate', value, date);
         this.setCurrentDate(new Date(year, month, day));
         this.setSelectedDate(new Date(year, month, day));
     }
     render () {
-        console.log('render');
         const { pickerShow } = this.props;
-        const { mode, currentDateStr, timeValue, selectedDateStr, selectedDateShow, currentData, hours, minutes, seconds, initTimeValue } = this.state;
-        const timeData = [
-            hours.map(item => ({ value:item, label:item + "时" })),
-            minutes.map(item => ({ value:item, label:item + "分" })),
-            seconds.map(item => ({ value:item, label:item + "秒" })),
-        ];
+        const { mode, currentDateStr, timeValue, selectedDateStr, selectedDateShow, currentData, initTimeValue } = this.state;
         return (<View>
             <View className={`modal ${pickerShow ? 'modal-show' : 'modal-hide'}`} catchtouchmove='true' onClick={this.cancel.bind(this)}></View>
             <View className={`picker ${pickerShow ? 'picker-show' : 'picker-hide'}`}>

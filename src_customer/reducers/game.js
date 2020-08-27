@@ -8,7 +8,8 @@ import { ADD_GAMETIMES,
     SET_JOIN_GAME,
     SET_RECEIVE_REWARDS, 
     COLLECT_GOOD_ITEM,
-    HELP_SHARE_USER } from "../constants/game";
+    HELP_SHARE_USER, 
+    TOGGLE_MUSIC_ENABLE } from "../actions/game";
 
 const initState = {
     gametimes: 0,
@@ -23,6 +24,7 @@ const initState = {
         start_date: "2020-01-01 00:00:00",
         end_date: "2020-12-31 00:00:00",
     },
+    music_enable: false,
 };
 /**
  * c端reducer
@@ -122,7 +124,12 @@ export default function reducer (state = initState, action) {
                 },
             };
         }
-
+        case TOGGLE_MUSIC_ENABLE: {
+            return {
+                ...state,
+                music_enable:!state.music_enable,
+            };
+        }
         default:
             return state;
     }

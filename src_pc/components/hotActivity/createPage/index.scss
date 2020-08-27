@@ -45,6 +45,27 @@
             margin-left: 0 !important;
         }
     }
+    .warn-bar{
+        display: flex;
+        height: 44px;
+        width: 880px;
+        box-sizing: border-box;
+        background: rgba(245,166,35,0.20);
+        align-items: center;
+        margin-top: 18.4px;
+        margin-left: 138px;
+        .warn-icon{
+            color: #FF6100;
+            font-size: 30px;
+            margin-right: 17px;
+            margin-left: 19px;
+            margin-top: 4px;
+        }
+        .warn-txt{
+            font-size: 24px;
+            color: #FF6100;
+        }
+    }
     .task-box {
         display: flex;
         margin-top: 32px;

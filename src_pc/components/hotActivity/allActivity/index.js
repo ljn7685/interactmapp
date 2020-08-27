@@ -6,10 +6,10 @@ import { changeTitleAction, getActivityByIdAction } from '../actions';
 import Taro from '@tarojs/taro';
 import { isEmpty } from '../../utils/index';
 import { connect } from 'react-redux';
-import TurnPage from '../../turnPage/index';
 import SelectBox from '../../selectBox/index';
 import { getActivityDataApi, createActivityApi } from '../../../public/bPromiseApi/index';
 import SearchBox from '../../searchBox';
+import Pagination from '../../pagination';
 
 const status_config = {
     "1":"进行中",
@@ -24,42 +24,55 @@ class AllActivity extends Component {
             isShow: false,
             dataList: '',
             query:'',
+            total: 1,
+            showSearch:true,
         };
         this.pageNo = 1; // 初始页数
         this.pageSize = 10; // 页面条数
         this.activeStatus = 0; // 活动状态
     }
-
     componentDidMount () {
         // 初始化信息
         this.getActivityData();
+    }
+    componentDidUpdate (prevProps, prevState) {
+        const { query } = this.state;
+        if(prevState.query !== query) {
+            if(query === '') {
+                this.clearSearch();
+            }
+        }
+    }
+    /**
+     * 清空搜索框
+     */
+    clearSearch () {
+        this.setState({ showSearch:false }, () => {
+            this.setState({ showSearch:true });
+        });
     }
     /**
      * 获取用户创建的游戏
      */
     getActivityData = async () => {
-        const { query } = this.state;
+        const { query, total } = this.state;
         const args = { 'pageNo': this.pageNo, 'pageSize': this.pageSize, 'activeStatus': this.activeStatus };
         if(query) {
             args.query = query;
             args.activeStatus = this.activeStatus = 0;
         }
-        let data = await getActivityDataApi(args).catch(err => {
+        let res = await getActivityDataApi(args).catch(err => {
             console.log('activity err', err);
         });
+        res = JSON.parse(res);
+        const { result:data } = res;
+        const newTotal = (res.total_res && Math.ceil(res.total_res / this.pageSize)) || total;
         console.log('activity data', data);
-        if (this.pageNo > 1 && isEmpty(data)) {
-            Taro.showToast({
-                title: '已经是最后一页了',
-                duration: 2000,
-            });
-            this.pageNo -= 1;
-            return;
-        }
         if (!isEmpty(data)) {
             this.setState({
                 dataList: data,
                 isShow: true,
+                total: newTotal,
             });
         } else {
             this.setState({ isShow: false });
@@ -97,18 +110,21 @@ class AllActivity extends Component {
     selectStatu = (value) => {
         this.activeStatus = value;
         this.pageNo = 1;
-        if (value !== 0) {
-            this.setState({ query:'' }, () => {
-                this.getActivityData();
-            });
-        }
+        this.setState({ query:'' }, () => {
+            this.getActivityData();
+        });
     }
     /**
      * 翻页
      * @param {*} type 
      */
-    turnPage = (current) => {
-        this.pageNo = current;
+    turnPage = (type) => {
+        let { pageNo } = this;
+        if (type === "prev") {
+            this.pageNo = pageNo - 1;
+        } else if (type === "next") {
+            this.pageNo = pageNo + 1;
+        }
         this.getActivityData();
     }
     /**
@@ -143,20 +159,24 @@ class AllActivity extends Component {
      * 数据具体展现组件
      */
     contentTip = () => {
-        const { dataList } = this.state;
+        const { dataList, total } = this.state;
         return (
             <View>
                 {
                     dataList.map((item, index) => {
-                        if(moment(item.start_date).isBefore(new Date()) && item.active_status === 3) {
-                            console.warn('活动自动开始', { ...item });
-                            item.active_status = 1;
+                        if (this.activeStatus === 0) {
+                            if(moment(item.start_date).isBefore(new Date()) && item.active_status === 3) {
+                                console.warn('活动自动开始', { ...item });
+                                item = { ...item, active_status : 1 };
+                            }
+                            if(moment(item.end_date).isBefore(new Date()) && item.active_status === 1) {
+                                console.warn('活动自动结束', { ...item });
+                                item = { ...item, active_status : 2 };
+                            }
                         }
-                        if(moment(item.end_date).isBefore(new Date()) && item.active_status === 1) {
-                            console.warn('活动自动结束', { ...item });
-                            item.active_status = 2;
-                        }
-                        if(item.status === undefined || item.status !== status_config[item.active_status]) {
+                        if (this.activeStatus !== 0) {
+                            item.status = status_config[this.activeStatus];
+                        } else if(item.status === undefined || item.status !== status_config[item.active_status]) {
                             item.status = status_config[item.active_status];
                         }
                         return (
@@ -179,7 +199,9 @@ class AllActivity extends Component {
                     })
                 }
                 {
-                    <TurnPage onPageNoChange={this.turnPage} pageNo={this.pageNo} />
+                    <View className='all-activity-bottom'>
+                        <Pagination  pageNum={this.pageNo} total={total} onChange={this.turnPage} /> 
+                    </View>
                 }
             </View>
         );
@@ -205,17 +227,17 @@ class AllActivity extends Component {
     }
 
     render () {
-        const { isShow } = this.state;
+        const { isShow, showSearch, query } = this.state;
         return (
             <View className='all-box'>
                 <View className='all-top'>
                     <SelectBox changeStatu={this.selectStatu} selectIndex={this.activeStatus} selectItem={['全部', '进行中', '已结束', '未开始']} />
-                    <SearchBox
+                    {showSearch && <SearchBox
                         className='search-box'
                         placeholder='请输入活动名称搜索'
                         onSearch={this.onClickSearch}
-                        value={this.query}
-                    />
+                        value={query}
+                    />}
                 </View>
                 {
                     !isShow && this.emptyPage()

@@ -11,7 +11,7 @@ class HelpShareResult extends Component {
         this.state = {};
     }
     render () {
-        const { onClose, isSuccess } = this.props;
+        const { onClose, shareResult:{ result, msg } } = this.props;
         return (
             <GameModal
                 visible
@@ -20,12 +20,12 @@ class HelpShareResult extends Component {
                 headerStyle={styles.header}
                 onClose={onClose}
             >
-                <Text className={classNames(styles.desc, { [styles.fail]:!isSuccess })}>
-                    {isSuccess
+                <Text className={classNames(styles.desc, { [styles.fail]:!result })}>
+                    {result
                         ? `好友助力成功了～
                     快来一起参与游戏拿优惠券吧`
-                        : `你已达到活动期间总助力次数上限啦
-                    赶紧和好友一起参与游戏吧～`}
+                        :  `${msg ? msg : '你已达到活动期间总助力次数上限啦'}
+                        赶紧和好友一起参与游戏吧～`}
                 </Text>
                 <GameButton className={styles.btn} onClick={onClose}>
                     立即参与

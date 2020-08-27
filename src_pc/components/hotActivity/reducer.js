@@ -1,4 +1,8 @@
-import { TITLE, SET_VALUE, SET_CONFIG } from './actions';
+import moment from "moment";
+import { isEmpty } from '../utils/index';
+import { getUserInfo } from '../../public/util/userInfoChanger';
+import { TITLE, SET_VALUE, SET_CONFIG, INIT_ACTIVITY_DATA } from './actions';
+import { levelConfig } from "./createPage";
 
 export const version = '0.0.12';
 const defaultState = {
@@ -24,6 +28,25 @@ export default (state = defaultState, action) => {
             let gameConfig = Object.assign({}, state.activityData.gameConfig);
             gameConfig[action.key] = action.value;
             return { ...state, activityData:{ ...state.activityData, gameConfig:gameConfig } };
+        }
+        case INIT_ACTIVITY_DATA: {
+            return {
+                ...state, activityData:{
+                    'activeName': '',
+                    'subTitle': '',
+                    'startDate': moment().format("YYYY-MM-DD HH:mm:ss"),
+                    'endDate': moment().add(7, 'days').format("YYYY-MM-DD HH:mm:ss"),
+                    'couponData': '',
+                    'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${isEmpty(getUserInfo().cVersion) ? '0.0.14' : getUserInfo().cVersion}&_mp_code=tb&query=activeID%3D`,
+                    'activeRewards': '',
+                    'gameConfig':{
+                        'maxShareNum':3,
+                        'maxCollectNum':3,
+                        'goods':[],
+                        'gameLevel':levelConfig['2'],
+                    },
+                },
+            };
         }
         default:
             return state;

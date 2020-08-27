@@ -1,17 +1,19 @@
-import { ADD_GAMETIMES,
-    MINUS_GAMETIMES,
-    SET_PRELOADED,
-    SET_BEST_SCORE,
-    SET_ACTIVITY_ENDED,
-    SET_USER_INFO,
-    SET_FAVOR_SHOP,
-    SET_RECEIVE_REWARDS,
-    SET_JOIN_GAME,
-    COLLECT_GOOD_ITEM,
-    HELP_SHARE_USER, } from "../constants/game";
 import { api } from "../../public/util/api";
 import Taro from "@tarojs/taro";
 import { getUserInfo } from "../../public/util/userInfoChanger";
+
+export const ADD_GAMETIMES = 'ADD_GAMETIMES';
+export const MINUS_GAMETIMES = 'MINUS_GAMETIMES';
+export const SET_PRELOADED = 'SET_PRELOADED';
+export const SET_ACTIVITY_ENDED = 'SET_ACTIVITY_ENDED';
+export const SET_BEST_SCORE = 'SET_BEST_SCORE';
+export const SET_USER_INFO = 'SET_USER_INFO';
+export const SET_FAVOR_SHOP = 'SET_FAVOR_SHOP';
+export const SET_RECEIVE_REWARDS = 'SET_RECEIVE_REWARDS';
+export const SET_JOIN_GAME = 'SET_JOIN_GAME';
+export const COLLECT_GOOD_ITEM = 'COLLECT_GOOD_ITEM';
+export const HELP_SHARE_USER = 'HELP_SHARE_USER';
+export const TOGGLE_MUSIC_ENABLE = 'TOGGLE_MUSIC_ENABLE';
 
 export const addGametimes = () => {
     return { type: ADD_GAMETIMES };
@@ -57,6 +59,10 @@ export const helpShareUser = () => {
     return { type: HELP_SHARE_USER };
 };
 
+export const toggleMusicEnable = () => {
+    return { type: TOGGLE_MUSIC_ENABLE };
+};
+
 /**
  * 淘宝关注店铺API
  * @param {*} userinfo
@@ -99,7 +105,7 @@ export const favorShop = (userinfo, cb) => {
             .then((res) => {
                 console.log("关注店铺成功", res);
                 api({
-                    apiName: "aiyong.interactc.user.data.update",
+                    apiName: "aiyong.item.interactc.user.data.update",
                     method: "/interactive/updateInterActCData",
                     args: {
                         game_stage: 1,
@@ -137,7 +143,7 @@ export const favorShop = (userinfo, cb) => {
 export const joinGame = (userinfo, cb) => {
     return (dispatch) => {
         api({
-            apiName: "aiyong.interactc.user.data.update",
+            apiName: "aiyong.item.interactc.user.data.update",
             method: "/interactive/updateInterActCData",
             args: {
                 game_stage: 2,
@@ -161,7 +167,7 @@ export const joinGame = (userinfo, cb) => {
 export const updateGameNumberApi = (userinfo) => {
     return new Promise((resolve, reject) => {
         api({
-            apiName: "aiyong.interactc.user.data.update",
+            apiName: "aiyong.item.interactc.user.data.update",
             method: "/interactive/updateInterActCData",
             args: {
                 revive: true,
@@ -187,10 +193,15 @@ export const updateGameNumberApi = (userinfo) => {
  */
 export const addGameNumberAction = (userinfo, cb) => {
     return async (dispatch) => {
-        const res = await updateGameNumberApi(userinfo);
-        console.log("~~~~~~~~~~~~~~~~~~~~", res);
-        dispatch(minusGametimes());
-        cb && cb();
+        try{
+            const res = await updateGameNumberApi(userinfo);
+            console.log("~~~~~~~~~~~~~~~~~~~~", res);
+            dispatch(minusGametimes());
+            cb && cb();
+        } catch (err) {
+            console.log('addGameNumberAction', err);
+            Taro.showToast({ title:'更新游戏次数失败' });
+        }
     };
 };
 const draw = (userinfo) => {
@@ -223,7 +234,7 @@ const draw = (userinfo) => {
 const receiveRewardsApi = (userinfo) => {
     return new Promise((resolve, reject) => {
         api({
-            apiName: "aiyong.interactc.user.data.update",
+            apiName: "aiyong.item.interactc.user.data.update",
             method: "/interactive/updateInterActCData",
             args: {
                 game_stage: 3,
@@ -271,7 +282,7 @@ export const drawPrize = (userinfo, cb) => {
 export function collectGoodApi (item, gameConfig) {
     return new Promise((resolve, reject) => {
         api({
-            apiName: "aiyong.interactc.user.data.update",
+            apiName: "aiyong.item.interactc.user.data.update",
             method: "/interactive/updateInterActCData",
             args: {
                 operType: 1,
@@ -300,7 +311,7 @@ export function collectGoodApi (item, gameConfig) {
 export function shareHelpApi (fromNick, gameConfig) {
     return new Promise((resolve, reject) => {
         api({
-            apiName: "aiyong.interactc.user.data.update",
+            apiName: "aiyong.item.interactc.user.data.update",
             method: "/interactive/updateInterActCData",
             args: {
                 operType: 2,
@@ -329,16 +340,12 @@ export function shareHelpApi (fromNick, gameConfig) {
 export function helpShareUserAction (fromNick, gameConfig, callback) {
     return async (dispatch) => {
         try {
-            await shareHelpApi(fromNick, gameConfig);
+            const res = await shareHelpApi(fromNick, gameConfig);
             dispatch(helpShareUser());
-            callback && callback(true);
+            callback && callback({ result:true, msg:res.msg || '' });
         } catch (error) {
-            Taro.showToast({
-                title: error.msg || "分享助力失败",
-                icon: "fail",
-                duration: 2000,
-            });
-            callback && callback(false);
+            dispatch(helpShareUser());
+            callback && callback({ result:false, msg:error.msg || '' });
         }
     };
 }

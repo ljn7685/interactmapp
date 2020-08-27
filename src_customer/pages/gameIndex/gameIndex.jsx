@@ -12,7 +12,8 @@ import ToastBox from "../../components/toast/toast";
 import { setActivityEnded,
     setUserInfo,
     favorShop,
-    joinGame, } from "../../actions/game";
+    joinGame,
+    toggleMusicEnable } from "../../actions/game";
 import icon_gift from "../../assets/images/icon_gift.png";
 import GameButton from "../../components/gameButton";
 import GameTask from "../gameTask";
@@ -21,6 +22,8 @@ import GameShare from "../gameShare";
 import useShareMessage from "../../components/shareMessage";
 import HelpShare from "../../components/helpShare";
 import HelpShareResult from "../../components/helpShareResult";
+import icon_music_png from "../../assets/images/icon_music.png";
+import icon_music_close_png from "../../assets/images/icon_music_close.png";
 
 const titleIcon = "http://q.aiyongtech.com/interact/game_title_icon.png";
 const start_turntable = "http://q.aiyongtech.com/interact/start_turntable.png";
@@ -38,6 +41,7 @@ class GameIndex extends Component {
             showShare: false,
             showHelpShare: false,
             showShareResult: false,
+            showMusicTip: true,
             shareResult: false,
             jumpIcon: false,
         };
@@ -74,6 +78,12 @@ class GameIndex extends Component {
         if (userinfo.fromNick) {
             this.setState({ showHelpShare: true });
         }
+        this.tipTimer = setTimeout(() => {
+            this.setState({ showMusicTip:false });
+        }, 5000);
+    }
+    componentWillUnmount () {
+        clearTimeout(this.tipTimer);
     }
     /**
      * 开始游戏
@@ -92,9 +102,7 @@ class GameIndex extends Component {
      * 跳转到游戏页面
      */
     redirectToGame = () => {
-        if (this.props.gametimes <= 0) {
-            this.showNoEnoughTimes();
-        } else {
+        if (this.props.gametimes > 0) {
             Taro.redirectTo({ url: "/pages/gameScene/gameScene" });
         }
     };
@@ -138,17 +146,15 @@ class GameIndex extends Component {
         };
         const onFavorShop = this.onFavorShop;
         const taskList = [];
-        if (!check_favored) {
-            taskList.push({
-                current: check_favored,
-                total: 1,
-                name: "关注店铺",
-                btnText: "立即关注",
-                disabledText: "已关注",
-                disabled: check_favored,
-                onClick: onFavorShop,
-            });
-        }
+        taskList.push({
+            current: check_favored,
+            total: 1,
+            name: "关注店铺",
+            btnText: "立即关注",
+            disabledText: "已关注",
+            disabled: check_favored,
+            onClick: onFavorShop,
+        });
         if (game_config && game_config.gameTask) {
             if (game_config.gameTask.includes("share")) {
                 const share_num = Array.isArray(shared_users)
@@ -156,7 +162,7 @@ class GameIndex extends Component {
                     : 0;
                 const share_total = game_config.maxShareNum;
                 taskList.push({
-                    current: share_num,
+                    current: share_num >= share_total ? share_total : share_num,
                     total: share_total,
                     name: "邀请好友",
                     btnText: "立即邀请",
@@ -193,11 +199,14 @@ class GameIndex extends Component {
             showShare,
             showHelpShare,
             showShareResult,
+            showMusicTip,
         } = this.state;
         const {
             activity_ended,
             userinfo: { sub_title, fromNick, check_favored },
             gametimes,
+            toggleMusicEnable,
+            music_enable,
         } = this.props;
         const taskList = this.getTaskList();
         return (
@@ -246,17 +255,30 @@ class GameIndex extends Component {
                                 ? "开始游戏 赢好礼"
                                 : "关注店铺 获取游戏次数"}
                     </GameButton>
-                    <GameButton
+                    { taskList.length > 1 ? <GameButton
                         className={styles["game-times"]}
                         onClick={this.onToggleModal.bind(this, "showTask")}
                     >
                         获取更多游戏次数
-                    </GameButton>
+                    </GameButton> : null}
                 </View>
                 <Text className={styles["game-desc"]}>
                     连续参与游戏成功率更高哦
                 </Text>
                 <View className='sidebar'>
+                    <View
+                        className='side-btn'
+                        onClick={toggleMusicEnable}
+                        key='music'
+                    >
+                        <Image
+                            src={music_enable ? icon_music_png : icon_music_close_png}
+                            alt=''
+                            className='side-img'
+                            mode='widthFix'
+                        ></Image>
+                        {showMusicTip && !music_enable ? <Text className='side-btn-tip'>开启音效，游戏体验更佳</Text> : null}
+                    </View>
                     <View
                         className='side-btn'
                         onClick={this.onToggleModal.bind(this, "showRule")}
@@ -302,7 +324,7 @@ class GameIndex extends Component {
                         }}
                     ></GamePrize>
                 ) : null}
-                {showTask && taskList.length > 0 ? (
+                {showTask && taskList.length > 1 ? (
                     <GameTask
                         onClose={this.onToggleModal.bind(this, "showTask")}
                         taskList={taskList}
@@ -334,7 +356,7 @@ class GameIndex extends Component {
                             this,
                             "showShareResult"
                         )}
-                        isSuccess={this.state.shareResult}
+                        shareResult={this.state.shareResult}
                     />
                 ) : null}
                 <ToastBox ref={(ref) => (this.toast = ref)}></ToastBox>
@@ -347,6 +369,7 @@ const mapStateToProps = ({ game }) => {
         gametimes: game.gametimes,
         activity_ended: game.activity_ended,
         userinfo: game.userinfo,
+        music_enable: game.music_enable,
     };
 };
 const mapDispatchToProps = {
@@ -354,6 +377,7 @@ const mapDispatchToProps = {
     setUserInfo,
     favorShop,
     joinGame,
+    toggleMusicEnable,
 };
 const wrapper = useShareMessage(
     connect(mapStateToProps, mapDispatchToProps)(GameIndex)

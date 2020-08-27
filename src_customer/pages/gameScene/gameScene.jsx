@@ -51,10 +51,7 @@ class GameScene extends Component {
                 this.setState({ showTip: false });
             }
             this.props.addGameNumberAction(userinfo, () => {
-                this.onCanvasReady();
-                if (revive) {
-                    this.gameStart();
-                }
+                this.onCanvasReady(revive);
             });
         }
     }
@@ -91,7 +88,7 @@ class GameScene extends Component {
     /**
      * 设置canvas
      */
-    onCanvasReady () {
+    onCanvasReady (revive) {
         console.log("onCanvasReady");
         const { game } = this.state;
         game.bump = new Bump(PIXI);
@@ -155,7 +152,11 @@ class GameScene extends Component {
                     arrow_count: this.props.arrow_count,
                     game_duration: this.props.game_duration,
                     arrow_score: this.props.arrow_score,
+                    music_enable: this.props.music_enable,
                 });
+                if (revive) {
+                    this.gameStart();
+                }
             },
         });
     }
@@ -163,10 +164,12 @@ class GameScene extends Component {
         if (score > this.props.best_score) {
             this.props.setBestScore(score);
         }
-        if (isSuccess) {
-            this.successAudio.play();
-        } else {
-            this.failAudio.play();
+        if(this.props.music_enable) {
+            if (isSuccess) {
+                this.successAudio.play();
+            } else {
+                this.failAudio.play();
+            }
         }
         this.setState({
             showGameResult: true,
@@ -291,6 +294,7 @@ const mapStateToProps = ({ game }) => {
         gametimes: game.gametimes,
         game_duration: game.game_duration,
         userinfo: game.userinfo,
+        music_enable: game.music_enable,
     };
 };
 const mapDispatchToProps = {

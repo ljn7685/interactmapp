@@ -138,7 +138,7 @@ class Preload extends Component {
     getLaunchParams (params) {
         return new Promise((resolve) => {
             let options = Taro.getLaunchOptionsSync();
-            // options = { ...options, query:{ ...options.query, activeID:265, ...params }  };
+            // options = { ...options, query:{ ...options.query, activeID:301, ...params }  };
             options = { ...options, query:{ ...options.query, ...params }  };
             if (!(options && options.query && options.query.activeID)) {
                 console.log("options", options);

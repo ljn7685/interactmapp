@@ -8,6 +8,7 @@ export const SET_DATA = "SET_DATA"; // 通过id保存游戏配置数据
 export const SET_URL = "SET_URL";// 保存创建成功后的活动url
 export const SET_VALUE = "SET_VALUE"; // input框的输入值变化
 export const SET_CONFIG = "SET_CONFIG"; // 游戏配置的变化
+export const INIT_ACTIVITY_DATA = "INIT_ACTIVITY_DATA"; // 初始化活动数据
 /**
  * 改变顶部标题
  * @param {*} values 
@@ -65,6 +66,12 @@ export const setActivityUrlAction = (activityUrl) => {
         activityUrl: activityUrl,
     };
 };
+/**
+ * 初始化活动数据
+ */
+export const initActivityDataAction = () => {
+    return { type:INIT_ACTIVITY_DATA };
+};
 export const getBenefitQueryAction = (ename, poolID) => {
     return async (dispatch) => {
         let data = await benefitQueryApi({ 'ename': ename, 'app_name': 'promotioncenter-3000000025552964', 'award_type':1 });
@@ -102,15 +109,15 @@ export const getActivityByIdAction = (id, operType) => {
         newData.subTitle = data.data[0].sub_title;
         newData.gameConfig = gameConfig;
         if (operType === '创建') {
-            newData.startDate = moment().format("YYYY-MM-DD");
-            newData.endDate = moment().add(7, 'days').format("YYYY-MM-DD");
+            newData.startDate = moment().format("YYYY-MM-DD HH:mm:ss");
+            newData.endDate = moment().add(7, 'days').format("YYYY-MM-DD HH:mm:ss");
             newData.activeRewards = '';
             newData.couponData = '';
             gameConfig.goods = [];
             gameConfig.maxCollectNum = 3;
         } else if (operType === '修改') {
-            newData.startDate = data.data[0].start_date.substring(0, 10);
-            newData.endDate = data.data[0].end_date.substring(0, 10);
+            newData.startDate = data.data[0].start_date;
+            newData.endDate = data.data[0].end_date;
             newData.activeRewards = JSON.parse(data.data[0].active_rewards);
             newData.couponData = JSON.parse(data.data[0].active_rewards).poolID;
         }
@@ -147,13 +154,13 @@ export const creacteActivityAction = (operationType) => {
             if(gameConfig.gameTask.includes('collect')) {
                 if (isEmpty(gameConfig.collectType)) {
                     toastTitle = '请选择随机推荐或指定商品';
-                } else if (!regPos.test(gameConfig.maxCollectNum)) {
+                } else if (!(regPos.test(gameConfig.maxCollectNum) && gameConfig.maxCollectNum > 0)) {
                     toastTitle = '最大收藏次数须是非负整数';
                 } else if(gameConfig.maxCollectNum > gameConfig.goods.length) {
                     toastTitle = '推荐商品数量不得少于收藏次数';
                 }
             } else if(gameConfig.gameTask.includes('share')) {
-                if (!regPos.test(gameConfig.maxShareNum)) {
+                if (!(regPos.test(gameConfig.maxShareNum) && gameConfig.maxShareNum > 0)) {
                     toastTitle = '最大分享次数须是非负整数';
                 }
             }

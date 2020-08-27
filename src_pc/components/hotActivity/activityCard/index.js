@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { View } from '@tarojs/components';
 import './index.scss';
-import { changeTitleAction, changeActivityDataAction } from '../actions';
-import moment from 'moment';
-import { isEmpty } from '../../utils/index';
-import { getUserInfo } from '../../../public/util/userInfoChanger';
+import { changeTitleAction, initActivityDataAction } from '../actions';
+
 
 import { connect } from 'react-redux';
-import { levelConfig } from '../createPage';
 
 class ActivityCard extends Component {
     constructor (props) {
@@ -21,23 +18,9 @@ class ActivityCard extends Component {
         my.qn.navigateToWebPage({ url: "https://www.yuque.com/xujingyi/kb/ufwevl" });
     }
     goToCreatePage = (title, titleType) => {
-        const { changeTitleAction, changeActivityDataAction } = this.props;
+        const { changeTitleAction, initActivityDataAction } = this.props;
         changeTitleAction(title, titleType);
-        changeActivityDataAction({
-            'activeName': '',
-            'subTitle': '',
-            'startDate': moment().format("YYYY-MM-DD HH:mm:ss"),
-            'endDate': moment().add(7, 'days').format("YYYY-MM-DD HH:mm:ss"),
-            'couponData': '',
-            'activeUrl': `https://m.duanqu.com?_ariver_appid=3000000012505562&nbsv=${isEmpty(getUserInfo().cVersion) ? '0.0.14' : getUserInfo().cVersion}&_mp_code=tb&query=activeID%3D`,
-            'activeRewards': '',
-            'gameConfig':{
-                'maxShareNum':3,
-                'maxCollectNum':3,
-                'goods':[],
-                'gameLevel':levelConfig['2'],
-            },
-        });
+        initActivityDataAction();
     }
 
     render () {
@@ -74,6 +57,6 @@ class ActivityCard extends Component {
 
 const mapDispatchToProps = {
     changeTitleAction,
-    changeActivityDataAction,
+    initActivityDataAction,
 };
 export default connect(state => state.hotReducer, mapDispatchToProps)(ActivityCard);
